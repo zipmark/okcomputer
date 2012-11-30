@@ -5,7 +5,7 @@ require 'okcomputer/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "okcomputer"
-  gem.version       = Okcomputer::VERSION
+  gem.version       = OKComputer::VERSION
   gem.authors       = ["TODO: Write your name"]
   gem.email         = ["TODO: Write your email address"]
   gem.description   = %q{TODO: Write a gem description}

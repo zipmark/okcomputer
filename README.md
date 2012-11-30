@@ -1,4 +1,4 @@
-# Okcomputer
+# OKComputer
 
 TODO: Write a gem description
 

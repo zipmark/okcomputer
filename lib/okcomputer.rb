@@ -1,5 +1,5 @@
 require "okcomputer/version"
 
-module Okcomputer
+module OKComputer
   # Your code goes here...
 end
