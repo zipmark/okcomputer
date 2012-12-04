@@ -1,3 +1,3 @@
 OKComputer::Engine.routes.draw do
-  match "/okcomputer" => "okcomputer#show"
+  # match "/okcomputer" => "okcomputer#show"
 end
