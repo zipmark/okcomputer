@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class OkcomputerTest < ActiveSupport::TestCase
+class OKComputerTest < ActiveSupport::TestCase
   test "truth" do
-    assert_kind_of Module, Okcomputer
+    assert_kind_of Module, OKComputer
   end
 end
