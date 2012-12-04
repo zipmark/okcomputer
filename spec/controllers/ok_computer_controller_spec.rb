@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OKComputerController do
+describe OkComputerController do
   describe "GET 'index'" do
     let(:checker) { stub(:check_wrapper_object)}
 

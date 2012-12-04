@@ -1,4 +1,4 @@
-class OKComputerController < ApplicationController
+class OkComputerController < ApplicationController
   layout nil
 
   def index
