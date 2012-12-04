@@ -1,2 +1,3 @@
-Rails.application.routes.draw do
+OKComputer::Engine.routes.draw do
+  match "/okcomputer" => "okcomputer#show"
 end
