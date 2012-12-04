@@ -2,11 +2,11 @@ class OKComputerController < ApplicationController
   layout nil
 
   def index
-    results = OKComputer.results
+    checker = OKComputer.checker
 
     respond_to do |format|
-      format.text { render text: results.values.join("\n") }
-      format.json { render json: results.to_json }
+      format.text { render text: checker.to_text }
+      format.json { render json: checker.to_json }
     end
   end
 

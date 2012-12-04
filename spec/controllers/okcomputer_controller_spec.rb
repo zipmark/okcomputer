@@ -2,20 +2,22 @@ require 'spec_helper'
 
 describe OKComputerController do
   describe "GET 'index'" do
-    let(:results) { {foo: "foo result ", bar: "bar result"} }
+    let(:checker) { stub(:check_wrapper_object)}
 
     before do
-      OKComputer.should_receive(:results) { results }
+      OKComputer.stub(:checker) { checker }
     end
 
     it "performs the basic up check" do
+      checker.stub(:to_text) { "text of the results" }
       get :index, format: :text, use_route: :ok_computer
-      response.body.should == results.values.join("\n")
+      response.body.should == checker.to_text
     end
 
     it "performs the basic up check as JSON" do
+      checker.stub(:to_json) { "json of the results" }
       get :index, format: :json, use_route: :ok_computer
-      response.body.should == results.to_json
+      response.body.should == checker.to_json
     end
 
     it "returns a failure status code if any check fails"
