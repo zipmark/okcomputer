@@ -26,7 +26,7 @@ describe OkComputerController do
   end
 
   describe "GET 'show'" do
-    let(:check_type) { :basic }
+    let(:check_type) { "basic" }
     let(:check) { stub(:single_check) }
 
     before do
