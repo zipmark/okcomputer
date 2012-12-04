@@ -1,13 +1,11 @@
 class OkComputerController < ApplicationController
   layout nil
+  respond_to :text, :json
 
   def index
-    checker = OKComputer.checker
+    checks = OKComputer.registered_checks
 
-    respond_to do |format|
-      format.text { render text: checker.to_text }
-      format.json { render json: checker.to_json }
-    end
+    respond_with checks
   end
 
   def show
