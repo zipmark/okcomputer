@@ -17,7 +17,6 @@ module OKComputer
     def self.registered_checks
       (@registered_checks || {}).values
     end
-    private_class_method :registered_checks
 
     # Private: Store a new list of checks
     #

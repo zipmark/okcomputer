@@ -8,12 +8,12 @@ module OKComputer
 
       it "returns an empty list if not set" do
         Checks.send(:registered_checks=, no_checks)
-        Checks.send(:registered_checks).should == []
+        Checks.registered_checks.should == []
       end
 
       it "remembers the checks given to it" do
         Checks.send(:registered_checks=, some_checks)
-        Checks.send(:registered_checks).should == some_checks.values
+        Checks.registered_checks.should == some_checks.values
       end
     end
 
