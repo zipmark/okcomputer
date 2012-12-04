@@ -1,4 +1,4 @@
 require "okcomputer/engine"
 
-module Okcomputer
+module OKComputer
 end

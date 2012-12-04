@@ -10,7 +10,7 @@ AUTHORS = {
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "okcomputer"
-  s.version     = Okcomputer::VERSION
+  s.version     = OKComputer::VERSION
   s.authors     = AUTHORS.keys
   s.email       = AUTHORS.values
   s.homepage    = "TODO"
