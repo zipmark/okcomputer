@@ -31,6 +31,18 @@ module OKComputer
         expect { Checks.registered_check(check_name) }.to raise_error(Checks::CheckNotFound)
       end
     end
+
+    context ".register(check_name, check_object)" do
+      let(:check_name) { :foo }
+      let(:check_object) { stub(:checker) }
+
+      it "adds the checker to the list of checkers" do
+        Checks.send(:registered_checks=, {})
+        Checks.registered_checks.should_not include check_object
+        Checks.register(check_name, check_object)
+        Checks.registered_checks.should include check_object
+      end
+    end
   end
 end
 

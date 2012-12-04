@@ -11,7 +11,16 @@ module OKComputer
       raise CheckNotFound
     end
 
-    # Private: The list of checks registered to the system
+    # Public: Register the given check with OKComputer
+    #
+    # check_name - The name of the check to retrieve
+    # check_object - Instance of Checker to register
+    def self.register(check_name, check_object)
+      @registered_checks ||= {}
+      @registered_checks[check_name] = check_object
+    end
+
+    # Public: The list of checks registered to the system
     #
     # Returns an Array of registered checks
     def self.registered_checks
