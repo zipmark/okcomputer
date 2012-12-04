@@ -5,7 +5,7 @@ describe OkComputerController do
     let(:checks) { stub(:all_checks)}
 
     before do
-      OKComputer.stub(:registered_checks) { checks }
+      OKComputer::Checks.stub(:registered_checks) { checks }
     end
 
     it "performs the basic up check" do
@@ -30,7 +30,7 @@ describe OkComputerController do
     let(:check) { stub(:single_check) }
 
     before do
-      OKComputer.should_receive(:registered_check).with(check_type) { check }
+      OKComputer::Checks.should_receive(:registered_check).with(check_type) { check }
     end
 
     it "performs the given check and returns text" do
