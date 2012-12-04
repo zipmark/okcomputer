@@ -11,9 +11,6 @@ class OkComputerController < ApplicationController
   def show
     check = OKComputer.registered_check(params[:check])
 
-    respond_to do |format|
-      format.text { render text: check.to_text }
-      format.json { render json: check.to_json }
-    end
+    respond_with check
   end
 end
