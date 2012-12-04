@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-class OKComputerTest < ActiveSupport::TestCase
-  test "truth" do
-    assert_kind_of Module, OKComputer
+describe OKComputer do
+  it "exists" do
+    OKComputer.should be_a Module
   end
 end
