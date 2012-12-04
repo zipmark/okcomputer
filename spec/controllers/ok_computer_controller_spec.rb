@@ -27,20 +27,22 @@ describe OkComputerController do
 
   describe "GET 'show'" do
     let(:check_type) { :basic }
-    let(:result) { "Basic result" }
+    let(:check) { stub(:single_check) }
 
     before do
-      OKComputer.should_receive(:perform_check).with(check_type) { result }
+      OKComputer.should_receive(:registered_check).with(check_type) { check }
     end
 
     it "performs the given check and returns text" do
+      check.stub(:to_text) { "text of check" }
       get :show, check: check_type, format: :text
-      response.body.should == result
+      response.body.should == check.to_text
     end
 
     it "performs the given check and returns JSON" do
+      check.stub(:to_json) { "json of check" }
       get :show, check: check_type, format: :json
-      response.body.should == {check_type => result}.to_json
+      response.body.should == check.to_json
     end
 
     it "returns a success status code if the check passes"

@@ -9,12 +9,11 @@ class OkComputerController < ApplicationController
   end
 
   def show
-    check_type = params[:check]
-    result = OKComputer.perform_check(check_type)
+    check = OKComputer.registered_check(params[:check])
 
     respond_to do |format|
-      format.text { render text: result }
-      format.json { render json: {check_type => result}.to_json }
+      format.text { render text: check.to_text }
+      format.json { render json: check.to_json }
     end
   end
 end
