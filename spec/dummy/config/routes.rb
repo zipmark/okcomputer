@@ -1,4 +1,5 @@
 Dummy::Application.routes.draw do
+  # FIXME i want to not have to manually mount the app, it should be able to mout itself
   mount OKComputer::Engine => "/okcomputer"
 
   # The priority is based upon order of creation:
