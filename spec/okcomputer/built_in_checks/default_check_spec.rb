@@ -7,7 +7,7 @@ module OKComputer
     end
 
     it "simply outputs a string to render" do
-      subject.perform.should include "OKComputer Site Check Passed"
+      subject.call.should include "OKComputer Site Check Passed"
     end
   end
 end
