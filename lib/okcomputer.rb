@@ -2,6 +2,9 @@ require "okcomputer/engine"
 require "okcomputer/check"
 require "okcomputer/checks"
 
+# and the built-in checks
+require "okcomputer/built_in_checks/default_check"
+
 module OKComputer
   # Public: Register the given check with the given name
   #
