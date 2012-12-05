@@ -27,6 +27,13 @@ module OKComputer
       (@registered_checks || {}).delete(check_name)
     end
 
+    # Private: The list of registered checks, keyed by their unique names
+    #
+    # Returns a Hash
+    def self.registry
+      @registry ||= {}
+    end
+
     # Public: The list of checks registered to the system
     #
     # Returns an Array of registered checks

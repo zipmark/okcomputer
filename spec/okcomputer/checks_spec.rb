@@ -32,6 +32,26 @@ module OKComputer
       end
     end
 
+    context ".registry" do
+      let(:some_hash) { stub(:hash) }
+
+      around(:each) do |example|
+        existing = Checks.instance_variable_get(:@registry)
+        example.run
+        Checks.instance_variable_set(:@registry, existing)
+      end
+
+      it "keeps the hash of the registered checks keyed on their names" do
+        Checks.instance_variable_set(:@registry, some_hash)
+        Checks.registry.should == some_hash
+      end
+
+      it "defaults to an empty hash if not set" do
+        Checks.instance_variable_set(:@registry, nil)
+        Checks.registry.should == {}
+      end
+    end
+
     context ".registered_check(check_name)" do
       let(:check_name) { :foo }
       let(:foo_check) { stub(:checker) }
