@@ -2,6 +2,8 @@ require "spec_helper"
 
 module OKComputer
   describe Checks do
+    let(:check_object) { stub(:checker, :name= => nil) }
+
     context ".registered_checks" do
       let(:some_checks) { {foo: "bar"} }
 
@@ -41,12 +43,11 @@ module OKComputer
     end
 
     context ".registered_check(check_name)" do
-      let(:check_name) { :foo }
-      let(:foo_check) { stub(:checker) }
+      let(:check_name) { "foo" }
 
       it "returns the check registered with the given name" do
-        Checks.register(check_name, foo_check)
-        Checks.registered_check(check_name).should == foo_check
+        Checks.register(check_name, check_object)
+        Checks.registered_check(check_name).should == check_object
       end
 
       it "raises an exceiption if given a check that's not registered" do
@@ -56,14 +57,18 @@ module OKComputer
     end
 
     context ".register(check_name, check_object)" do
-      let(:check_name) { :foo }
-      let(:check_object) { stub(:checker) }
-      let(:second_check_object) { stub(:checker) }
+      let(:check_name) { "foo" }
+      let(:second_check_object) { stub(:checker, :name= => nil) }
 
       before do
         # make sure it isn't there yet
         Checks.deregister(check_name)
         Checks.registered_checks.should_not include check_object
+      end
+
+      it "assigns the given name to the checker" do
+        check_object.should_receive(:name=).with(check_name)
+        Checks.register(check_name, check_object)
       end
 
       it "adds the checker to the list of checkers" do
@@ -84,8 +89,7 @@ module OKComputer
     end
 
     context ".deregister(check_name)" do
-      let(:check_name) { :foo }
-      let(:check_object) { stub(:checker) }
+      let(:check_name) { "foo" }
 
       it "removes the checker from the list of checkers" do
         Checks.register(check_name, check_object)
