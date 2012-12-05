@@ -20,6 +20,13 @@ module OKComputer
       @registered_checks[check_name] = check_object
     end
 
+    # Public: Remove the check of the given name being checked
+    #
+    # check_name - The name of the check to retrieve
+    def self.deregister(check_name)
+      (@registered_checks || {}).delete(check_name)
+    end
+
     # Public: The list of checks registered to the system
     #
     # Returns an Array of registered checks

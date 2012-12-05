@@ -55,6 +55,24 @@ module OKComputer
         Checks.registered_checks.should include second_check_object
       end
     end
+
+    context ".deregister(check_name)" do
+      let(:check_name) { :foo }
+      let(:check_object) { stub(:checker) }
+
+      it "removes the checker from the list of checkers" do
+        Checks.register(check_name, check_object)
+        Checks.registered_checks.should include check_object
+
+        Checks.deregister(check_name)
+        Checks.registered_checks.should_not include check_object
+      end
+
+      it "does not error if the name isn't registered" do
+        Checks.deregister(check_name)
+        Checks.deregister(check_name)
+      end
+    end
   end
 end
 
