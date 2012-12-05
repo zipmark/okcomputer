@@ -1,3 +1,7 @@
+# Private: Storage of the checks which have been registered with OKComputer.
+#
+# No one is expected to interact directly with this class, but rather through
+# the outer OKComputer interface.
 module OKComputer
   class Checks
     # Public: The check registered to the given name
