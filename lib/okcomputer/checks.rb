@@ -38,20 +38,6 @@ module OKComputer
       @registry ||= {}
     end
 
-    # Public: The list of checks registered to the system
-    #
-    # Returns an Array of registered checks
-    def self.registered_checks
-      registry.values
-    end
-
-    # Public: The names of the checks registered to the system
-    #
-    # Returns an Array of registered names
-    def self.registered_names
-      registry.keys
-    end
-
     # used when fetching a check that has not been registered
     CheckNotFound = Class.new(StandardError)
   end

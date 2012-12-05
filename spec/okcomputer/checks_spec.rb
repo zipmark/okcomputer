@@ -4,24 +4,6 @@ module OKComputer
   describe Checks do
     let(:check_object) { stub(:checker, :name= => nil) }
 
-    context ".registered_checks" do
-      let(:some_checks) { {foo: "bar"} }
-
-      it "remembers the checks given to it" do
-        Checks.stub(registry: some_checks)
-        Checks.registered_checks.should == some_checks.values
-      end
-    end
-
-    context ".registered_names" do
-      let(:some_checks) { {foo: "bar"} }
-
-      it "remembers the names of the checks given to it" do
-        Checks.stub(registry: some_checks)
-        Checks.registered_names.should == some_checks.keys
-      end
-    end
-
     context ".registry" do
       let(:some_hash) { stub(:hash) }
 
@@ -63,7 +45,6 @@ module OKComputer
       before do
         # make sure it isn't there yet
         Checks.deregister(check_name)
-        Checks.registered_checks.should_not include check_object
       end
 
       it "assigns the given name to the checker" do
@@ -73,18 +54,18 @@ module OKComputer
 
       it "adds the checker to the list of checkers" do
         Checks.register(check_name, check_object)
-        Checks.registered_checks.should include check_object
+        Checks.registry[check_name].should == check_object
       end
 
       it "overwrites the current check with the given name" do
         # put the first one in and make sure it's there
         Checks.register(check_name, check_object)
-        Checks.registered_checks.should include check_object
+        Checks.registry[check_name].should == check_object
 
         # put the second one in there, and first one gets replaced
         Checks.register(check_name, second_check_object)
-        Checks.registered_checks.should_not include check_object
-        Checks.registered_checks.should include second_check_object
+        Checks.registry.values.should_not include check_object
+        Checks.registry[check_name].should == second_check_object
       end
     end
 
@@ -92,11 +73,12 @@ module OKComputer
       let(:check_name) { "foo" }
 
       it "removes the checker from the list of checkers" do
+        # add it
         Checks.register(check_name, check_object)
-        Checks.registered_checks.should include check_object
-
+        # then remove it
         Checks.deregister(check_name)
-        Checks.registered_checks.should_not include check_object
+        Checks.registry.keys.should_not include check_name
+        Checks.registry.values.should_not include check_object
       end
 
       it "does not error if the name isn't registered" do
