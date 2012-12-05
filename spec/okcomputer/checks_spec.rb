@@ -35,12 +35,24 @@ module OKComputer
     context ".register(check_name, check_object)" do
       let(:check_name) { :foo }
       let(:check_object) { stub(:checker) }
+      let(:second_check_object) { stub(:checker) }
 
       it "adds the checker to the list of checkers" do
         Checks.send(:registered_checks=, {})
         Checks.registered_checks.should_not include check_object
         Checks.register(check_name, check_object)
         Checks.registered_checks.should include check_object
+      end
+
+      it "overwrites the current check with the given name" do
+        # put the first one in and make sure it's there
+        Checks.register(check_name, check_object)
+        Checks.registered_checks.should include check_object
+
+        # put the second one in there, and first one gets replaced
+        Checks.register(check_name, second_check_object)
+        Checks.registered_checks.should_not include check_object
+        Checks.registered_checks.should include second_check_object
       end
     end
   end
