@@ -10,7 +10,7 @@ describe OKComputer do
     let(:check) { stub(:checker_object) }
 
     it "adds the given check" do
-      OKComputer::Checks.should_receive(:register).with(check_name, check)
+      OKComputer::Registry.should_receive(:register).with(check_name, check)
       OKComputer.register check_name, check
     end
   end

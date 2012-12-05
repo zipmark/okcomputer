@@ -1,6 +1,6 @@
 module OKComputer
   class Check
-    # to be set by Checks upon registration
+    # to be set by Registry upon registration
     attr_accessor :name
 
     # Public: Perform the appropriate check

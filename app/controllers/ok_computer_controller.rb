@@ -3,13 +3,13 @@ class OkComputerController < ApplicationController
   respond_to :text, :json
 
   def index
-    checks = OKComputer::Checks.registered_checks
+    checks = OKComputer::Registry.registered_checks
 
     respond_with checks
   end
 
   def show
-    check = OKComputer::Checks.fetch(params[:check])
+    check = OKComputer::Registry.fetch(params[:check])
 
     respond_with check
   end
