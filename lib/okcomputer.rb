@@ -14,3 +14,6 @@ module OKComputer
     Checks.register(check_name, check_object)
   end
 end
+
+OKComputer.register "default", OKComputer::DefaultCheck.new
+
