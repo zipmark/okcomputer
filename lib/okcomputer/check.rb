@@ -20,7 +20,9 @@ module OKComputer
     # Public: The JSON output of performing the check
     #
     # Returns a String containing JSON
-    def to_json
+    def to_json(*args)
+      # NOTE swallowing the arguments that Rails passes by default since we don't care. This may prove to be a bad idea
+      # Rails passes stuff like this: {:prefixes=>["ok_computer", "application"], :template=>"show", :layout=>#<Proc>}]
       {name => perform}.to_json
     end
 
