@@ -3,31 +3,19 @@ require "spec_helper"
 module OKComputer
   describe Checks do
     context ".registered_checks" do
-      let(:no_checks) { nil }
       let(:some_checks) { {foo: "bar"} }
 
-      it "returns an empty list if not set" do
-        Checks.send(:registered_checks=, no_checks)
-        Checks.registered_checks.should == []
-      end
-
       it "remembers the checks given to it" do
-        Checks.send(:registered_checks=, some_checks)
+        Checks.stub(registry: some_checks)
         Checks.registered_checks.should == some_checks.values
       end
     end
 
     context ".registered_names" do
-      let(:no_checks) { nil }
       let(:some_checks) { {foo: "bar"} }
 
-      it "returns an empty list if not set" do
-        Checks.send(:registered_checks=, no_checks)
-        Checks.registered_names.should == []
-      end
-
-      it "remembers the checks given to it" do
-        Checks.send(:registered_checks=, some_checks)
+      it "remembers the names of the checks given to it" do
+        Checks.stub(registry: some_checks)
         Checks.registered_names.should == some_checks.keys
       end
     end
@@ -72,9 +60,13 @@ module OKComputer
       let(:check_object) { stub(:checker) }
       let(:second_check_object) { stub(:checker) }
 
-      it "adds the checker to the list of checkers" do
+      before do
+        # make sure it isn't there yet
         Checks.deregister(check_name)
         Checks.registered_checks.should_not include check_object
+      end
+
+      it "adds the checker to the list of checkers" do
         Checks.register(check_name, check_object)
         Checks.registered_checks.should include check_object
       end
