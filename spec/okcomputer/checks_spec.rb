@@ -22,12 +22,12 @@ module OKComputer
       let(:foo_check) { stub(:checker) }
 
       it "returns the check registered with the given name" do
-        Checks.send(:registered_checks=, {check_name => foo_check})
+        Checks.register(check_name, foo_check)
         Checks.registered_check(check_name).should == foo_check
       end
 
       it "raises an exceiption if given a check that's not registered" do
-        Checks.send(:registered_checks=, {})
+        Checks.deregister(check_name)
         expect { Checks.registered_check(check_name) }.to raise_error(Checks::CheckNotFound)
       end
     end
@@ -38,7 +38,7 @@ module OKComputer
       let(:second_check_object) { stub(:checker) }
 
       it "adds the checker to the list of checkers" do
-        Checks.send(:registered_checks=, {})
+        Checks.deregister(check_name)
         Checks.registered_checks.should_not include check_object
         Checks.register(check_name, check_object)
         Checks.registered_checks.should include check_object
