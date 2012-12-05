@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 # Maintain your gem's version:
 require "okcomputer/version"
 
-AUTHORS = {
+authors = {
   "Patrick Byrne" => "patrick.byrne@tstmedia.com",
 }
 
@@ -11,8 +11,8 @@ AUTHORS = {
 Gem::Specification.new do |s|
   s.name        = "okcomputer"
   s.version     = OKComputer::VERSION
-  s.authors     = AUTHORS.keys
-  s.email       = AUTHORS.values
+  s.authors     = authors.keys
+  s.email       = authors.values
   s.homepage    = "TODO"
   s.summary     = "TODO: Summary of OK Computer."
   s.description = "TODO: Description of OK Computer."
