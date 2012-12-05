@@ -18,9 +18,9 @@ module OKComputer
         subject.stub(perform: "Everything is great!")
       end
 
-      context "#to_s" do
+      context "#to_text" do
         it "combines the name and result of #perform" do
-          subject.to_s.should == "#{subject.name}: #{subject.perform}"
+          subject.to_text.should == "#{subject.name}: #{subject.perform}"
         end
       end
 

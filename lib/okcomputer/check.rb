@@ -10,10 +10,10 @@ module OKComputer
       raise(PerformNotDefined, "Your subclass must define its own #perform.")
     end
 
-    # Public: The string output of performing the check
+    # Public: The text output of performing the check
     #
     # Returns a String
-    def to_s
+    def to_text
       "#{name}: #{perform}"
     end
 
