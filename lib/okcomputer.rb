@@ -1,4 +1,5 @@
 require "okcomputer/engine"
+require "okcomputer/check"
 require "okcomputer/checks"
 
 module OKComputer
