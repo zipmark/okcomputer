@@ -30,7 +30,7 @@ describe OkComputerController do
     let(:check) { stub(:single_check) }
 
     before do
-      OKComputer::Checks.should_receive(:registered_check).with(check_type) { check }
+      OKComputer::Checks.should_receive(:fetch).with(check_type) { check }
     end
 
     it "performs the given check and returns text" do

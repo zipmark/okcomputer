@@ -4,12 +4,12 @@
 # the outer OKComputer interface.
 module OKComputer
   class Checks
-    # Public: The check registered to the given name
+    # Public: Return the check registered to the given name
     #
     # check_name - The name of the check to retrieve
     #
     # Returns the registered check or raises Checks::CheckNotFound
-    def self.registered_check(check_name)
+    def self.fetch(check_name)
       registry.fetch(check_name)
     rescue KeyError
       raise CheckNotFound, "No check registered with '#{check_name}'"

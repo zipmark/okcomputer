@@ -9,7 +9,7 @@ class OkComputerController < ApplicationController
   end
 
   def show
-    check = OKComputer::Checks.registered_check(params[:check])
+    check = OKComputer::Checks.fetch(params[:check])
 
     respond_with check
   end

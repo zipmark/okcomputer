@@ -24,17 +24,17 @@ module OKComputer
       end
     end
 
-    context ".registered_check(check_name)" do
+    context ".fetch(check_name)" do
       let(:check_name) { "foo" }
 
       it "returns the check registered with the given name" do
         Checks.register(check_name, check_object)
-        Checks.registered_check(check_name).should == check_object
+        Checks.fetch(check_name).should == check_object
       end
 
       it "raises an exceiption if given a check that's not registered" do
         Checks.deregister(check_name)
-        expect { Checks.registered_check(check_name) }.to raise_error(Checks::CheckNotFound)
+        expect { Checks.fetch(check_name) }.to raise_error(Checks::CheckNotFound)
       end
     end
 
