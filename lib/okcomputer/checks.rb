@@ -12,7 +12,7 @@ module OKComputer
     def self.registered_check(check_name)
       registry.fetch(check_name)
     rescue KeyError
-      raise CheckNotFound
+      raise CheckNotFound, "No check registered with '#{check_name}'"
     end
 
     # Public: Register the given check with OKComputer
