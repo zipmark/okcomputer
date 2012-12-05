@@ -17,6 +17,21 @@ module OKComputer
       end
     end
 
+    context ".registered_names" do
+      let(:no_checks) { nil }
+      let(:some_checks) { {foo: "bar"} }
+
+      it "returns an empty list if not set" do
+        Checks.send(:registered_checks=, no_checks)
+        Checks.registered_names.should == []
+      end
+
+      it "remembers the checks given to it" do
+        Checks.send(:registered_checks=, some_checks)
+        Checks.registered_names.should == some_checks.keys
+      end
+    end
+
     context ".registered_check(check_name)" do
       let(:check_name) { :foo }
       let(:foo_check) { stub(:checker) }

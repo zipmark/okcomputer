@@ -34,6 +34,13 @@ module OKComputer
       (@registered_checks || {}).values
     end
 
+    # Public: The names of the checks registered to the system
+    #
+    # Returns an Array of registered names
+    def self.registered_names
+      (@registered_checks || {}).keys
+    end
+
     # Private: Store a new list of checks
     #
     # checks - A Hash with the name of the check as the key and the check for
