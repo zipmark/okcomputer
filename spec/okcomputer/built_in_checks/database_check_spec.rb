@@ -22,21 +22,16 @@ module OKComputer
     end
 
     context "#version" do
-      let(:connection) { stub(:connection) }
       let(:result) { "123" }
       let(:error_message) { "Wrong password" }
 
-      before do
-        ActiveRecord::Base.should_receive(:connection) { connection }
-      end
-
       it "queries from ActiveRecord its installed schema" do
-        connection.should_receive(:select_value).with("SELECT MAX(version) FROM schema_migrations") { result }
+        ActiveRecord::Migrator.should_receive(:current_version) { result }
         subject.version.should == result
       end
 
       it "raises ConnectionFailed in the event of any error" do
-        connection.should_receive(:select_value).and_raise(StandardError, error_message)
+        ActiveRecord::Migrator.should_receive(:current_version).and_raise(StandardError, error_message)
         expect { subject.version }.to raise_error(DatabaseCheck::ConnectionFailed, error_message)
       end
     end

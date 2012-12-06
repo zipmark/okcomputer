@@ -11,7 +11,7 @@ module OKComputer
     #
     # Returns a String with the version number
     def version
-      ActiveRecord::Base.connection.select_value("SELECT MAX(version) FROM schema_migrations")
+      ActiveRecord::Migrator.current_version
     rescue => e
       raise ConnectionFailed, e
     end
