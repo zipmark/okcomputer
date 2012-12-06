@@ -27,7 +27,7 @@ module OKComputer
     # Public: The JSON of each check in the collection
     #
     # Returns a String containing a JSON array of hashes
-    def to_json
+    def to_json(*args)
       # smooshing their #to_json objects into a JSON array
       "[#{checks.map(&:to_json).join(",")}]"
     end
