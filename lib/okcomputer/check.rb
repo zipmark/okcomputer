@@ -36,6 +36,11 @@ module OKComputer
       not failure_occurred
     end
 
+    # Public: Mark that this check has failed in some way
+    def mark_failure
+      self.failure_occurred = true
+    end
+
     CallNotDefined = Class.new(StandardError)
   end
 end

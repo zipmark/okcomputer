@@ -43,7 +43,11 @@ module OKComputer
     end
 
     context "#mark_failure" do
-      pending
+      it "sets the failure_occurred occurred boolean" do
+        subject.failure_occurred.should be_false
+        subject.mark_failure
+        subject.failure_occurred.should be_true
+      end
     end
   end
 end
