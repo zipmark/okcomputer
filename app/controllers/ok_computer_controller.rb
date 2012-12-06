@@ -11,6 +11,6 @@ class OkComputerController < ApplicationController
   def show
     check = OKComputer::Registry.fetch(params[:check])
 
-    respond_with check
+    respond_with check, status: (check.success? ? :ok : :error)
   end
 end
