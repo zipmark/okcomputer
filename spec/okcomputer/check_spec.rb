@@ -30,5 +30,20 @@ module OKComputer
         end
       end
     end
+
+    context "#success?" do
+      it "is true by default" do
+        subject.should be_success
+      end
+
+      it "is false if failure_occurred is true" do
+        subject.failure_occurred = true
+        subject.should_not be_success
+      end
+    end
+
+    context "#mark_failure" do
+      pending
+    end
   end
 end
