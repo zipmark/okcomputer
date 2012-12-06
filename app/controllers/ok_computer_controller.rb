@@ -5,7 +5,7 @@ class OkComputerController < ApplicationController
   def index
     checks = OKComputer::Registry.all
 
-    respond_with checks
+    respond_with checks, status: (checks.success? ? :ok : :error)
   end
 
   def show

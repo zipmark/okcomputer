@@ -2,27 +2,39 @@ require 'spec_helper'
 
 describe OkComputerController do
   describe "GET 'index'" do
-    let(:checks) { stub(:all_checks)}
+    let(:checks) do
+      stub(:all_checks, {
+        to_text: "text of the results",
+        to_json: "json of the results",
+        success?: nil,
+      })
+    end
 
     before do
       OKComputer::Registry.stub(:all) { checks }
     end
 
     it "performs the basic up check" do
-      checks.stub(:to_text) { "text of the results" }
       get :index, format: :text
       response.body.should == checks.to_text
     end
 
     it "performs the basic up check as JSON" do
-      checks.stub(:to_json) { "json of the results" }
       get :index, format: :json
       response.body.should == checks.to_json
     end
 
-    it "returns a failure status code if any check fails"
+    it "returns a failure status code if any check fails" do
+      checks.stub(:success?) { false }
+      get :index, format: :text
+      response.should_not be_success
+    end
 
-    it "returns a success status code if all checks pass"
+    it "returns a success status code if all checks pass" do
+      checks.stub(:success?) { true }
+      get :index, format: :text
+      response.should be_success
+    end
   end
 
   describe "GET 'show'" do
