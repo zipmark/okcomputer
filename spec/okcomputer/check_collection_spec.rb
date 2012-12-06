@@ -29,7 +29,11 @@ module OKComputer
     end
 
     context "#to_json" do
-      pending
+      it "returns the #to_json of each check in a JSON array" do
+        foocheck.stub(:to_json) { {"foo" => "foo result"}.to_json }
+        barcheck.stub(:to_json) { {"bar" => "bar result"}.to_json }
+        subject.to_json.should == "[#{foocheck.to_json},#{barcheck.to_json}]"
+      end
     end
   end
 end

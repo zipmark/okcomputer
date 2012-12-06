@@ -23,5 +23,13 @@ module OKComputer
     def to_text
       checks.map(&:to_text).join("\n")
     end
+
+    # Public: The JSON of each check in the collection
+    #
+    # Returns a String containing a JSON array of hashes
+    def to_json
+      # smooshing their #to_json objects into a JSON array
+      "[#{checks.map(&:to_json).join(",")}]"
+    end
   end
 end
