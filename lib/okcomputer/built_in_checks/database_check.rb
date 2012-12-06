@@ -10,7 +10,7 @@ module OKComputer
     # Public: The scema version of the app's database
     #
     # Returns a String with the version number
-    def version
+    def schema_version
       ActiveRecord::Migrator.current_version
     rescue => e
       raise ConnectionFailed, e
