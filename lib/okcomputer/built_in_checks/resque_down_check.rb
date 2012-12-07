@@ -30,7 +30,7 @@ module OKComputer
     #
     # Returns a Boolean
     def working?
-      Resque.workers.any?(&:working?)
+      Resque.working.any?
     end
   end
 end

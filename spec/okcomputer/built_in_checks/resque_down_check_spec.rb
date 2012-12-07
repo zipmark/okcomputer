@@ -58,19 +58,13 @@ module OKComputer
     end
 
     context "#working?" do
-      let(:worker) { stub(:resque_worker) }
-
-      before do
-        Resque.stub(:workers) { [worker] }
-      end
-
       it "is true if Resque says it has workers working" do
-        worker.should_receive(:working?) { true }
+        Resque.should_receive(:working) { [stub(:worker)] }
         subject.should be_working
       end
 
       it "is false if Resque says its jobs are not working" do
-        worker.should_receive(:working?) { false }
+        Resque.should_receive(:working) { [] }
         subject.should_not be_working
       end
     end
