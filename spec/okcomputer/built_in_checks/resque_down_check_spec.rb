@@ -47,24 +47,24 @@ module OKComputer
 
     context "#queued?" do
       it "is true if Resque says the queue has jobs" do
-        Resque.should_receive(:size).with(queue) { 1 }
+        Resque.should_receive(:info) { {pending: 1} }
         subject.should be_queued
       end
 
       it "is false if Resque says the queue has no jobs" do
-        Resque.should_receive(:size).with(queue) { 0 }
+        Resque.should_receive(:info) { {pending: 0} }
         subject.should_not be_queued
       end
     end
 
     context "#working?" do
       it "is true if Resque says it has workers working" do
-        Resque.should_receive(:working) { [stub(:worker)] }
+        Resque.should_receive(:info) { {working: 1} }
         subject.should be_working
       end
 
       it "is false if Resque says its jobs are not working" do
-        Resque.should_receive(:working) { [] }
+        Resque.should_receive(:info) { {working: 0} }
         subject.should_not be_working
       end
     end

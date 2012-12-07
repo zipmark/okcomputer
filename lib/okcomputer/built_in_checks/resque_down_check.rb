@@ -23,14 +23,14 @@ module OKComputer
     #
     # Returns a Boolean
     def queued?
-      Resque.size(queue) > 0
+      Resque.info.fetch(:pending) > 0
     end
 
     # Public: Whether the Resque has workers working on a job
     #
     # Returns a Boolean
     def working?
-      Resque.working.any?
+      Resque.info.fetch(:working) > 0
     end
   end
 end
