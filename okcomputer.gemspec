@@ -13,11 +13,16 @@ Gem::Specification.new do |s|
   s.version     = OKComputer::VERSION
   s.authors     = authors.keys
   s.email       = authors.values
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of OK Computer."
-  s.description = "TODO: Description of OK Computer."
+  s.homepage    = "https://github.com/tstmedia/okcomputer"
+  s.summary     = "A simple, extensible health-check monitor"
+  s.description = %Q(
+    Inspired by the simplicity of Fitter Happier, but frustrated by its lack of
+    flexibility, we built OK Computer. Create and register your own custom
+    health checks, or choose from the built-in library of checks to ensure your
+    app is working as intended.
+  )
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.markdown"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.0"
