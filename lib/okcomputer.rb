@@ -8,6 +8,7 @@ require "okcomputer/built_in_checks/default_check"
 require "okcomputer/built_in_checks/database_check"
 require "okcomputer/built_in_checks/resque_backed_up_check"
 require "okcomputer/built_in_checks/resque_down_check"
+require "okcomputer/built_in_checks/mongoid_check"
 
 module OKComputer
 end
