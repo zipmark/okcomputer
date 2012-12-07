@@ -22,7 +22,14 @@ Or install it yourself as:
 
 ## Usage
 
-To perform the default checks (application running and ActiveRecord database connection), do nothing other than adding to your application's Gemfile.
+To perform the default checks (application running and ActiveRecord database
+connection), do nothing other than adding to your application's Gemfile.
+
+If you use a database adapter other than ActiveRecord, see Registering Custom
+Checks below to build your own database check and register it with the name
+"database" to replace the built-in check, or use
+`OKComputer::Registry.deregister "database"` to stop checking your database
+altogether.
 
 ### Registering Additional Checks
 
