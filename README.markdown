@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-To perform the default checks (application running and database connection), do nothing other than adding to your application's Gemfile.
+To perform the default checks (application running and ActiveRecord database connection), do nothing other than adding to your application's Gemfile.
 
 ### Registering Additional Checks
 
@@ -30,15 +30,31 @@ Register additional checks in an initializer, like do:
 
 ```ruby
 # config/initializers/okcomputer.rb
-OKComputer::Registry.register "resque", OKComputer::Checks::Resque
-OKComputer::Registry.register "load", OKComputer::Checks::CPULoad
+OKComputer::Registry.register "resque_down", OKComputer::ResqueDownCheck.new("critical", 100)
+OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpCheck.new
 ```
-
-TODO: Figure out interface for configuring checks (e.g., Resque looking for more than 100 jobs in the "critical" queue)
 
 ### Registering Custom Checks
 
-TODO: Figre out interface for custom checks
+The simplest way to register a check unique to your application is to subclass
+OKComputer::Check and implement your own `#call` method, which returns the
+output string, and calls `mark_failure` if anything is wrong.
+
+```ruby
+# config/initializers/okcomputer.rb
+class MyCustomCheck < OKComputer::Check
+  def call
+    if rand(10).even?
+      "Even is great!"
+    else
+      mark_failure
+      "We don't like odd numbers"
+    end
+  end
+end
+
+OKComputer::Registry.register "check_for_odds", MyCustomCheck.new
+```
 
 ## Performing Checks
 
