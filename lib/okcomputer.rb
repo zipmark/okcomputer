@@ -14,5 +14,5 @@ module OKComputer
 end
 
 OKComputer::Registry.register "default", OKComputer::DefaultCheck.new
-OKComputer::Registry.register "database", OKComputer::DatabaseCheck.new
+OKComputer::Registry.register "database", OKComputer::ActiveRecordCheck.new
 
