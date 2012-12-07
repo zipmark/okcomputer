@@ -10,7 +10,7 @@ module OKComputer
     #   it backed up
     def initialize(queue, threshold)
       self.queue = queue
-      self.threshold = threshold
+      self.threshold = Integer(threshold)
     end
 
     # Public: Check whether the given queue is backed up

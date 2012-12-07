@@ -19,6 +19,11 @@ module OKComputer
         subject.queue.should == queue
         subject.threshold.should == threshold
       end
+
+      it "coerces the threshold parameter into an integer" do
+        threshold = "123"
+        ResqueBackedUpCheck.new(queue, threshold).threshold.should == 123
+      end
     end
 
     context "#call" do
