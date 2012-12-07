@@ -11,15 +11,11 @@ module OKComputer
 
     # Public: Check whether Resque workers are working
     def call
-      if queued?
-        if working?
-          "Resque is working through the queue."
-        else
-          mark_failure
-          "Resque is DOWN. No workers are working the queue."
-        end
+      if queued? and not working?
+        mark_failure
+        "Resque is DOWN. No workers are working the queue."
       else
-        "Resque is working. No jobs queued."
+        "Resque is working"
       end
     end
 

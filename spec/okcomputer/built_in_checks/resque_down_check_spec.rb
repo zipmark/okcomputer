@@ -23,7 +23,7 @@ module OKComputer
       it "returns a success message if no jobs are queued" do
         subject.stub(:queued?) { false }
         subject.should_not_receive(:mark_failure)
-        subject.call.should == "Resque is working. No jobs queued."
+        subject.call.should include "Resque is working"
       end
 
       context "with queued jobs" do
@@ -34,13 +34,13 @@ module OKComputer
         it "returns a success message if workers are working" do
           subject.stub(:working?) { true }
           subject.should_not_receive(:mark_failure)
-          subject.call.should == "Resque is working through the queue."
+          subject.call.should include "Resque is working"
         end
 
         it "returns a failure message if workers are not working" do
           subject.stub(:working?) { false }
           subject.should_receive(:mark_failure)
-          subject.call.should == "Resque is DOWN. No workers are working the queue."
+          subject.call.should include "Resque is DOWN"
         end
       end
     end
