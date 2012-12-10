@@ -2,6 +2,13 @@ class OkComputerController < ActionController::Base
   layout nil
   respond_to :text, :json
 
+  rescue_from OKComputer::Registry::CheckNotFound do |e|
+    respond_to do |f|
+      f.text { render text: "Check not found", status: :not_found }
+      f.json { render json: { error: "Check not found" }, status: :not_found }
+    end
+  end
+
   def index
     checks = OKComputer::Registry.all
 
