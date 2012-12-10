@@ -77,13 +77,13 @@ describe OkComputerController do
 
     it "returns a 404 if the check does not exist" do
       get :show, check: "non-existant", format: :text
-      response.body.should == "Check not found"
+      response.body.should == "No check registered with 'non-existant'"
       response.code.should == "404"
     end
 
     it "returns a JSON 404 if the check does not exist" do
       get :show, check: "non-existant", format: :json
-      response.body.should == { error: "Check not found" }.to_json
+      response.body.should == { error: "No check registered with 'non-existant'" }.to_json
       response.code.should == "404"
     end
 

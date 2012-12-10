@@ -4,8 +4,8 @@ class OkComputerController < ActionController::Base
 
   rescue_from OKComputer::Registry::CheckNotFound do |e|
     respond_to do |f|
-      f.text { render text: "Check not found", status: :not_found }
-      f.json { render json: { error: "Check not found" }, status: :not_found }
+      f.text { render text: e.message, status: :not_found }
+      f.json { render json: { error: e.message }, status: :not_found }
     end
   end
 
