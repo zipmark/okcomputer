@@ -45,8 +45,8 @@ Register additional checks in an initializer, like do:
 
 ```ruby
 # config/initializers/okcomputer.rb
-OKComputer::Registry.register "resque_down", OKComputer::ResqueDownCheck.new("critical", 100)
-OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpCheck.new
+OKComputer::Registry.register "resque_down", OKComputer::ResqueDownCheck.new
+OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpCheck.new("critical", 100)
 ```
 
 ### Registering Custom Checks
