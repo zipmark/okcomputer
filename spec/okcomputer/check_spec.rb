@@ -86,7 +86,13 @@ module OKComputer
     end
 
     context "#mark_message" do
-      pending
+      let(:message) { "message" }
+
+      it "sets the check's message" do
+        subject.message.should be_nil
+        subject.mark_message message
+        subject.message.should == message
+      end
     end
   end
 end

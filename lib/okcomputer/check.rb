@@ -6,6 +6,8 @@ module OKComputer
     attr_accessor :name
     # nil by default, only set to true if the check deems itself failed
     attr_accessor :failure_occurred
+    # nil by default, set by #check to control the output
+    attr_accessor :message
 
     # Public: Run the check
     def run
@@ -20,6 +22,7 @@ module OKComputer
     def check
       if respond_to? :call
         warn CALL_DEPRECATION_MESSAGE
+        # The old #call methods returned the message, so use that to set the message output
         mark_message call
       else
         raise(CheckNotDefined, "Your subclass must define its own #check.")
@@ -53,6 +56,13 @@ module OKComputer
     # Public: Mark that this check has failed in some way
     def mark_failure
       self.failure_occurred = true
+    end
+
+    # Public: Capture the desired message to display
+    #
+    # message - Text of the message to display for this check
+    def mark_message(message)
+      self.message = message
     end
 
     # Public: Clear any prior failures
