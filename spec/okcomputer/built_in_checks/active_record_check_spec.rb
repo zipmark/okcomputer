@@ -6,19 +6,21 @@ module OKComputer
       subject.should be_a Check
     end
 
-    context "#call" do
+    context "#check" do
       let(:version) { "20121205" }
       let(:error_message) { "Error message" }
 
       it "confirms connection to the database" do
         subject.should_receive(:schema_version) { version }
-        subject.call.should == "Schema version: #{version}"
+        subject.check
+        subject.message.should == "Schema version: #{version}"
         subject.should be_success
       end
 
       it "returns a valid failure message" do
         subject.should_receive(:schema_version).and_raise(ActiveRecordCheck::ConnectionFailed, error_message)
-        subject.call.should == "Failed to connect: '#{error_message}'"
+        subject.check
+        subject.message.should == "Failed to connect: '#{error_message}'"
         subject.should_not be_success
       end
     end
