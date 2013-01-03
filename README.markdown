@@ -72,6 +72,14 @@ end
 OKComputer::Registry.register "check_for_odds", MyCustomCheck.new
 ```
 
+#### Deprecation of Check#call
+
+Versions before 0.2.0 implemented a "#call" method which returned the message.
+This has been deprecated and will be removed in a future version. Please
+define a #check method which calls `mark_failure` and `mark_message` as
+appropriate. In the meantime, OKComputer displays a warning and uses the result
+of the #call method as the message.
+
 ## Performing Checks
 
 * Perform a simple up check: http://example.com/okcomputer
