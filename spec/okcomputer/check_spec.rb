@@ -2,6 +2,8 @@ require "spec_helper"
 
 module OKComputer
   describe Check do
+    let(:message) { "message" }
+
     it "has a name attribute which it does not set" do
       subject.name.should be_nil
     end
@@ -47,21 +49,22 @@ module OKComputer
       end
     end
 
-    context "displaying the output of #call" do
+    context "displaying the message captured by #check" do
       before do
         subject.name = "foo"
-        subject.stub(call: "Everything is great!")
+        subject.should_not_receive(:call)
+        subject.message = message
       end
 
       context "#to_text" do
-        it "combines the name and result of #call" do
-          subject.to_text.should == "#{subject.name}: #{subject.call}"
+        it "combines the name and message" do
+          subject.to_text.should == "#{subject.name}: #{subject.message}"
         end
       end
 
       context "#to_json" do
-        it "returns JSON with the name as the key and result of call as the value" do
-          subject.to_json.should == {subject.name => subject.call}.to_json
+        it "returns JSON with the name as the key and message as the value" do
+          subject.to_json.should == {subject.name => subject.message}.to_json
         end
       end
     end
@@ -86,7 +89,6 @@ module OKComputer
     end
 
     context "#mark_message" do
-      let(:message) { "message" }
 
       it "sets the check's message" do
         subject.message.should be_nil
