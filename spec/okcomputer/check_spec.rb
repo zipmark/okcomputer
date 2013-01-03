@@ -6,9 +6,25 @@ module OKComputer
       subject.name.should be_nil
     end
 
-    context "#call" do
+    context "#check" do
+      let(:call_response) { "Old #call returns the message" }
+
       it "raises an exception, to be overwritten by subclasses" do
-        expect { subject.call }.to raise_error(Check::CallNotDefined)
+        expect { subject.send(:check) }.to raise_error(Check::CheckNotDefined)
+      end
+
+      context "for legacy checks with #call defined" do
+        before do
+          subject.should_receive(:respond_to?).with(:call) { true }
+        end
+
+        it "warns about #call deprecation, if #call is defined" do
+          subject.should_receive(:warn).with(Check::CALL_DEPRECATION_MESSAGE)
+          subject.should_receive(:call) { call_response }
+          subject.should_receive(:mark_message).with(call_response)
+
+          subject.send(:check)
+        end
       end
     end
 
@@ -67,6 +83,10 @@ module OKComputer
         subject.mark_failure
         subject.failure_occurred.should be_true
       end
+    end
+
+    context "#mark_message" do
+      pending
     end
   end
 end
