@@ -52,18 +52,19 @@ OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpChec
 ### Registering Custom Checks
 
 The simplest way to register a check unique to your application is to subclass
-OKComputer::Check and implement your own `#call` method, which returns the
-output string, and calls `mark_failure` if anything is wrong.
+OKComputer::Check and implement your own `#check` method, which sets the
+display message with `mark_message`, and calls `mark_failure` if anything is
+wrong.
 
 ```ruby
 # config/initializers/okcomputer.rb
 class MyCustomCheck < OKComputer::Check
-  def call
+  def check
     if rand(10).even?
-      "Even is great!"
+      mark_message "Even is great!"
     else
       mark_failure
-      "We don't like odd numbers"
+      mark_message "We don't like odd numbers"
     end
   end
 end
