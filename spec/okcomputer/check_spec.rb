@@ -41,11 +41,13 @@ module OKComputer
     context "#clear" do
       before do
         subject.failure_occurred = true
+        subject.message = "asdf"
       end
 
       it "removes the failure_occurred flag" do
         subject.clear
         subject.failure_occurred.should_not be_true
+        subject.message.should be_nil
       end
     end
 

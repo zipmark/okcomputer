@@ -68,6 +68,7 @@ module OKComputer
     # Public: Clear any prior failures
     def clear
       self.failure_occurred = false
+      self.message = nil
     end
 
     CheckNotDefined = Class.new(StandardError)
