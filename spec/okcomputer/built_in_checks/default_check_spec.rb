@@ -7,11 +7,8 @@ module OKComputer
     end
 
     context "#check" do
-      it "simply outputs a string to render" do
-        subject.check
-        subject.message.should include "OKComputer Site Check Passed"
-        subject.should be_success
-      end
+      it { should be_successful }
+      it { should have_message "OKComputer Site Check Passed" }
     end
   end
 end

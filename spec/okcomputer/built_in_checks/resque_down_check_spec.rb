@@ -10,30 +10,36 @@ module OKComputer
     end
 
     context "#check" do
-      it "returns a success message if no jobs are queued" do
-        subject.stub(:queued?) { false }
-        subject.should_not_receive(:mark_failure)
-        subject.check.should include "Resque is working"
+      context "when not queued" do
+        before do
+          subject.stub(:queued?) { false }
+        end
+
+        it { should be_successful }
+        it { should have_message "Resque is working" }
       end
 
-      context "with queued jobs" do
+      context "when queued" do
         before do
           subject.stub(:queued?) { true }
         end
 
-        it "returns a success message if workers are working" do
-          subject.stub(:working?) { true }
-          subject.should_not_receive(:mark_failure)
-          subject.check
-          subject.message.should include "Resque is working"
-          subject.should be_success
+        context "with workers working" do
+          before do
+            subject.stub(:working?) { true }
+          end
+
+          it { should be_successful }
+          it { should have_message "Resque is working" }
         end
 
-        it "returns a failure message if workers are not working" do
-          subject.stub(:working?) { false }
-          subject.check
-          subject.message.should include "Resque is DOWN"
-          subject.should_not be_success
+        context "with workers not working" do
+          before do
+            subject.stub(:working?) { false }
+          end
+
+          it { should_not be_successful }
+          it { should have_message "Resque is DOWN" }
         end
       end
     end
