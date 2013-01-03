@@ -5,6 +5,12 @@ module OKComputer
     # nil by default, only set to true if the check deems itself failed
     attr_accessor :failure_occurred
 
+    # Public: Run the check
+    def run
+      clear
+      check
+    end
+
     # Public: Perform the appropriate check
     #
     # Your subclass of Check must define its own #call method. This method
@@ -39,6 +45,11 @@ module OKComputer
     # Public: Mark that this check has failed in some way
     def mark_failure
       self.failure_occurred = true
+    end
+
+    # Public: Clear any prior failures
+    def clear
+      self.failure_occurred = false
     end
 
     CallNotDefined = Class.new(StandardError)

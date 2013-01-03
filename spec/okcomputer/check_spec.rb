@@ -12,6 +12,25 @@ module OKComputer
       end
     end
 
+    context "#run" do
+      it "clears any past failures and runs the check" do
+        subject.should_receive(:clear)
+        subject.should_receive(:check)
+        subject.run
+      end
+    end
+
+    context "#clear" do
+      before do
+        subject.failure_occurred = true
+      end
+
+      it "removes the failure_occurred flag" do
+        subject.clear
+        subject.failure_occurred.should_not be_true
+      end
+    end
+
     context "displaying the output of #call" do
       before do
         subject.name = "foo"
