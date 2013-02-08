@@ -1,3 +1,6 @@
+[![Code Climate](https://codeclimate.com/github/tstmedia/okcomputer.png)](https://codeclimate.com/github/tstmedia/okcomputer)
+[![Build Status](https://travis-ci.org/tstmedia/okcomputer.png)](https://travis-ci.org/tstmedia/okcomputer)
+
 # OK Computer
 
 Inspired by the ease of installing and setting up [fitter-happier] as a Rails
