@@ -1,4 +1,7 @@
 class OkComputerController < ActionController::Base
+  if OKComputer.requires_authentication?
+    http_basic_authenticate_with name: OKComputer.username, password: OKComputer.password
+  end
   layout nil
   respond_to :text, :json
 
