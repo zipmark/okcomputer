@@ -8,6 +8,13 @@ module OKComputer
     self.password = password
   end
 
+  # Public: Whether OKComputer is configured to require authentication
+  #
+  # Returns a Boolean
+  def self.requires_authentication?
+    username && password
+  end
+
   # attr_accessor isn't doing what I want inside a module, so here we go.
 
   # Public: The username configured for access to checks
