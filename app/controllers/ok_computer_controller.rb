@@ -11,12 +11,14 @@ class OkComputerController < ActionController::Base
 
   def index
     checks = OKComputer::Registry.all
+    checks.run
 
     respond_with checks, status: status_code(checks)
   end
 
   def show
     check = OKComputer::Registry.fetch(params[:check])
+    check.run
 
     respond_with check, status: status_code(check)
   end

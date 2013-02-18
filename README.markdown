@@ -1,3 +1,6 @@
+[![Code Climate](https://codeclimate.com/github/tstmedia/okcomputer.png)](https://codeclimate.com/github/tstmedia/okcomputer)
+[![Build Status](https://travis-ci.org/tstmedia/okcomputer.png)](https://travis-ci.org/tstmedia/okcomputer)
+
 # OK Computer
 
 Inspired by the ease of installing and setting up [fitter-happier] as a Rails
@@ -45,31 +48,40 @@ Register additional checks in an initializer, like do:
 
 ```ruby
 # config/initializers/okcomputer.rb
-OKComputer::Registry.register "resque_down", OKComputer::ResqueDownCheck.new("critical", 100)
-OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpCheck.new
+OKComputer::Registry.register "resque_down", OKComputer::ResqueDownCheck.new
+OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpCheck.new("critical", 100)
 ```
 
 ### Registering Custom Checks
 
 The simplest way to register a check unique to your application is to subclass
-OKComputer::Check and implement your own `#call` method, which returns the
-output string, and calls `mark_failure` if anything is wrong.
+OKComputer::Check and implement your own `#check` method, which sets the
+display message with `mark_message`, and calls `mark_failure` if anything is
+wrong.
 
 ```ruby
 # config/initializers/okcomputer.rb
 class MyCustomCheck < OKComputer::Check
-  def call
+  def check
     if rand(10).even?
-      "Even is great!"
+      mark_message "Even is great!"
     else
       mark_failure
-      "We don't like odd numbers"
+      mark_message "We don't like odd numbers"
     end
   end
 end
 
 OKComputer::Registry.register "check_for_odds", MyCustomCheck.new
 ```
+
+#### Deprecation of Check#call
+
+Versions before 0.2.0 implemented a "#call" method which returned the message.
+This has been deprecated and will be removed in a future version. Please
+define a #check method which calls `mark_failure` and `mark_message` as
+appropriate. In the meantime, OKComputer displays a warning and uses the result
+of the #call method as the message.
 
 ## Performing Checks
 
