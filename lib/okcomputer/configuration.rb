@@ -8,6 +8,18 @@ module OKComputer
     self.password = password
   end
 
+  # Public: Attempt to authenticate against required username and password
+  #
+  # username - Username to authenticate with
+  # password - Password to authenticate with
+  #
+  # Returns a Boolean
+  def self.authenticate(username_try, password_try)
+    return true unless requires_authentication?
+
+    username == username_try && password == password_try
+  end
+
   # Public: Whether OKComputer is configured to require authentication
   #
   # Returns a Boolean
