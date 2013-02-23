@@ -1,9 +1,8 @@
 class OkComputerController < ActionController::Base
-  if OKComputer.requires_authentication?
-    http_basic_authenticate_with name: OKComputer.username, password: OKComputer.password
-  end
   layout nil
   respond_to :text, :json
+
+  before_filter :authenticate
 
   def index
     checks = OKComputer::Registry.all
@@ -23,4 +22,13 @@ class OkComputerController < ActionController::Base
     check.success? ? :ok : :error
   end
   private :status_code
+
+  def authenticate
+    if OKComputer.requires_authentication?
+      authenticate_or_request_with_http_basic do |username, password|
+        OKComputer.authenticate(username, password)
+      end
+    end
+  end
+  private :authenticate
 end
