@@ -8,8 +8,8 @@ describe OKComputer do
   context "#require_authentication" do
     it "captures username and password necessary to access OKComputer" do
       OKComputer.require_authentication(username, password)
-      OKComputer.username.should == username
-      OKComputer.password.should == password
+      OKComputer.send(:username).should == username
+      OKComputer.send(:password).should == password
     end
   end
 

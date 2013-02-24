@@ -29,10 +29,11 @@ module OKComputer
 
   # attr_accessor isn't doing what I want inside a module, so here we go.
 
-  # Public: The username configured for access to checks
+  # Private: The username configured for access to checks
   def self.username
     @username
   end
+  private_class_method :username
 
   # Private: Configure the username to access checks
   def self.username=(username)
@@ -40,10 +41,11 @@ module OKComputer
   end
   private_class_method :username=
 
-  # Public: The password configured for access to checks
+  # Private: The password configured for access to checks
   def self.password
     @password
   end
+  private_class_method :password
 
   # Private: Configure the password to access checks
   def self.password=(password)
