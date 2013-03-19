@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.version     = OKComputer::VERSION
   s.authors     = authors.keys
   s.email       = authors.values
-  s.homepage    = "https://github.com/tstmedia/okcomputer"
+  s.homepage    = "https://github.com/sportngin/okcomputer"
   s.summary     = "A simple, extensible health-check monitor"
   s.description = %Q(
     Inspired by the simplicity of Fitter Happier, but frustrated by its lack of
