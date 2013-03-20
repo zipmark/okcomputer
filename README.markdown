@@ -1,5 +1,5 @@
-[![Code Climate](https://codeclimate.com/github/tstmedia/okcomputer.png)](https://codeclimate.com/github/tstmedia/okcomputer)
-[![Build Status](https://travis-ci.org/tstmedia/okcomputer.png)](https://travis-ci.org/tstmedia/okcomputer)
+[![Code Climate](https://codeclimate.com/github/sportngin/okcomputer.png)](https://codeclimate.com/github/tstmedia/okcomputer)
+[![Build Status](https://travis-ci.org/sportngin/okcomputer.png)](https://travis-ci.org/tstmedia/okcomputer)
 
 # OK Computer
 
