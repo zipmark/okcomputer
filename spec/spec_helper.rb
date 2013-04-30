@@ -1,3 +1,6 @@
+require 'coverall'
+Coveralls.wear!
+
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 
