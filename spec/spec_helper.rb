@@ -1,4 +1,4 @@
-require 'coverall'
+require 'coveralls'
 Coveralls.wear!
 
 # Configure Rails Environment
