@@ -8,7 +8,14 @@ module OKComputer
     # name -  the value that this check should be refered to as
     # threshold - An Integer to compare the size object's count against to consider
     #   it backed up
-    # size_proc - The object that responds to the size method
+    # size_proc - The block/proc that returns an integer to compare against
+    #
+    # Examples
+    #
+    #    SizeThresholdCheck.new("some queue", 2) do
+    #      Queue.new("my_queue").size
+    #    end
+    #
     def initialize(name, threshold, &size_proc)
       self.size_proc = size_proc
       self.threshold = Integer(threshold)
