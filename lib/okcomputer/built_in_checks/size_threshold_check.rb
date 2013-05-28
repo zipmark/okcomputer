@@ -1,21 +1,18 @@
 module OKComputer
   class SizeThresholdCheck < Check
-    attr_accessor :size_obj
+    attr_accessor :size_proc
     attr_accessor :threshold
 
     # Public: Initialize a check for a backed-up Resque queue
     #
-    # size_obj - The object that responds to the size method
+    # name -  the value that this check should be refered to as
     # threshold - An Integer to compare the size object's count against to consider
     #   it backed up
-    # options - list of options to be used for the check
-    #   name is the only valid option currently, that can be used to override the
-    #   default name given to the check
-    def initialize(size_obj, threshold, options={})
-      raise(ArgumentError, "Size Object must respond to size") unless size_obj.respond_to?(:size)
-      self.size_obj = size_obj
+    # size_proc - The object that responds to the size method
+    def initialize(name, threshold, &size_proc)
+      self.size_proc = size_proc
       self.threshold = Integer(threshold)
-      self.name = options[:name] || size_obj.class.to_s
+      self.name = name
     end
 
     # Public: Check whether the given queue is backed up
@@ -30,7 +27,7 @@ module OKComputer
 
     # Public: The number of jobs in the check's queue
     def size
-      size_obj.size
+      Integer(size_proc.call)
     end
   end
 end
