@@ -25,6 +25,9 @@ module OKComputer
 
     # Public: Check whether the given queue is backed up
     def check
+      # Memoize size here to prevent a theoretically
+      # expensive operation from happening more than once
+      size = self.size
       if size <= threshold
         mark_message " #{name} at reasonable level (#{size})"
       else
