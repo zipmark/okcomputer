@@ -32,7 +32,7 @@ module OKComputer
         mark_message " #{name} at reasonable level (#{size})"
       else
         mark_failure
-        mark_message "#{name} is over #{size - threshold} threshold! (#{size})"
+        mark_message "#{name} is #{size - threshold} over threshold! (#{size})"
       end
     end
 
