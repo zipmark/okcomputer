@@ -63,11 +63,38 @@ module OKComputer
         it { should_not be_successful }
         it { should have_message "#{name} is #{subject.size - subject.threshold} over threshold! (#{subject.size})" }
       end
+
+      context "when #size raises an ArgumentError" do
+        before do
+          subject.should_receive(:size).and_raise(ArgumentError)
+        end
+
+        it { should_not be_successful }
+        it { should have_message "The given proc MUST return a number (ArgumentError)" }
+      end
+
+      context "when #size raises a TypeError" do
+        before do
+          subject.should_receive(:size).and_raise(TypeError)
+        end
+
+        it { should_not be_successful }
+        it { should have_message "The given proc MUST return a number (TypeError)" }
+      end
+
+      context "when #size raises any other kind of exception" do
+        let(:error) { StandardError.new("some message") }
+
+        before do
+          subject.should_receive(:size).and_raise(error)
+        end
+
+        it { should_not be_successful }
+        it { should have_message "An error occurred: '#{error.message}' (#{error.class})" }
+      end
     end
 
     context "#size" do
-      let(:error) { StandardError.new("some message") }
-
       it "defer size to the passed block" do
         size_proc.should_receive(:call).and_return(123)
         subject.size
@@ -75,23 +102,12 @@ module OKComputer
 
       it "raises an ArgumentError if the proc doesn't return an Integer" do
         size_proc.should_receive(:call).and_return("not a number")
-        subject.should_receive(:mark_failure)
-        subject.should_receive(:mark_message).with("The given proc MUST return an Integer, rather than String (ArgumentError)")
-        subject.size
+        expect { subject.size }.to raise_error(ArgumentError)
       end
 
       it "raises a TypeError if the proc returns nil" do
         size_proc.should_receive(:call).and_return(nil)
-        subject.should_receive(:mark_failure)
-        subject.should_receive(:mark_message).with("The given proc MUST return an Integer, rather than NilClass (TypeError)")
-        subject.size
-      end
-
-      it "gracefully handles a proc with an exception" do
-        size_proc.should_receive(:call).and_raise(error)
-        subject.should_receive(:mark_failure)
-        subject.should_receive(:mark_message).with("An error occurred: '#{error.message}' (#{error.class})")
-        subject.size
+        expect { subject.size }.to raise_error(TypeError)
       end
     end
   end
