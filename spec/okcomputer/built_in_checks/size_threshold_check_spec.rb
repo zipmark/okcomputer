@@ -66,6 +66,8 @@ module OKComputer
     end
 
     context "#size" do
+      let(:error) { StandardError.new("some message") }
+
       it "defer size to the passed block" do
         size_proc.should_receive(:call).and_return(123)
         subject.size
@@ -73,12 +75,23 @@ module OKComputer
 
       it "raises an ArgumentError if the proc doesn't return an Integer" do
         size_proc.should_receive(:call).and_return("not a number")
-        lambda { subject.size }.should raise_error(ArgumentError)
+        subject.should_receive(:mark_failure)
+        subject.should_receive(:mark_message).with("The given proc MUST return an Integer, rather than String (ArgumentError)")
+        subject.size
       end
 
       it "raises a TypeError if the proc returns nil" do
         size_proc.should_receive(:call).and_return(nil)
-        lambda { subject.size }.should raise_error(TypeError)
+        subject.should_receive(:mark_failure)
+        subject.should_receive(:mark_message).with("The given proc MUST return an Integer, rather than NilClass (TypeError)")
+        subject.size
+      end
+
+      it "gracefully handles a proc with an exception" do
+        size_proc.should_receive(:call).and_raise(error)
+        subject.should_receive(:mark_failure)
+        subject.should_receive(:mark_message).with("An error occurred: '#{error.message}' (#{error.class})")
+        subject.size
       end
     end
   end

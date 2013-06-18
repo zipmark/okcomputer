@@ -38,7 +38,14 @@ module OKComputer
 
     # Public: The number of jobs in the check's queue
     def size
-      Integer(size_proc.call)
+      result = size_proc.call
+      Integer(result)
+    rescue ArgumentError, TypeError => e
+      mark_failure
+      mark_message "The given proc MUST return an Integer, rather than #{result.class} (#{e.class})"
+    rescue StandardError => e
+      mark_failure
+      mark_message "An error occurred: '#{e.message}' (#{e.class})"
     end
   end
 end
