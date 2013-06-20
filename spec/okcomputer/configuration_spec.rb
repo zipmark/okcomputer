@@ -3,6 +3,7 @@ require "spec_helper"
 describe OKComputer do
   let(:username) { "foo" }
   let(:password) { "bar" }
+  let(:whitelist) { [:default] }
   let(:bogus) { "asdfasdfasdfas" }
 
   context "#require_authentication" do
@@ -10,6 +11,12 @@ describe OKComputer do
       OKComputer.require_authentication(username, password)
       OKComputer.send(:username).should == username
       OKComputer.send(:password).should == password
+      OKComputer.send(:whitelist).should be_empty
+    end
+
+    it "captures an optional list of whitelisted actions to skip authentication" do
+      OKComputer.require_authentication(username, password, except: whitelist)
+      OKComputer.send(:whitelist).should == whitelist
     end
   end
 
