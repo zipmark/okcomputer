@@ -21,16 +21,26 @@ describe OKComputer do
   end
 
   context "#requires_authentication?" do
-    it "is true if username and password are configured" do
-      OKComputer.send(:username=, username)
-      OKComputer.send(:password=, password)
-      OKComputer.requires_authentication?.should be_true
+    context "with a configured username and password" do
+      before do
+        OKComputer.send(:username=, username)
+        OKComputer.send(:password=, password)
+      end
+
+      it "is true" do
+        OKComputer.requires_authentication?.should be_true
+      end
     end
 
-    it "is false if username and password are not configured" do
-      OKComputer.send(:username=, nil)
-      OKComputer.send(:password=, nil)
-      OKComputer.requires_authentication?.should be_false
+    context "without a configured username and password" do
+      before do
+        OKComputer.send(:username=, nil)
+        OKComputer.send(:password=, nil)
+      end
+
+      it "is false" do
+        OKComputer.requires_authentication?.should be_false
+      end
     end
   end
 
