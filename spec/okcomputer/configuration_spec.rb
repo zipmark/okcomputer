@@ -27,8 +27,33 @@ describe OKComputer do
         OKComputer.send(:password=, password)
       end
 
-      it "is true" do
-        OKComputer.requires_authentication?.should be_true
+      context "without a whitelist" do
+        before do
+          OKComputer.send(:options=, {})
+        end
+
+        it "is true" do
+          OKComputer.requires_authentication?.should be_true
+        end
+      end
+
+      context "with a whitelist" do
+        let(:action) { "default" }
+        before do
+          OKComputer.send(:options=, {except: [action]})
+        end
+
+        it "is true for the #index action" do
+          OKComputer.requires_authentication?({action: "index"}).should be_true
+        end
+
+        it "is true for #show if params[:check] is not whitelisted" do
+          OKComputer.requires_authentication?({action: "show", check: "somethingelse"}).should be_true
+        end
+
+        it "is false for #show if params[:check] is whitelisted" do
+          OKComputer.requires_authentication?({action: "show", check: action}).should_not be_true
+        end
       end
     end
 
@@ -36,6 +61,7 @@ describe OKComputer do
       before do
         OKComputer.send(:username=, nil)
         OKComputer.send(:password=, nil)
+        OKComputer.send(:options=, {})
       end
 
       it "is false" do

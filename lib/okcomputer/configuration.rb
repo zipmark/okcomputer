@@ -34,7 +34,9 @@ module OKComputer
   # Public: Whether OKComputer is configured to require authentication
   #
   # Returns a Boolean
-  def self.requires_authentication?
+  def self.requires_authentication?(params={})
+    return false if params[:action] == "show" && whitelist.include?(params[:check])
+
     username && password
   end
 
