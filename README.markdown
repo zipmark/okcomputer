@@ -10,6 +10,11 @@ Computer was born. It provides a robust endpoint to perform server health
 checks with a set of built-in plugins, as well as a simple interface to add
 your own custom checks.
 
+For more insight into why we built this, check out [our blog post introducing
+OK Computer][blog].
+
+[blog]:http://pulse.sportngin.com/news_article/show/267646?referrer_id=543230
+
 ## Installation
 
 Add this line to your application's Gemfile:
