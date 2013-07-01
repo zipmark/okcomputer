@@ -1,7 +1,7 @@
 language: ruby
-gemfile:
-  - gemfiles/Gemfile.rails-3.2.x
-  - gemfiles/Gemfile.rails-4.0.x
+env:
+  - RAILS_VERSION=4.0
+  - RAILS_VERSION=3.2
 rvm:
   - 1.9.3
   - 2.0.0
