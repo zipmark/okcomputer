@@ -71,8 +71,13 @@ module OKComputer
     @options = options
   end
 
+  # Private: Get, you know, options
+  def self.options
+    @options || {}
+  end
+
   # Private: Configure a whitelist of checks to skip authentication
   def self.whitelist
-    @options.fetch(:except) { [] }
+    options.fetch(:except) { [] }
   end
 end

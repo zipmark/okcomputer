@@ -29,7 +29,7 @@ describe OKComputer do
 
       context "without a whitelist" do
         before do
-          OKComputer.send(:options=, {})
+          OKComputer.stub(:options) { {} }
         end
 
         it "is true" do
