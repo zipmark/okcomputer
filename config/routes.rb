@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "/okcomputer" => "ok_computer#show", defaults: {check: "default"}
-  get "/okcomputer/all" => "ok_computer#index"
-  get "/okcomputer/:check" => "ok_computer#show"
+  match "/okcomputer" => "ok_computer#show", defaults: {check: "default"}, via: [:get, :options]
+  match "/okcomputer/all" => "ok_computer#index", via: [:get, :options]
+  match "/okcomputer/:check" => "ok_computer#show", via: [:get, :options]
 end
