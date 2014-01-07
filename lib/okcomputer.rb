@@ -12,6 +12,7 @@ require "okcomputer/built_in_checks/mongoid_check"
 require "okcomputer/built_in_checks/resque_backed_up_check"
 require "okcomputer/built_in_checks/resque_down_check"
 require "okcomputer/built_in_checks/delayed_job_backed_up_check"
+require "okcomputer/built_in_checks/ruby_version_check"
 
 module OKComputer
 end
