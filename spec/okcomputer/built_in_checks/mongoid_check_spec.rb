@@ -5,7 +5,7 @@ class Mongoid; end
 
 module OKComputer
   describe MongoidCheck do
-    
+
     let(:stats) { { "db" => "foobar" } }
 
     it "is a Check" do
@@ -22,7 +22,7 @@ module OKComputer
         end
 
         it { should be_successful }
-        it { should have_message "Successfully connected to mongodb #{mongodb_name}" }
+        it { should have_message "Connected to mongodb #{mongodb_name}" }
       end
 
       context "with an unsuccessful connection" do
@@ -31,7 +31,7 @@ module OKComputer
         end
 
         it {should_not be_successful }
-        it {should have_message "Failed to connect: '#{error_message}'" }
+        it {should have_message "Error: '#{error_message}'" }
       end
     end
 

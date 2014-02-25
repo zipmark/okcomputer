@@ -8,7 +8,7 @@ module OKComputer
 
     context "#check" do
       it { should be_successful }
-      it { should have_message "OKComputer Site Check Passed" }
+      it { should have_message "Application is running" }
     end
   end
 end
