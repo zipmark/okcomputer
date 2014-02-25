@@ -34,7 +34,8 @@ module OKComputer
     #
     # Returns a String
     def to_text
-      "#{registrant_name}: #{message}"
+      passfail = success? ? "PASSED" : "FAILED"
+      "#{registrant_name}: #{passfail} #{message}"
     end
 
     # Public: The JSON output of performing the check
@@ -43,7 +44,7 @@ module OKComputer
     def to_json(*args)
       # NOTE swallowing the arguments that Rails passes by default since we don't care. This may prove to be a bad idea
       # Rails passes stuff like this: {:prefixes=>["ok_computer", "application"], :template=>"show", :layout=>#<Proc>}]
-      {registrant_name => message}.to_json
+      {registrant_name => {:message => message, :success => success?}}.to_json
     end
 
     # Public: Whether the check passed
