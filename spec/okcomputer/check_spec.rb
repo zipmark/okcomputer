@@ -59,14 +59,20 @@ module OKComputer
       end
 
       context "#to_text" do
-        it "combines the registrant_name and message" do
-          subject.to_text.should == "#{subject.registrant_name}: #{subject.message}"
+        it "combines the registrant_name, success, and message" do
+          subject.to_text.should == "#{subject.registrant_name}: PASSED #{subject.message}"
         end
       end
 
       context "#to_json" do
-        it "returns JSON with the registrant_name as the key and message as the value" do
-          subject.to_json.should == {subject.registrant_name => subject.message}.to_json
+        it "returns JSON keyed on registrant_name including the message and whether it succeeded" do
+          expected = {
+            subject.registrant_name => {
+              :message => subject.message,
+              :success => subject.success?,
+            }
+          }
+          subject.to_json.should == expected.to_json
         end
       end
     end

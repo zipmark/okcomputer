@@ -2,10 +2,10 @@ module OKComputer
   class MongoidCheck < Check
     # Public: Return the status of the mongodb
     def check
-      mark_message "Successfully connected to mongodb #{mongodb_name}"
+      mark_message "Connected to mongodb #{mongodb_name}"
     rescue ConnectionFailed => e
       mark_failure
-      mark_message "Failed to connect: '#{e}'"
+      mark_message "Error: '#{e}'"
     end
 
     # Public: The stats for the app's mongodb

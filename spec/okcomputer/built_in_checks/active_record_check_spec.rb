@@ -25,7 +25,7 @@ module OKComputer
         end
 
         it { should_not be_successful }
-        it { should have_message "Failed to connect: '#{error_message}'" }
+        it { should have_message "Error: '#{error_message}'" }
       end
     end
 

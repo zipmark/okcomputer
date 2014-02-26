@@ -116,7 +116,19 @@ define a #check method which calls `mark_failure` and `mark_message` as
 appropriate. In the meantime, OKComputer displays a warning and uses the result
 of the #call method as the message.
 
-#### Breaking Change of JSON Output
+#### Breaking Changes of JSON Output
+
+Versions before 0.6.0 did not include whether a given check succeeded.
+
+**before 0.6.0**
+```json
+{"check": "result"}
+```
+
+**after 0.6.0**
+```json
+{"check": {"message": "result", "success": true}
+```
 
 Versions before 0.3.0, when performing multiple checks, returned an Array of
 the check results, each being a JSON object. Starting with 0.3.0, these are

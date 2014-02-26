@@ -5,7 +5,7 @@ module OKComputer
       mark_message "Schema version: #{schema_version}"
     rescue ConnectionFailed => e
       mark_failure
-      mark_message "Failed to connect: '#{e}'"
+      mark_message "Error: '#{e}'"
     end
 
     # Public: The scema version of the app's database
