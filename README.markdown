@@ -102,9 +102,15 @@ Checks are available as plain text (by default) or JSON by appending .json, e.g.
 
 ## OkComputer NewRelic Ignore
 
-If you use OKComputer for uptime checks, it will start to artificially bring your
-request time down on NewRelic. To avoid that, check out
-[this gem](https://github.com/sportngin/okcomputer-newrelic-ignore).
+If NewRelic is installed, OkComputer automatically disables NewRelic monitoring for uptime checks,
+as it will start to artificially bring your request time down.
+
+If you'd like to intentionally count OkComputer requrests towards your NewRelic request time analytics, set:
+
+```
+# config/initializers/okcomputer.rb
+OKComputer.analytics_ignore = false
+```
 
 ## Deprecations and Breaking Changes
 

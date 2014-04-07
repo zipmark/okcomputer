@@ -139,4 +139,52 @@ describe OkComputerController do
 
     it "returns a failure status code if given a status check not already registered"
   end
+
+  describe 'newrelic_ignore' do
+
+    let(:load_class) do
+      load OKComputer::Engine.root.join("app/controllers/ok_computer_controller.rb")
+    end
+
+    before do
+      Object.send(:remove_const, 'OkComputerController')
+    end
+
+    context "#newrelic_ignore" do
+
+      context "when NewRelic is installed" do
+
+        before do
+          stub_const('NewRelic::Agent::Instrumentation::ControllerInstrumentation', Module.new)
+        end
+
+        context "when analytics_ignore is true" do
+
+          before { OKComputer.stub(:analytics_ignore){ true } }
+
+          it "should inject newrelic_ignore" do
+            Module.any_instance.should_receive(:newrelic_ignore).with(no_args())
+            load_class
+          end
+        end
+
+        context "when analytics_ignore is false" do
+
+          before { OKComputer.stub(:analytics_ignore){ false } }
+
+          it "should inject newrelic_ignore" do
+            Module.any_instance.should_not_receive(:newrelic_ignore)
+            load_class
+          end
+        end
+      end
+
+      context "when NewRelic is not installed" do
+        it "should not inject newrelic_ignore" do
+          Module.any_instance.should_not_receive(:newrelic_ignore)
+          load_class
+        end
+      end
+    end
+  end
 end
