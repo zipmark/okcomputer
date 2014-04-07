@@ -53,8 +53,30 @@ module OKComputer
     end
 
     context "#size" do
-      it "checks Delayed::Job's count of pending jobs within the given priority" do
-        pending("looking for a non-terrible way to test this. would like a scope that returns this with a single call (like with Resque check)")
+
+      context "when Mongoid defined" do
+        before do
+          stub_const('Delayed::Backend::Mongoid::Job', Object.new)
+          stub_const('Delayed::Worker', Object.new).should_receive(:backend).and_return(Delayed::Backend::Mongoid::Job)
+        end
+
+        it "checks Delayed::Job's count of pending jobs within the given priority" do
+          Delayed::Job.should_receive(:lte).with(priority: priority).and_return(Delayed::Job)
+          Delayed::Job.should_receive(:where).with(:locked_at => nil, :last_error => nil).and_return(Delayed::Job)
+          Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+          subject.size.should eq 456
+        end
+      end
+
+      context "when Mongoid not defined" do
+        before { hide_const 'Delayed::Backend::Mongoid::Job' }
+
+        it "checks Delayed::Job's count of pending jobs within the given priority" do
+          Delayed::Job.should_receive(:where).with("priority <= ?", priority).and_return(Delayed::Job)
+          Delayed::Job.should_receive(:where).with(:locked_at => nil, :last_error => nil).and_return(Delayed::Job)
+          Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+          subject.size.should eq 456
+        end
       end
     end
   end
