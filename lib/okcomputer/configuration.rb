@@ -40,6 +40,10 @@ module OKComputer
     username && password
   end
 
+  # Public: Option to disable third-party app performance tools (.e.g NewRelic) from counting OKComputer routes towards their total.
+  mattr_accessor :analytics_ignore
+  self.analytics_ignore = true
+
   # Private: The username for access to checks
   mattr_accessor :username
   private_class_method :username

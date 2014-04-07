@@ -4,9 +4,9 @@ class OkComputerController < ActionController::Base
 
   before_filter :authenticate
 
-  if defined?(NewRelic::Agent::Instrumentation::ControllerInstrumentation)
+  if OKComputer.analytics_ignore && defined?(NewRelic::Agent::Instrumentation::ControllerInstrumentation)
     include NewRelic::Agent::Instrumentation::ControllerInstrumentation
-    newrelic_ignore
+    newrelic_ignore if respond_to?(:newrelic_ignore)
   end
 
   rescue_from OKComputer::Registry::CheckNotFound do |e|

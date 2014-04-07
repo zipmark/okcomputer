@@ -90,4 +90,14 @@ describe OKComputer do
       end
     end
   end
+
+  context "#analytics_ignore" do
+    it "has default mount_at value of true" do
+      OKComputer.analytics_ignore.should == true
+    end
+
+    it "allows configuration of analytics_ignore" do
+      OKComputer.respond_to?('analytics_ignore=').should be_true
+    end
+  end
 end

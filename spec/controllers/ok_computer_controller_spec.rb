@@ -152,20 +152,36 @@ describe OkComputerController do
 
     context "#newrelic_ignore" do
 
-      context "#when NewRelic is installed" do
+      context "when NewRelic is installed" do
+
         before do
           stub_const('NewRelic::Agent::Instrumentation::ControllerInstrumentation', Module.new)
         end
 
-        it "should inject newrelic_ignore" do
-          Object.any_instance.should_receive(:newrelic_ignore).with(no_args())
-          load_class
+        context "when analytics_ignore is true" do
+
+          before { OKComputer.stub(:analytics_ignore){ true } }
+
+          it "should inject newrelic_ignore" do
+            Module.any_instance.should_receive(:newrelic_ignore).with(no_args())
+            load_class
+          end
+        end
+
+        context "when analytics_ignore is false" do
+
+          before { OKComputer.stub(:analytics_ignore){ false } }
+
+          it "should inject newrelic_ignore" do
+            Module.any_instance.should_not_receive(:newrelic_ignore)
+            load_class
+          end
         end
       end
 
-      context "#when NewRelic is not installed" do
+      context "when NewRelic is not installed" do
         it "should not inject newrelic_ignore" do
-          Object.any_instance.should_not_receive(:newrelic_ignore)
+          Module.any_instance.should_not_receive(:newrelic_ignore)
           load_class
         end
       end

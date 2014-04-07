@@ -105,6 +105,13 @@ Checks are available as plain text (by default) or JSON by appending .json, e.g.
 If NewRelic is installed, OkComputer automatically disables NewRelic monitoring for uptime checks,
 as it will start to artificially bring your request time down.
 
+If you'd like to intentionally count OkComputer requrests towards your NewRelic request time analytics, set:
+
+```
+# config/initializers/okcomputer.rb
+OKComputer.analytics_ignore = false
+```
+
 ## Deprecations and Breaking Changes
 
 #### Deprecation of Check#call
