@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.markdown"]
   s.test_files = Dir["test/**/*"]
+  s.post_install_message = File.read('UPGRADING') if File.exists?('UPGRADING')
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"

@@ -127,6 +127,11 @@ OkComputer.analytics_ignore = false
 
 ## Deprecations and Breaking Changes
 
+#### Namespace change from `OKComputer` to `OkComputer`
+
+OkComputer has changed its namespace from `OKComputer` (uppercase K) to `OkComputer` (lowercase k)
+as of version 0.7.0. Please update your configuration accordingly.
+
 #### Deprecation of Check#call
 
 Versions before 0.2.0 implemented a "#call" method which returned the message.
