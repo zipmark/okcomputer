@@ -91,6 +91,16 @@ describe OKComputer do
     end
   end
 
+  context "#mount_at" do
+    it "has default mount_at value of 'okcomputer'" do
+      OKComputer.mount_at.should == 'okcomputer'
+    end
+
+    it "allows configuration of mount_at" do
+      OKComputer.respond_to?('mount_at=').should be_true
+    end
+  end
+
   context "#analytics_ignore" do
     it "has default mount_at value of true" do
       OKComputer.analytics_ignore.should == true

@@ -40,6 +40,11 @@ module OKComputer
     username && password
   end
 
+  # Public: The route to automatically mount the OkComputer engine. Setting to false
+  # prevents OKComputer from automatically mounting itself.
+  mattr_accessor :mount_at
+  self.mount_at = 'okcomputer'
+
   # Public: Option to disable third-party app performance tools (.e.g NewRelic) from counting OKComputer routes towards their total.
   mattr_accessor :analytics_ignore
   self.analytics_ignore = true
