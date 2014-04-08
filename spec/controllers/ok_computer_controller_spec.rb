@@ -1,6 +1,9 @@
 require 'spec_helper'
 
-describe OkComputerController do
+describe OkComputer::OkComputerController do
+
+  routes { OkComputer::Engine.routes }
+
   describe "GET 'index'" do
     let(:checks) do
       double(:all_checks, {
@@ -11,7 +14,7 @@ describe OkComputerController do
     end
 
     before do
-      OKComputer::Registry.stub(:all) { checks }
+      OkComputer::Registry.stub(:all) { checks }
       checks.should_receive(:run)
       # not testing authentication here
       controller.class.skip_before_filter :authenticate
@@ -75,7 +78,7 @@ describe OkComputerController do
 
     context "existing check-type" do
       before do
-        OKComputer::Registry.should_receive(:fetch).with(check_type) { check }
+        OkComputer::Registry.should_receive(:fetch).with(check_type) { check }
         check.should_receive(:run)
       end
 
@@ -143,11 +146,11 @@ describe OkComputerController do
   describe 'newrelic_ignore' do
 
     let(:load_class) do
-      load OKComputer::Engine.root.join("app/controllers/ok_computer_controller.rb")
+      load OkComputer::Engine.root.join("app/controllers/ok_computer/ok_computer_controller.rb")
     end
 
     before do
-      Object.send(:remove_const, 'OkComputerController')
+      OkComputer.send(:remove_const, 'OkComputerController')
     end
 
     context "#newrelic_ignore" do
@@ -160,7 +163,7 @@ describe OkComputerController do
 
         context "when analytics_ignore is true" do
 
-          before { OKComputer.stub(:analytics_ignore){ true } }
+          before { OkComputer.stub(:analytics_ignore){ true } }
 
           it "should inject newrelic_ignore" do
             Module.any_instance.should_receive(:newrelic_ignore).with(no_args())
@@ -170,7 +173,7 @@ describe OkComputerController do
 
         context "when analytics_ignore is false" do
 
-          before { OKComputer.stub(:analytics_ignore){ false } }
+          before { OkComputer.stub(:analytics_ignore){ false } }
 
           it "should inject newrelic_ignore" do
             Module.any_instance.should_not_receive(:newrelic_ignore)

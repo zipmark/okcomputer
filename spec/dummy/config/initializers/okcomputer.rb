@@ -1,1 +1,1 @@
-OKComputer.require_authentication("foo", "bar")
+OkComputer.require_authentication("foo", "bar")

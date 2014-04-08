@@ -40,12 +40,12 @@ We also include a MongoidCheck, but do not register it. If you use Mongoid,
 replace the default ActiveRecord check like so:
 
 ```ruby
-OKComputer::Registry.register "database", OKComputer::MongoidCheck.new
+OkComputer::Registry.register "database", OkComputer::MongoidCheck.new
 ```
 
 If you use another database adapter, see Registering Custom Checks below to
 build your own database check and register it with the name "database" to
-replace the built-in check, or use `OKComputer::Registry.deregister "database"`
+replace the built-in check, or use `OkComputer::Registry.deregister "database"`
 to stop checking your database altogether.
 
 ### Requiring Authentication
@@ -54,8 +54,21 @@ Optionally require HTTP Basic authentication to view the results of checks in an
 
 ```ruby
 # config/initializers/okcomputer.rb
-OKComputer.require_authentication("username", "password")
+OkComputer.require_authentication("username", "password")
 ```
+
+### Changing the OkComputer Route
+
+By default, OkComputer routes are mounted at `/okcomputer`. If you'd like to use an alternate route,
+you can configure it with:
+
+```ruby
+# config/initializers/okcomputer.rb
+OkComputer.mount_at = 'health_checks'    # mounts at /health_checks
+```
+
+For advanced users, setting `OkComputer.mount_at = false` will disable automatic mounting,
+and you can write custom code in your `routes.rb` file to mount the engine.
 
 ### Registering Additional Checks
 
@@ -63,20 +76,20 @@ Register additional checks in an initializer, like so:
 
 ```ruby
 # config/initializers/okcomputer.rb
-OKComputer::Registry.register "resque_down", OKComputer::ResqueDownCheck.new
-OKComputer::Registry.register "resque_backed_up", OKComputer::ResqueBackedUpCheck.new("critical", 100)
+OkComputer::Registry.register "resque_down", OkComputer::ResqueDownCheck.new
+OkComputer::Registry.register "resque_backed_up", OkComputer::ResqueBackedUpCheck.new("critical", 100)
 ```
 
 ### Registering Custom Checks
 
 The simplest way to register a check unique to your application is to subclass
-OKComputer::Check and implement your own `#check` method, which sets the
+OkComputer::Check and implement your own `#check` method, which sets the
 display message with `mark_message`, and calls `mark_failure` if anything is
 wrong.
 
 ```ruby
 # config/initializers/okcomputer.rb
-class MyCustomCheck < OKComputer::Check
+class MyCustomCheck < OkComputer::Check
   def check
     if rand(10).even?
       mark_message "Even is great!"
@@ -87,7 +100,7 @@ class MyCustomCheck < OKComputer::Check
   end
 end
 
-OKComputer::Registry.register "check_for_odds", MyCustomCheck.new
+OkComputer::Registry.register "check_for_odds", MyCustomCheck.new
 ```
 
 ## Performing Checks
@@ -105,21 +118,26 @@ Checks are available as plain text (by default) or JSON by appending .json, e.g.
 If NewRelic is installed, OkComputer automatically disables NewRelic monitoring for uptime checks,
 as it will start to artificially bring your request time down.
 
-If you'd like to intentionally count OkComputer requrests towards your NewRelic request time analytics, set:
+If you'd like to intentionally count OkComputer requests in your NewRelic analytics, set:
 
 ```
 # config/initializers/okcomputer.rb
-OKComputer.analytics_ignore = false
+OkComputer.analytics_ignore = false
 ```
 
 ## Deprecations and Breaking Changes
+
+#### Namespace change from `OKComputer` to `OkComputer`
+
+OkComputer has changed its namespace from `OKComputer` (uppercase K) to `OkComputer` (lowercase k)
+as of version 0.7.0. Please update your configuration accordingly.
 
 #### Deprecation of Check#call
 
 Versions before 0.2.0 implemented a "#call" method which returned the message.
 This has been deprecated and will be removed in a future version. Please
 define a #check method which calls `mark_failure` and `mark_message` as
-appropriate. In the meantime, OKComputer displays a warning and uses the result
+appropriate. In the meantime, OkComputer displays a warning and uses the result
 of the #call method as the message.
 
 #### Breaking Changes of JSON Output
