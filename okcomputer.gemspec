@@ -1,7 +1,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "okcomputer/version"
+require "ok_computer/version"
 
 authors = {
   "Patrick Byrne" => "patrick.byrne@tstmedia.com",
@@ -10,7 +10,7 @@ authors = {
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "okcomputer"
-  s.version     = OKComputer::VERSION
+  s.version     = OkComputer::VERSION
   s.authors     = authors.keys
   s.email       = authors.values
   s.license     = "MIT"
