@@ -67,8 +67,17 @@ you can configure it with:
 OkComputer.mount_at = 'health_checks'    # mounts at /health_checks
 ```
 
-For advanced users, setting `OkComputer.mount_at = false` will disable automatic mounting,
-and you can write custom code in your `routes.rb` file to mount the engine.
+For more control of adding OkComputer to your routes, set `OkComputer.mount_at
+= false` to disable automatic mounting, and you can manually mount the engine
+in your `routes.rb`.
+
+```ruby
+# config/initializers/okcomputer.rb
+OkComputer.mount_at = false
+
+# config/routes.rb, at any priority that suits you
+mount OkComputer::Engine, at: "/custom_path"
+```
 
 ### Registering Additional Checks
 
@@ -132,14 +141,6 @@ OkComputer.analytics_ignore = false
 OkComputer has changed its namespace from `OKComputer` (uppercase K) to `OkComputer` (lowercase k)
 as of version 0.7.0. Please update your configuration accordingly.
 
-#### Deprecation of Check#call
-
-Versions before 0.2.0 implemented a "#call" method which returned the message.
-This has been deprecated and will be removed in a future version. Please
-define a #check method which calls `mark_failure` and `mark_message` as
-appropriate. In the meantime, OkComputer displays a warning and uses the result
-of the #call method as the message.
-
 #### Breaking Changes of JSON Output
 
 Versions before 0.6.0 did not include whether a given check succeeded.
@@ -168,6 +169,14 @@ example:
 ```json
 {"check": "result", "other": "result"}
 ```
+
+#### Deprecation of Check#call
+
+Versions before 0.2.0 implemented a "#call" method which returned the message.
+This has been deprecated and will be removed in a future version. Please
+define a #check method which calls `mark_failure` and `mark_message` as
+appropriate. In the meantime, OkComputer displays a warning and uses the result
+of the #call method as the message.
 
 ## Contributing
 
