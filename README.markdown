@@ -173,10 +173,8 @@ example:
 #### Deprecation of Check#call
 
 Versions before 0.2.0 implemented a "#call" method which returned the message.
-This has been deprecated and will be removed in a future version. Please
-define a #check method which calls `mark_failure` and `mark_message` as
-appropriate. In the meantime, OkComputer displays a warning and uses the result
-of the #call method as the message.
+This was deprecated at the time and removed in 1.0.0. Please define a #check
+method which calls `mark_failure` and `mark_message` as appropriate.
 
 ## Contributing
 
