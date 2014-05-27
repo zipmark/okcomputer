@@ -1,7 +1,5 @@
 module OkComputer
   class Check
-    CALL_DEPRECATION_MESSAGE = "Deprecation warning: Please define #check rather than defining #call"
-
     # to be set by Registry upon registration
     attr_accessor :registrant_name
     # nil by default, only set to true if the check deems itself failed
@@ -20,13 +18,7 @@ module OkComputer
     # Your subclass of Check must define its own #check method. This method
     # must return the string to render when performing the check.
     def check
-      if respond_to? :call
-        warn CALL_DEPRECATION_MESSAGE
-        # The old #call methods returned the message, so use that to set the message output
-        mark_message call
-      else
-        raise(CheckNotDefined, "Your subclass must define its own #check.")
-      end
+      raise(CheckNotDefined, "Your subclass must define its own #check.")
     end
     private :check
 
