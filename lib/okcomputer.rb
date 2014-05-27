@@ -15,12 +15,5 @@ require "ok_computer/built_in_checks/delayed_job_backed_up_check"
 require "ok_computer/built_in_checks/ruby_version_check"
 require "ok_computer/built_in_checks/cache_check"
 
-# Remove the following code in version 1.0.0
-module OKComputer
-  def self.method_missing(*args)
-    raise 'Please replace all usages of `OKComputer` with `OkComputer` (lowercase `k`)'
-  end
-end
-
 OkComputer::Registry.register "default", OkComputer::DefaultCheck.new
 OkComputer::Registry.register "database", OkComputer::ActiveRecordCheck.new
