@@ -29,7 +29,7 @@ module OkComputer
       # expensive operation from happening more than once
       size = self.size
       if size <= threshold
-        mark_message " #{name} at reasonable level (#{size})"
+        mark_message "#{name} at reasonable level (#{size})"
       else
         mark_failure
         mark_message "#{name} is #{size - threshold} over threshold! (#{size})"
