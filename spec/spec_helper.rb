@@ -17,4 +17,7 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
   config.use_transactional_fixtures = true
+  config.infer_spec_type_from_file_location!
+  # when we use deprecated rspec methods, fail the test
+  config.raise_errors_for_deprecations!
 end

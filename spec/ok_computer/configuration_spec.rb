@@ -33,7 +33,7 @@ describe OkComputer do
         end
 
         it "is true" do
-          OkComputer.requires_authentication?.should be_true
+          OkComputer.requires_authentication?.should be_truthy
         end
       end
 
@@ -44,15 +44,15 @@ describe OkComputer do
         end
 
         it "is true for the #index action" do
-          OkComputer.requires_authentication?({action: "index"}).should be_true
+          OkComputer.requires_authentication?({action: "index"}).should be_truthy
         end
 
         it "is true for #show if params[:check] is not whitelisted" do
-          OkComputer.requires_authentication?({action: "show", check: "somethingelse"}).should be_true
+          OkComputer.requires_authentication?({action: "show", check: "somethingelse"}).should be_truthy
         end
 
         it "is false for #show if params[:check] is whitelisted" do
-          OkComputer.requires_authentication?({action: "show", check: action}).should_not be_true
+          OkComputer.requires_authentication?({action: "show", check: action}).should_not be_truthy
         end
       end
     end
@@ -65,7 +65,7 @@ describe OkComputer do
       end
 
       it "is false" do
-        OkComputer.requires_authentication?.should be_false
+        OkComputer.requires_authentication?.should be_falsey
       end
     end
   end
@@ -73,7 +73,7 @@ describe OkComputer do
   context "#authenticate(username, password)" do
     it "returns true if OkComputer is not set up to require authentication" do
       OkComputer.require_authentication(nil, nil)
-      OkComputer.authenticate(bogus, bogus).should be_true
+      OkComputer.authenticate(bogus, bogus).should be_truthy
     end
 
     context "when set up to require authentication" do
@@ -82,11 +82,11 @@ describe OkComputer do
       end
 
       it "returns true if given the correct username and password" do
-        OkComputer.authenticate(username, password).should be_true
+        OkComputer.authenticate(username, password).should be_truthy
       end
 
       it "returns false if not given the correct username and password" do
-        OkComputer.authenticate(bogus, bogus).should be_false
+        OkComputer.authenticate(bogus, bogus).should be_falsey
       end
     end
   end
@@ -97,7 +97,7 @@ describe OkComputer do
     end
 
     it "allows configuration of mount_at" do
-      OkComputer.respond_to?('mount_at=').should be_true
+      OkComputer.respond_to?('mount_at=').should be_truthy
     end
   end
 
@@ -107,7 +107,7 @@ describe OkComputer do
     end
 
     it "allows configuration of analytics_ignore" do
-      OkComputer.respond_to?('analytics_ignore=').should be_true
+      OkComputer.respond_to?('analytics_ignore=').should be_truthy
     end
   end
 end

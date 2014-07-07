@@ -30,7 +30,7 @@ module OkComputer
 
       it "removes the failure_occurred flag" do
         subject.clear
-        subject.failure_occurred.should_not be_true
+        subject.failure_occurred.should_not be_truthy
         subject.message.should be_nil
       end
     end
@@ -74,9 +74,9 @@ module OkComputer
 
     context "#mark_failure" do
       it "sets the failure_occurred occurred boolean" do
-        subject.failure_occurred.should be_false
+        subject.failure_occurred.should be_falsey
         subject.mark_failure
-        subject.failure_occurred.should be_true
+        subject.failure_occurred.should be_truthy
       end
     end
 
