@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 # Stubbing the constant out; will exist in apps which have Mongoid loaded
 class Mongoid; end

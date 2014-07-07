@@ -1,8 +1,13 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe OkComputer::OkComputerController do
 
   routes { OkComputer::Engine.routes }
+
+  before do
+    # not testing authentication here
+    controller.class.skip_before_filter :authenticate
+  end
 
   describe "GET 'index'" do
     let(:checks) do
@@ -16,8 +21,6 @@ describe OkComputer::OkComputerController do
     before do
       OkComputer::Registry.stub(:all) { checks }
       checks.should_receive(:run)
-      # not testing authentication here
-      controller.class.skip_before_filter :authenticate
     end
 
     it "performs the basic up check when format: text" do
