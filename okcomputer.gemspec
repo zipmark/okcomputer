@@ -28,6 +28,6 @@ Gem::Specification.new do |s|
   s.post_install_message = File.read('UPGRADING') if File.exists?('UPGRADING')
 
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "rspec-rails", "~> 2.99.0"
   s.add_development_dependency "coveralls"
 end
