@@ -30,6 +30,10 @@ module OkComputer
       it "coercese threshold into an integer" do
         DelayedJobBackedUpCheck.new(priority, "123").threshold.should == 123
       end
+
+      it "sets greater_than_priority to false" do
+        DelayedJobBackedUpCheck.new(priority, "123").greater_than_priority.should == false
+      end
     end
 
     context ".new(priority, threshold, :greater_than_priority => true)" do

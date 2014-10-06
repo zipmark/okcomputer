@@ -18,7 +18,7 @@ module OkComputer
     def initialize(priority, threshold, options = {})
       self.priority = Integer(priority)
       self.threshold = Integer(threshold)
-      self.greater_than_priority = options[:greater_than_priority].nil? ? false : options[:greater_than_priority]
+      self.greater_than_priority = !!options[:greater_than_priority]
       self.name = greater_than_priority ? "Delayed Jobs with priority higher than '#{priority}'" : "Delayed Jobs with priority lower than '#{priority}'"
     end
 
