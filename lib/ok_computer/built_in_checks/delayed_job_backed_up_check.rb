@@ -25,18 +25,12 @@ module OkComputer
     # Public: How many delayed jobs are pending within the given priority
     def size
       if defined?(::Delayed::Backend::Mongoid::Job) && Delayed::Worker.backend == Delayed::Backend::Mongoid::Job
-        if greater_than_priority
-          Delayed::Job.gte(priority: priority).where(:locked_at => nil, :last_error => nil).count
-        else
-          Delayed::Job.lte(priority: priority).where(:locked_at => nil, :last_error => nil).count
-        end
+        query = greater_than_priority ? Delayed::Job.gte(priority: priority) : Delayed::Job.lte(priority: priority)
       else
-        if greater_than_priority
-          Delayed::Job.where("priority >= ?", priority).where(:locked_at => nil, :last_error => nil).count
-        else
-          Delayed::Job.where("priority <= ?", priority).where(:locked_at => nil, :last_error => nil).count
-        end
+        operator = greater_than_priority ? ">=" : "<="
+        query = Delayed::Job.where("priority #{operator} ?", priority)
       end
+      query.where(:locked_at => nil, :last_error => nil).count
     end
   end
 end
