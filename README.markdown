@@ -57,6 +57,13 @@ Optionally require HTTP Basic authentication to view the results of checks in an
 OkComputer.require_authentication("username", "password")
 ```
 
+To allow access to specific checks without a password, optionally specify the names of the checks:
+
+```ruby
+# config/initializers/okcomputer.rb
+OkComputer.require_authentication("username", "password", except: %w(default nonsecret))
+```
+
 ### Changing the OkComputer Route
 
 By default, OkComputer routes are mounted at `/okcomputer`. If you'd like to use an alternate route,
