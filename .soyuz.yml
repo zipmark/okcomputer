@@ -5,7 +5,7 @@ defaults:
     - sed -i '' -e "s/\".*/\"$(git tag | tail -1 | sed s/v//)\"/" lib/ok_computer/version.rb
     - git add  lib/ok_computer/version.rb
     - git commit -m "Version Bump" && git push
-    - gem build opsicle.gemspec
+    - gem build okcomputer.gemspec
   after_deploy_cmds:
     - rm *.gem
 environments:
