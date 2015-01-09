@@ -1,7 +1,6 @@
 module OkComputer
   class OkComputerController < ActionController::Base
     layout nil
-    respond_to :text, :html, :json
 
     before_filter :authenticate
 
