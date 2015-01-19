@@ -13,6 +13,7 @@ require "ok_computer/built_in_checks/resque_backed_up_check"
 require "ok_computer/built_in_checks/resque_failure_threshold_check"
 require "ok_computer/built_in_checks/resque_down_check"
 require "ok_computer/built_in_checks/delayed_job_backed_up_check"
+require "ok_computer/built_in_checks/sidekiq_latency_check"
 require "ok_computer/built_in_checks/ruby_version_check"
 require "ok_computer/built_in_checks/cache_check"
 
