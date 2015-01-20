@@ -19,14 +19,14 @@ module OkComputer
       subject.should be_a Check
     end
 
-    context ".new(queue, latency)" do
+    context ".new(queue, threshold)" do
       it "accepts a queue name and a latency threshold to consider backed up" do
         subject.queue.should == queue
         subject.threshold.should == threshold
       end
 
-      it "coerces the latency parameter into an integer" do
-        latency = "30"
+      it "coerces the threshold parameter into an integer" do
+        threshold = "30"
         described_class.new(queue, threshold).threshold.should == 30
       end
     end
