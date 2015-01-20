@@ -141,48 +141,6 @@ If you'd like to intentionally count OkComputer requests in your NewRelic analyt
 OkComputer.analytics_ignore = false
 ```
 
-## Deprecations and Breaking Changes
-
-#### Namespace change from `OKComputer` to `OkComputer`
-
-OkComputer has changed its namespace from `OKComputer` (uppercase K) to `OkComputer` (lowercase k)
-as of version 0.7.0. Please update your configuration accordingly.
-
-#### Breaking Changes of JSON Output
-
-Versions before 0.6.0 did not include whether a given check succeeded.
-
-**before 0.6.0**
-```json
-{"check": "result"}
-```
-
-**after 0.6.0**
-```json
-{"check": {"message": "result", "success": true}
-```
-
-Versions before 0.3.0, when performing multiple checks, returned an Array of
-the check results, each being a JSON object. Starting with 0.3.0, these are
-combined into a single JSON object with each check having its own key. For
-example:
-
-**before 0.3.0**
-```json
-[{"check": "result"}, {"other": "result"}]
-```
-
-**0.3.0 and above**
-```json
-{"check": "result", "other": "result"}
-```
-
-#### Deprecation of Check#call
-
-Versions before 0.2.0 implemented a "#call" method which returned the message.
-This was deprecated at the time and removed in 1.0.0. Please define a #check
-method which calls `mark_failure` and `mark_message` as appropriate.
-
 ## Contributing
 
 1. Fork it
