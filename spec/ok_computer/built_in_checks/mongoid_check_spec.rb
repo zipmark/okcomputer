@@ -1,7 +1,7 @@
 require "rails_helper"
 
 # Stubbing the constant out; will exist in apps which have Mongoid loaded
-class Mongoid; end
+module Mongoid; end
 
 module OkComputer
   describe MongoidCheck do
