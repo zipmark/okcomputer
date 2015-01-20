@@ -1,4 +1,0 @@
-OkComputer Namespace Change (v0.7.0)
-------------------------------------
-OkComputer has changed its namespace from `OKComputer` (uppercase K) to `OkComputer` (lowercase k)
-as of version 0.7.0. Please update your configuration accordingly.
