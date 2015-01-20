@@ -7,7 +7,11 @@ end
 
 Bundler::GemHelper.install_tasks
 
-task :default => :spec
+if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
+  task default: :appraisal
+else
+  task default: :spec
+end
 
 require "rspec/core/rake_task"
 
@@ -19,3 +23,6 @@ namespace :spec do
   end
 end
 
+task :appraisal do
+  exec "bundle exec appraisal rake spec"
+end
