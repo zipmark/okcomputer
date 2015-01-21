@@ -7,15 +7,15 @@ require "ok_computer/registry"
 # and the built-in checks
 require "ok_computer/built_in_checks/size_threshold_check"
 require "ok_computer/built_in_checks/active_record_check"
+require "ok_computer/built_in_checks/cache_check"
 require "ok_computer/built_in_checks/default_check"
+require "ok_computer/built_in_checks/delayed_job_backed_up_check"
 require "ok_computer/built_in_checks/mongoid_check"
 require "ok_computer/built_in_checks/resque_backed_up_check"
-require "ok_computer/built_in_checks/resque_failure_threshold_check"
 require "ok_computer/built_in_checks/resque_down_check"
-require "ok_computer/built_in_checks/delayed_job_backed_up_check"
-require "ok_computer/built_in_checks/sidekiq_latency_check"
+require "ok_computer/built_in_checks/resque_failure_threshold_check"
 require "ok_computer/built_in_checks/ruby_version_check"
-require "ok_computer/built_in_checks/cache_check"
+require "ok_computer/built_in_checks/sidekiq_latency_check"
 
 OkComputer::Registry.register "default", OkComputer::DefaultCheck.new
 OkComputer::Registry.register "database", OkComputer::ActiveRecordCheck.new
