@@ -12,6 +12,18 @@ module OkComputer
       subject.should be_a Check
     end
 
+    context "new(host)" do
+      it "remembers the host given to it" do
+        subject = CacheCheck.new("example.com")
+        expect(subject.host).to eq("example.com")
+      end
+
+      it "defaults to the machine's name" do
+        subject = CacheCheck.new
+        expect(subject.host).to eq(Socket.gethostname)
+      end
+    end
+
     context "#check" do
       let(:stats) { "foo" }
       let(:error_message) { "Error message" }
