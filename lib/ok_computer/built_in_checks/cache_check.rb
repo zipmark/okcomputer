@@ -1,7 +1,12 @@
 module OkComputer
+  # Verifies that the Rails cache is set up and can speak with Memcached
+  # running on the given host (defaults to local).
   class CacheCheck < Check
+    attr_accessor :host
 
-    ConnectionFailed = Class.new(StandardError)
+    def initialize(host=Socket.gethostname)
+      self.host = host
+    end
 
     # Public: Check whether the cache is active
     def check
@@ -14,9 +19,9 @@ module OkComputer
     # Public: Outputs stats string for cache
     def stats
       stats    = Rails.cache.stats
-      host     = stats.select{|k,v| k =~ Regexp.new(Socket.gethostname) }.values[0]
-      mem_used = to_megabytes host['bytes']
-      mem_max  = to_megabytes host['limit_maxbytes']
+      values     = stats.select{|k,v| k =~ Regexp.new(host) }.values[0]
+      mem_used = to_megabytes values['bytes']
+      mem_max  = to_megabytes values['limit_maxbytes']
       return "#{mem_used} / #{mem_max} MB, #{stats.count - 1} peers"
     rescue => e
       raise ConnectionFailed, e
@@ -28,5 +33,7 @@ module OkComputer
     def to_megabytes(bytes)
       bytes.to_i / (1024 * 1024)
     end
+
+    ConnectionFailed = Class.new(StandardError)
   end
 end
