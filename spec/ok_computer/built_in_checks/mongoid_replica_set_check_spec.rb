@@ -35,6 +35,20 @@ module OkComputer
       subject.should be_a Check
     end
 
+    describe "#initialize" do
+      it "uses the default session by default" do
+        expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_return(session)
+        expect(subject.session).to eq(session)
+      end
+
+      it "accepts a session name" do
+        other_session = double("other session")
+        expect(Mongoid::Sessions).to receive(:with_name).with(:other_session).and_return(other_session)
+        check = described_class.new(:other_session)
+        expect(check.session).to eq(other_session)
+      end
+    end
+
     describe "#check" do
       let(:error_message) { "Error message" }
 

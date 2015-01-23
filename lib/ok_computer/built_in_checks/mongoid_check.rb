@@ -1,5 +1,17 @@
 module OkComputer
   class MongoidCheck < Check
+    attr_accessor :session
+
+    # Public: Initialize a check for a Mongoid replica set
+    #
+    # session - The name of the Mongoid session to use. Defaults to the
+    #   default session.
+    def initialize(session = :default)
+      if Mongoid.respond_to?(:sessions)
+        self.session = Mongoid::Sessions.with_name(session)
+      end
+    end
+
     # Public: Return the status of the mongodb
     def check
       mark_message "Connected to mongodb #{mongodb_name}"
@@ -12,8 +24,8 @@ module OkComputer
     #
     # Returns a hash with the status of the db
     def mongodb_stats
-      if Mongoid.respond_to?(:default_session)
-        Mongoid.default_session.command(dbStats: 1) # Mongoid 3+
+      if session
+        session.command(dbStats: 1) # Mongoid 3+
       else
         Mongoid.database.stats # Mongoid 2
       end
