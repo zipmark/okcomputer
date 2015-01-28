@@ -1,3 +1,9 @@
+#### v1.2.0
+
+* Added two new checks:
+    * ElasticsearchCheck, which tests the health of your Elasticsearch cluster
+    * AppVersionCheck, which reports the version (as a SHA) of your app is running
+
 #### v1.1.0
 
 * Added two new checks:
