@@ -1,18 +1,40 @@
 require "rails_helper"
 
 # Stubbing the constant out; will exist in apps which have Mongoid loaded
-module Mongoid; end
+module Mongoid
+  module Sessions
+  end
+end
 
 module OkComputer
   describe MongoidCheck do
 
     let(:stats) { { "db" => "foobar" } }
+    let(:session) { double(:session) }
 
     it "is a Check" do
       subject.should be_a Check
     end
 
-    context "#check" do
+    describe "#initialize" do
+      before do
+        Mongoid.stub(:sessions)
+      end
+        
+      it "uses the default session by default" do
+        expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_return(session)
+        expect(subject.session).to eq(session)
+      end
+
+      it "accepts a session name" do
+        other_session = double("other session")
+        expect(Mongoid::Sessions).to receive(:with_name).with(:other_session).and_return(other_session)
+        check = described_class.new(:other_session)
+        expect(check.session).to eq(other_session)
+      end
+    end
+
+    describe "#check" do
       let(:mongodb_name) { "foo" }
       let(:error_message) { "Error message" }
 
@@ -35,22 +57,24 @@ module OkComputer
       end
     end
 
-    context "#mongodb_name" do
+    describe "#mongodb_name" do
       it "returns the name of the mongodb" do
         subject.should_receive(:mongodb_stats) { stats }
         subject.mongodb_name.should == stats["db"]
       end
     end
 
-    context "#mongodb_stats" do
+    describe "#mongodb_stats" do
 
       context "Mongoid 3" do
 
-        let(:default_session) { double(:default_session) }
+        before do
+          Mongoid.stub(:sessions)
+        end
 
         it "returns a mongodb stats hash" do
-          default_session.should_receive(:command).with(dbStats: 1) { stats }
-          Mongoid.should_receive(:default_session).with(no_args) { default_session }
+          session.should_receive(:command).with(dbStats: 1) { stats }
+          Mongoid::Sessions.should_receive(:with_name).with(:default) { session }
           subject.mongodb_stats.should == stats
         end
       end
