@@ -15,8 +15,9 @@ module OkComputer
         expect { described_class.new }.to raise_error
       end
 
-      it "remembers host" do
-        expect(subject.host).to eq(host)
+      it "saves host as a URI and sets url to cluster health API url" do
+        expect(subject.host).to eq URI(host)
+        expect(subject.url).to eq(URI("#{host}/_cluster/health"))
       end
 
       it "defaults request_timeout to 5 seconds" do
@@ -26,11 +27,6 @@ module OkComputer
       it "remembers request_timeout" do
         check = described_class.new(host, 10)
         expect(check.request_timeout).to eq(10)
-      end
-
-      it "coerces request_timeout to an integer" do
-        check = described_class.new(host, "8")
-        expect(check.request_timeout).to eq(8)
       end
     end
 
@@ -71,7 +67,7 @@ module OkComputer
         let(:error_message) { "Error message" }
 
         before do
-          subject.stub(:cluster_health).and_raise(ElasticsearchCheck::ConnectionFailed, error_message)
+          subject.stub(:cluster_health).and_raise(HttpCheck::ConnectionFailed, error_message)
         end
 
         it { should_not be_successful }
@@ -89,11 +85,11 @@ module OkComputer
           }
         end
 
-        before do
-          subject.health_url.stub(:read).and_return(response)
-        end
-
         let(:response) { cluster_health.to_json }
+
+        before do
+          subject.stub(:perform_request).and_return(response)
+        end
 
         it "returns a symbolized hash of the cluster health API response" do
           expect(subject.cluster_health).to eq(cluster_health)
@@ -102,22 +98,11 @@ module OkComputer
 
       context "when the connection fails" do
         before do
-          subject.health_url.stub(:read).and_raise(Errno::ENETUNREACH)
+          subject.stub(:perform_request).and_raise(HttpCheck::ConnectionFailed)
         end
 
         it "raises a ConnectionFailed error" do
-          expect { subject.cluster_health }.to raise_error(ElasticsearchCheck::ConnectionFailed)
-        end
-      end
-
-      context "when the connection takes too long" do
-        before do
-          subject.request_timeout = 0.1
-          subject.health_url.stub(:read) { sleep(subject.request_timeout + 0.1) }
-        end
-
-        it "raises a ConnectionFailed error" do
-          expect { subject.cluster_health }.to raise_error(ElasticsearchCheck::ConnectionFailed)
+          expect { subject.cluster_health }.to raise_error(HttpCheck::ConnectionFailed)
         end
       end
     end
