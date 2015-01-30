@@ -1,3 +1,7 @@
+#### v1.3.0
+
+* MongoidCheck now accepts an optional `session` argument to check the given session.
+
 #### v1.2.0
 
 * Added two new checks:
