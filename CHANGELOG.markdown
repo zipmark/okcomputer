@@ -1,3 +1,10 @@
+#### v1.4.0
+
+* Added two new checks:
+    * SolrCheck, which tests connection to a Solr instance
+    * HttpCheck, which tests connection to an arbitrary HTTP endpoint
+* ElasticsearchCheck has been modified to be a child of HttpCheck, with no change in external behavior.
+
 #### v1.3.0
 
 * MongoidCheck now accepts an optional `session` argument to check the given session.
