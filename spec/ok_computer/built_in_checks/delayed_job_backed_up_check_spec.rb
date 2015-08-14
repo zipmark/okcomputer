@@ -111,7 +111,7 @@ module OkComputer
       end
 
       context "with greater_than_priority == true" do
-        subject { DelayedJobBackedUpCheck.new priority, threshold , :greater_than_priority =>  true }
+        subject { DelayedJobBackedUpCheck.new priority, threshold, :greater_than_priority => true }
         context "when Mongoid defined" do
           before do
             stub_const('Delayed::Backend::Mongoid::Job', Object.new)
@@ -132,6 +132,90 @@ module OkComputer
           it "checks Delayed::Job's count of pending jobs within the given priority" do
             Delayed::Job.should_receive(:where).with("priority >= ?", priority).and_return(Delayed::Job)
             Delayed::Job.should_receive(:where).with(:locked_at => nil, :last_error => nil).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+            subject.size.should eq 456
+          end
+        end
+      end
+
+      context "with include_locked == true" do
+        subject { DelayedJobBackedUpCheck.new priority, threshold, :include_locked => true }
+        context "when Mongoid defined" do
+          before do
+            stub_const('Delayed::Backend::Mongoid::Job', Object.new)
+            stub_const('Delayed::Worker', Object.new).should_receive(:backend).and_return(Delayed::Backend::Mongoid::Job)
+          end
+
+          it "checks Delayed::Job's count of pending jobs within the given priority" do
+            Delayed::Job.should_receive(:lte).with(priority: priority).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:where).with(:last_error => nil).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+            subject.size.should eq 456
+          end
+        end
+
+        context "when Mongoid not defined" do
+          before { hide_const 'Delayed::Backend::Mongoid::Job' }
+
+          it "checks Delayed::Job's count of pending jobs within the given priority" do
+            Delayed::Job.should_receive(:where).with("priority <= ?", priority).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:where).with(:last_error => nil).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+            subject.size.should eq 456
+          end
+        end
+      end
+
+      context "with include_errored == true" do
+        subject { DelayedJobBackedUpCheck.new priority, threshold, :include_errored => true }
+        context "when Mongoid defined" do
+          before do
+            stub_const('Delayed::Backend::Mongoid::Job', Object.new)
+            stub_const('Delayed::Worker', Object.new).should_receive(:backend).and_return(Delayed::Backend::Mongoid::Job)
+          end
+
+          it "checks Delayed::Job's count of pending jobs within the given priority" do
+            Delayed::Job.should_receive(:lte).with(priority: priority).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:where).with(:locked_at => nil).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+            subject.size.should eq 456
+          end
+        end
+
+        context "when Mongoid not defined" do
+          before { hide_const 'Delayed::Backend::Mongoid::Job' }
+
+          it "checks Delayed::Job's count of pending jobs within the given priority" do
+            Delayed::Job.should_receive(:where).with("priority <= ?", priority).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:where).with(:locked_at => nil).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+            subject.size.should eq 456
+          end
+        end
+      end
+
+      context "with queue set" do
+        subject { DelayedJobBackedUpCheck.new priority, threshold, :queue => 'default' }
+        context "when Mongoid defined" do
+          before do
+            stub_const('Delayed::Backend::Mongoid::Job', Object.new)
+            stub_const('Delayed::Worker', Object.new).should_receive(:backend).and_return(Delayed::Backend::Mongoid::Job)
+          end
+
+          it "checks Delayed::Job's count of pending jobs within the given priority" do
+            Delayed::Job.should_receive(:lte).with(priority: priority).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:where).with(:queue => 'default', :last_error => nil, :locked_at => nil).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
+            subject.size.should eq 456
+          end
+        end
+
+        context "when Mongoid not defined" do
+          before { hide_const 'Delayed::Backend::Mongoid::Job' }
+
+          it "checks Delayed::Job's count of pending jobs within the given priority" do
+            Delayed::Job.should_receive(:where).with("priority <= ?", priority).and_return(Delayed::Job)
+            Delayed::Job.should_receive(:where).with(:queue => 'default', :last_error => nil, :locked_at => nil).and_return(Delayed::Job)
             Delayed::Job.should_receive(:count).with(no_args()).and_return(456)
             subject.size.should eq 456
           end

@@ -1,14 +1,21 @@
 module OkComputer
   class DelayedJobBackedUpCheck < SizeThresholdCheck
-    attr_accessor :priority
-    attr_accessor :threshold
-    attr_accessor :greater_than_priority
+    attr_accessor :priority,
+                  :threshold,
+                  :queue,
+                  :include_locked,
+                  :include_errored,
+                  :greater_than_priority
 
     # Public: Initialize a check for backed-up Delayed Job jobs
     #
     # priority - Which priority to check for
-    # threshold - An Integer to compare the jobs count against
-    #   to consider it backed up
+    # threshold - An Integer to compare the jobs count against to consider it backed up
+    # options - Hash of optional parameters
+    #    queue - Used to monitor a specific delayed job queue (default: nil)
+    #    include_locked - If true, will include currently locked jobs in the query (default: false)
+    #    include_errored - If true, will include currently errored jobs in the query (default: false)
+    #    greater_than_priority - If true, will include all jobs with a priority value equal or greater than the set value.
     #
     # Example:
     #   check = new(10, 50)
@@ -18,6 +25,9 @@ module OkComputer
     def initialize(priority, threshold, options = {})
       self.priority = Integer(priority)
       self.threshold = Integer(threshold)
+      self.queue = options[:queue]
+      self.include_locked = !!options[:include_locked]
+      self.include_errored = !!options[:include_errored]
       self.greater_than_priority = !!options[:greater_than_priority]
       self.name = greater_than_priority ? "Delayed Jobs with priority higher than '#{priority}'" : "Delayed Jobs with priority lower than '#{priority}'"
     end
@@ -30,7 +40,11 @@ module OkComputer
         operator = greater_than_priority ? ">=" : "<="
         query = Delayed::Job.where("priority #{operator} ?", priority)
       end
-      query.where(:locked_at => nil, :last_error => nil).count
+      opts = {}
+      opts[:queue] = queue if queue
+      opts[:locked_at] = nil unless include_locked
+      opts[:last_error] = nil unless include_errored
+      query.where(opts).count
     end
   end
 end
