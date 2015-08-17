@@ -19,16 +19,16 @@ module OkComputer
     let(:nodes) { [primary_node, secondary_node, double('secondary')]}
 
     before do
-      Mongoid::Sessions.stub(:with_name).and_return(session)
-      session.stub(:cluster).and_return(cluster)
+      allow(Mongoid::Sessions).to receive(:with_name).and_return(session)
+      allow(session).to receive(:cluster).and_return(cluster)
 
-      cluster.stub(:refresh)
-      cluster.stub(:nodes).and_return(nodes)
-      cluster.stub(:with_primary).and_yield(primary_node)
-      cluster.stub(:with_secondary).and_yield(secondary_node)
+      allow(cluster).to receive(:refresh)
+      allow(cluster).to receive(:nodes).and_return(nodes)
+      allow(cluster).to receive(:with_primary).and_yield(primary_node)
+      allow(cluster).to receive(:with_secondary).and_yield(secondary_node)
 
-      primary_node.stub(:command).and_return(primary_status)
-      secondary_node.stub(:command).and_return(secondary_status)
+      allow(primary_node).to receive(:command).and_return(primary_status)
+      allow(secondary_node).to receive(:command).and_return(secondary_status)
     end
 
     it "is a Check" do
@@ -46,6 +46,11 @@ module OkComputer
         expect(Mongoid::Sessions).to receive(:with_name).with(:other_session).and_return(other_session)
         check = described_class.new(:other_session)
         expect(check.session).to eq(other_session)
+      end
+
+      it "does not set session if not configured" do
+        expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_raise(StandardError)
+        expect(subject.session).to eq(nil)
       end
     end
 
@@ -70,6 +75,15 @@ module OkComputer
 
         it {should_not be_successful }
         it {should have_message "Error: '#{error_message}'" }
+      end
+
+      context "when session not configured" do
+        before do
+          expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_raise(StandardError)
+        end
+
+        it {should_not be_successful }
+        it {should have_message "Error: 'undefined method `cluster' for nil:NilClass'" }
       end
     end
 
