@@ -18,7 +18,7 @@ module OkComputer
 
     describe "#initialize" do
       before do
-        Mongoid.stub(:sessions)
+        allow(Mongoid).to receive(:sessions)
       end
         
       it "uses the default session by default" do
@@ -31,6 +31,11 @@ module OkComputer
         expect(Mongoid::Sessions).to receive(:with_name).with(:other_session).and_return(other_session)
         check = described_class.new(:other_session)
         expect(check.session).to eq(other_session)
+      end
+
+      it "does not set session if not configured" do
+        expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_raise(StandardError)
+        expect(subject.session).to eq(nil)
       end
     end
 
@@ -55,6 +60,16 @@ module OkComputer
         it {should_not be_successful }
         it {should have_message "Error: '#{error_message}'" }
       end
+
+      context "when session not configured" do
+        before do
+          allow(Mongoid).to receive(:sessions)
+          expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_raise(StandardError)
+        end
+
+        it {should_not be_successful }
+        it {should have_message "Error: 'undefined method `database' for Mongoid:Module'" }
+      end
     end
 
     describe "#mongodb_name" do
@@ -69,7 +84,7 @@ module OkComputer
       context "Mongoid 3" do
 
         before do
-          Mongoid.stub(:sessions)
+          allow(Mongoid).to receive(:sessions)
         end
 
         it "returns a mongodb stats hash" do
