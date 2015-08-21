@@ -1,3 +1,4 @@
+#### v1.5.1
 #### v1.5.0
 
 * Added new options to DelayedJobBackedUpCheck: which queue to check, whether to include running jobs in the count, whether to include failed jobs in the count, and a minimum priority of jobs to count.
