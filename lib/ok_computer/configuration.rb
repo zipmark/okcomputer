@@ -45,6 +45,10 @@ module OkComputer
   mattr_accessor :mount_at
   self.mount_at = 'okcomputer'
 
+  # Public: whether to execute checks in parallel.
+  mattr_accessor :check_in_parallel
+  self.check_in_parallel = false
+
   # Public: Option to disable third-party app performance tools (.e.g NewRelic) from counting OkComputer routes towards their total.
   mattr_accessor :analytics_ignore
   self.analytics_ignore = true

@@ -119,6 +119,15 @@ end
 OkComputer::Registry.register "check_for_odds", MyCustomCheck.new
 ```
 
+## Running checks in parallel
+
+By default, OkComputer runs checks in sequence. If you'd like to run them in parallel, you can configure it with:
+
+```ruby
+# config/initializers/okcomputer.rb
+OkComputer.check_in_parallel = true
+```
+
 ## Performing Checks
 
 * Perform a simple up check: http://example.com/okcomputer
@@ -150,4 +159,3 @@ OkComputer.analytics_ignore = false
 5. Create new Pull Request
 
 [fitter-happier]:https://rubygems.org/gems/fitter-happier
-
