@@ -14,13 +14,20 @@ module OkComputer
       end
     end
 
-    context "#run" do
-      it "runs its registered checks" do
-        foocheck.should_receive(:run)
-        barcheck.should_receive(:run)
-        subject.run
+    [false, true].each do |check_in_parallel|
+      before { OkComputer.check_in_parallel = check_in_parallel }
+
+      context "with check_in_parallel set to #{check_in_parallel}" do
+        context "#run" do
+          it "runs its registered checks" do
+            foocheck.should_receive(:run)
+            barcheck.should_receive(:run)
+            subject.run
+          end
+        end
       end
     end
+
     context "#checks" do
       it "returns the checks from its registry" do
         subject.checks.should == registry.values

@@ -1,3 +1,7 @@
+#### v1.6.0
+
+* Added a configuration option to run checks in parallel.
+
 #### v1.5.1
 #### v1.5.0
 

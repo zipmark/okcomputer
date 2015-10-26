@@ -12,7 +12,7 @@ module OkComputer
 
     # Public: Run the registry's checks
     def run
-      checks.each(&:run)
+      OkComputer.check_in_parallel ? check_in_parallel : check_in_sequence
     end
 
     # Public: The list of checks in the collection
@@ -47,6 +47,19 @@ module OkComputer
     # Returns a Boolean
     def success?
       checks.all?(&:success?)
+    end
+
+    private
+
+    def check_in_sequence
+      checks.each(&:run)
+    end
+
+    def check_in_parallel
+      threads = checks.map do |check|
+        Thread.new { check.run }
+      end
+      threads.each(&:join)
     end
   end
 end
