@@ -1,3 +1,7 @@
+#### v1.6.1
+
+  * Add built in redis health check
+
 #### v1.6.0
 
 * Added a configuration option to run checks in parallel.
