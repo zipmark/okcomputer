@@ -1,3 +1,7 @@
+#### v1.6.2
+
+  * Fix exception when requiring `okcomputer` without the use of Bundler.
+
 #### v1.6.1
 
   * Add built in redis health check
