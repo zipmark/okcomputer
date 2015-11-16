@@ -1,4 +1,4 @@
-require "ok_computer/configuration"
+require "ok_computer/configuration" # must come before engine
 require "ok_computer/engine"
 require "ok_computer/check"
 require "ok_computer/check_collection"
