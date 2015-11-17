@@ -1,3 +1,8 @@
+begin
+  require 'sidekiq/api'
+rescue LoadError
+end
+
 module OkComputer
   class SidekiqLatencyCheck < SizeThresholdCheck
     attr_accessor :queue
