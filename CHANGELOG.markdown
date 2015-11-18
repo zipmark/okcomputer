@@ -1,3 +1,6 @@
+#### v1.6.3
+  * Added support for Sidekiq 4
+
 #### v1.6.2
 
   * Fix exception when requiring `okcomputer` without the use of Bundler.
