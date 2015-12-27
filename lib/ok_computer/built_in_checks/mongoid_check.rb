@@ -29,7 +29,9 @@ module OkComputer
     # Returns a hash with the status of the db
     def mongodb_stats
       if session
-        session.command(dbStats: 1) # Mongoid 3+
+        stats = session.command(dbStats: 1) # Mongoid 3+
+        stats = stats.first unless stats.is_a? Hash # Mongoid 5
+        stats
       else
         Mongoid.database.stats # Mongoid 2
       end
