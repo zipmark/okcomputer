@@ -1,3 +1,4 @@
+#### v1.6.4
 #### v1.6.3
   * Added support for Sidekiq 4
 
