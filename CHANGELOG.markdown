@@ -1,14 +1,14 @@
 #### v1.6.4
 #### v1.6.3
-  * Added support for Sidekiq 4
+* Added support for Sidekiq 4
 
 #### v1.6.2
 
-  * Fix exception when requiring `okcomputer` without the use of Bundler.
+* Fix exception when requiring `okcomputer` without the use of Bundler.
 
 #### v1.6.1
 
-  * Add built in redis health check
+* Add built in redis health check
 
 #### v1.6.0
 
