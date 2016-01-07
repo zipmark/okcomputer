@@ -1,4 +1,7 @@
 #### v1.6.4
+
+* Added support for Mongoid 5
+
 #### v1.6.3
 * Added support for Sidekiq 4
 
