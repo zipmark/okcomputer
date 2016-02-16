@@ -1,3 +1,7 @@
+#### v1.6.5
+
+* Add `okcomputer_check` and `okcomputer_checks` names to existing routes. Now you can `link_to okcomputer_checks` or otherwise refer to them programmatically.
+
 #### v1.6.4
 
 * Added support for Mongoid 5
