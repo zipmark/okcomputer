@@ -1,3 +1,7 @@
+#### v1.6.6
+
+* Reduce Rails dependencies outside of the engine. The upshot is OK Computer is now easier to port to non-Rails apps.
+
 #### v1.6.5
 
 * Add `okcomputer_check` and `okcomputer_checks` names to existing routes. Now you can `link_to okcomputer_checks` or otherwise refer to them programmatically.
