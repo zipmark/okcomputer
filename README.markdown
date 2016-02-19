@@ -15,6 +15,13 @@ OK Computer][blog].
 
 [blog]:http://pulse.sportngin.com/news_article/show/267646?referrer_id=543230
 
+#### Not using Rails?
+
+If you use [Grape] instead of Rails, check out [okcomputer-grape].
+
+[Grape]:https://github.com/ruby-grape/grape
+[okcomputer-grape]:https://github.com/bellycard/okcomputer-grape
+
 ## Installation
 
 Add this line to your application's Gemfile:
