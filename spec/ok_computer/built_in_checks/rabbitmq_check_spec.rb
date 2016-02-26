@@ -3,8 +3,6 @@ require "rails_helper"
 module OkComputer
   describe RabbitmqCheck do
     before do
-      ENV['CLOUDAMQP_URL'] = 'amqp://local'
-
       bunny_stub = Class.new
       bunny_stub.class_eval { def initialize(url); end; def start; end }
       stub_const 'Bunny', bunny_stub
@@ -13,10 +11,53 @@ module OkComputer
       stub_const 'Bunny::TCPConnectionFailedForAllHosts', error_stub
     end
 
-    subject { described_class.new }
+    subject { described_class.new('amqp://local') }
 
     it "is a subclass of Check" do
       subject.should be_a Check
+    end
+
+    describe '#new' do
+      it 'uses the passed in url when supplied' do
+        check = described_class.new('amqp://foo')
+        expect(check.url).to eq('amqp://foo')
+      end
+
+      it 'uses CLOUDAMQP_URL when supplied' do
+        ENV['CLOUDAMQP_URL'] = 'amqp://cloudamqp'
+        check = described_class.new
+        expect(check.url).to eq('amqp://cloudamqp')
+        ENV['CLOUDAMQP_URL'] = nil
+      end
+
+      it 'uses AMQP_HOST when supplied' do
+        ENV['AMQP_HOST'] = 'amqp://amqphost'
+        check = described_class.new
+        expect(check.url).to eq('amqp://amqphost')
+        ENV['AMQP_HOST'] = nil
+      end
+
+      it 'uses passed in url first when all config options are supplied' do
+        ENV['CLOUDAMQP_URL']  = 'amqp://cloudamqp'
+        ENV['AMQP_HOST']      = 'amqp://amqphost'
+
+        check = described_class.new('amqp://foo')
+        expect(check.url).to eq('amqp://foo')
+
+        ENV['CLOUDAMQP_URL']  = nil
+        ENV['AMQP_HOST']      = nil
+      end
+
+      it 'uses CLOUDAMQP_URL when both ENV options are supplied' do
+        ENV['CLOUDAMQP_URL']  = 'amqp://cloudamqp'
+        ENV['AMQP_HOST']      = 'amqp://amqphost'
+
+        check = described_class.new
+        expect(check.url).to eq('amqp://cloudamqp')
+
+        ENV['CLOUDAMQP_URL']  = nil
+        ENV['AMQP_HOST']      = nil
+      end
     end
 
     describe "#check" do
