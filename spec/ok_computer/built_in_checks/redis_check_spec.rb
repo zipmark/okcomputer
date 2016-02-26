@@ -19,7 +19,7 @@ module OkComputer
 
     describe "#new(redis_config)" do
       it "requires a hash with redis configuration" do
-        expect { described_class.new }.to raise_error
+        expect { described_class.new }.to raise_error(ArgumentError)
       end
 
       it "stores the configuration" do

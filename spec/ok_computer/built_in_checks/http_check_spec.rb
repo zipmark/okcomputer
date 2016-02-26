@@ -12,7 +12,7 @@ module OkComputer
 
     describe "#new(url, request_timeout)" do
       it "requires url" do
-        expect { described_class.new }.to raise_error
+        expect { described_class.new }.to raise_error(ArgumentError)
       end
 
       it "remembers url" do

@@ -12,7 +12,7 @@ module OkComputer
 
     describe "#new(host, request_timeout)" do
       it "requires host" do
-        expect { described_class.new }.to raise_error
+        expect { described_class.new }.to raise_error(ArgumentError)
       end
 
       it "saves host as a URI and sets url to cluster health API url" do
@@ -43,7 +43,7 @@ module OkComputer
               status: "yellow",
               number_of_nodes: 1
             }
-          end     
+          end
 
           it { should be_successful }
           it { should have_message "Connected to elasticseach cluster 'elasticsearch', 1 nodes, status 'yellow'" }
@@ -56,7 +56,7 @@ module OkComputer
               status: "red",
               number_of_nodes: 1
             }
-          end     
+          end
 
           it { should_not be_successful }
           it { should have_message "Connected to elasticseach cluster 'elasticsearch', 1 nodes, status 'red'" }
