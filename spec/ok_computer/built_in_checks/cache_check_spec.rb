@@ -63,7 +63,7 @@ module OkComputer
 
       context "when cannot connect to cache" do
 
-        it { expect{ subject.stats }.to raise_error }
+        it { expect{ subject.stats }.to raise_error(CacheCheck::ConnectionFailed) }
       end
     end
   end

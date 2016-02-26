@@ -143,7 +143,6 @@ describe OkComputer::OkComputerController do
       response.code.should == "404"
     end
 
-    it "returns a failure status code if given a status check not already registered"
   end
 
   describe 'newrelic_ignore' do

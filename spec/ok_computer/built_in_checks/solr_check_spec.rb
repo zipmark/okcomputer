@@ -12,7 +12,7 @@ module OkComputer
 
     describe "#new(host, request_timeout)" do
       it "requires host" do
-        expect { described_class.new }.to raise_error
+        expect { described_class.new }.to raise_error(ArgumentError)
       end
 
       it "saves host as a URI and sets url to the ping handler" do
