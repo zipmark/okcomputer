@@ -1,3 +1,7 @@
+#### v1.7.0
+
+* Add RabbitmqCheck check to test your RabbitMQ connection.
+
 #### v1.6.6
 
 * Reduce Rails dependencies outside of the engine. The upshot is OK Computer is now easier to port to non-Rails apps.
