@@ -90,5 +90,35 @@ module OkComputer
         end
       end
     end
+
+    describe '#parse_url' do
+      subject { described_class.new('') }
+
+      it 'assigns the url attribute as expected' do
+        subject.parse_url('http://foo.com')
+        expect(subject.url.to_s).to eq('http://foo.com')
+      end
+
+      it 'extracts and assigns the username and password' do
+        subject.parse_url('http://user:pass@foo.com')
+        expect(subject.url.to_s).to eq('http://foo.com')
+        expect(subject.basic_auth_username).to eq('user')
+        expect(subject.basic_auth_password).to eq('pass')
+      end
+
+      it 'sets userinfo to nil when parsing a url with user/pass' do
+        subject.parse_url('http://user:pass@foo.com')
+        expect(subject.url.userinfo).to be nil
+      end
+    end
+
+    describe '#basic_auth_options' do
+      subject { described_class.new('') }
+
+      it 'returns an array with the parsed username and password from the url' do
+        subject.parse_url('http://user:pass@foo.com')
+        expect(subject.basic_auth_options).to eq(['user','pass'])
+      end
+    end
   end
 end

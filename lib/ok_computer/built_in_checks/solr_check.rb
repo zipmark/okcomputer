@@ -10,8 +10,7 @@ module OkComputer
     # request_timeout - How long to wait to connect before timing out. Defaults to 5 seconds.
     def initialize(host, request_timeout = 5)
       @host = URI(host)
-      ping_url ||= URI("#{host}/admin/ping")
-      super(ping_url, request_timeout)
+      super("#{host}/admin/ping", request_timeout)
     end
 
     # Public: Return the status of Solr

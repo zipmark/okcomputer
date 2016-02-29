@@ -9,15 +9,14 @@ module OkComputer
   class HttpCheck < Check
     ConnectionFailed = Class.new(StandardError)
 
-    attr_accessor :url
-    attr_accessor :request_timeout
+    attr_accessor :url, :request_timeout, :basic_auth_username, :basic_auth_password
 
     # Public: Initialize a new HTTP check.
     #
     # url - The URL to check
     # request_timeout - How long to wait to connect before timing out. Defaults to 5 seconds.
     def initialize(url, request_timeout = 5)
-      self.url = URI(url)
+      parse_url(url)
       self.request_timeout = request_timeout.to_i
     end
 
@@ -36,10 +35,25 @@ module OkComputer
     # Otherwise raises a HttpCheck::ConnectionFailed error.
     def perform_request
       timeout(request_timeout) do
-        url.read(read_timeout: request_timeout)
+        url.read(
+          read_timeout: request_timeout,
+          http_basic_authentication: basic_auth_options
+        )
       end
     rescue => e
       raise ConnectionFailed, e
+    end
+
+    def parse_url(url)
+      self.url = URI.parse(url)
+      if self.url.userinfo
+        self.basic_auth_username, self.basic_auth_password = self.url.userinfo.split(':')
+        self.url.userinfo = ''
+      end
+    end
+
+    def basic_auth_options
+      [self.basic_auth_username, self.basic_auth_password]
     end
   end
 end

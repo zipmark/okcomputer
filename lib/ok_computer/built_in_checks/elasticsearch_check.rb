@@ -1,7 +1,7 @@
 module OkComputer
   # This class performs a health check on an elasticsearch cluster using the
   # {cluster health API}[http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/cluster-health.html].
-  # 
+  #
   # It reports the cluster's name, number of nodes, and status (green, yellow,
   # or red). A cluster status of red is reported as a failure, since this means
   # one or more primary shards are unavailable. Note that the app may still
@@ -15,8 +15,7 @@ module OkComputer
     # request_timeout - How long to wait to connect before timing out. Defaults to 5 seconds.
     def initialize(host, request_timeout = 5)
       @host = URI(host)
-      health_url = URI("#{host}/_cluster/health")
-      super(health_url, request_timeout)
+      super("#{host}/_cluster/health", request_timeout)
     end
 
     # Public: Return the status of the elasticsearch cluster
