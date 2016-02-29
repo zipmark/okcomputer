@@ -1,5 +1,4 @@
 #### v1.7.1
-#### v1.7.1
 
 * Add Support for basic auth on http checks
 
