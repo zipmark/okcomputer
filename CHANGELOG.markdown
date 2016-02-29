@@ -1,3 +1,8 @@
+#### v1.7.1
+#### v1.7.1
+
+* Add Support for basic auth on http checks
+
 #### v1.7.0
 
 * Add RabbitmqCheck check to test your RabbitMQ connection.
