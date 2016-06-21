@@ -89,6 +89,34 @@ module OkComputer
           expect { subject.perform_request }.to raise_error(HttpCheck::ConnectionFailed)
         end
       end
+
+      context "when basic authentication are set" do
+        before do
+          subject.parse_url('http://user:pass@foo.com')
+          subject.url.stub(:read)
+        end
+
+        it "sets the Authorization header" do
+          expect(subject.url).to receive(:read).with(
+            read_timeout: 5,
+            http_basic_authentication: ['user', 'pass']
+          )
+
+          subject.perform_request
+        end
+      end
+
+      context "when basic authentication credentials are not set" do
+        before do
+          subject.url.stub(:read)
+        end
+
+        it "does not set the Authorization header" do
+          expect(subject.url).to receive(:read).with(read_timeout: 5)
+
+          subject.perform_request
+        end
+      end
     end
 
     describe '#parse_url' do

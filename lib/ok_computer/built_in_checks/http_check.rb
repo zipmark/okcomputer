@@ -35,10 +35,13 @@ module OkComputer
     # Otherwise raises a HttpCheck::ConnectionFailed error.
     def perform_request
       timeout(request_timeout) do
-        url.read(
-          read_timeout: request_timeout,
-          http_basic_authentication: basic_auth_options
-        )
+        options = { read_timeout: request_timeout }
+
+        if basic_auth_options.any?
+          options[:http_basic_authentication] = basic_auth_options
+        end
+
+        url.read(options)
       end
     rescue => e
       raise ConnectionFailed, e
