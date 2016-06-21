@@ -1,3 +1,7 @@
+#### v1.7.2
+
+* Only apply basic auth headers for HTTP checks when basic auth credentials are configured.
+
 #### v1.7.1
 
 * Add Support for basic auth on http checks
