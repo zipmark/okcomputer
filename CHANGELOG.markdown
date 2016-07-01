@@ -1,7 +1,6 @@
 #### v1.7.3
-* Adds support for Neo4j
 
-  > Unknown User: Coveralls, Andy Fleener: https://github.com/sportngin/okcomputer/pull/93
+* Adds support for Neo4j
 
 #### v1.7.2
 
