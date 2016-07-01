@@ -1,3 +1,8 @@
+#### v1.7.3
+* Adds support for Neo4j
+
+  > Unknown User: Coveralls, Andy Fleener: https://github.com/sportngin/okcomputer/pull/93
+
 #### v1.7.2
 
 * Only apply basic auth headers for HTTP checks when basic auth credentials are configured.
