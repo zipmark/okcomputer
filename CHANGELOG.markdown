@@ -1,3 +1,9 @@
+#### v1.8.0
+
+* No longer display name of requested check when no matching check is found. This eliminates possibility of XSS vulnerability with maliciously crafted requests.
+    * Before: "No check registered with 'CHECK_NAME'"
+    * After: "No matching check"
+
 #### v1.7.3
 
 * Adds support for Neo4j
