@@ -12,7 +12,7 @@ module OkComputer
     def self.fetch(check_name)
       registry.fetch(check_name)
     rescue KeyError
-      raise CheckNotFound, "No check registered with '#{check_name}'"
+      raise CheckNotFound, "No matching check"
     end
 
     # Public: Return an object containing all the registered checks
