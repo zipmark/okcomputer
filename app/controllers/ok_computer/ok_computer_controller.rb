@@ -2,7 +2,11 @@ module OkComputer
   class OkComputerController < ActionController::Base
     layout nil
 
-    before_filter :authenticate
+    if Rails::VERSION::MAJOR < 5
+      before_filter :authenticate
+    else
+      before_action :authenticate
+    end
 
     if OkComputer.analytics_ignore && defined?(NewRelic::Agent::Instrumentation::ControllerInstrumentation)
       include NewRelic::Agent::Instrumentation::ControllerInstrumentation

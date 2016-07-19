@@ -1,12 +1,31 @@
 require 'rails_helper'
 
 describe OkComputer::OkComputerController do
+  module PositionalTestCaseAPI
+    def get(*args, **kwargs)
+      if kwargs.include?(:params)
+        super(*args, kwargs[:params])
+      else
+        super
+      end
+    end
+  end
+
+  # Confused? See https://github.com/rails/rails/issues/23643
+  # TLDR: This override unwraps the 'params' kwarg in these Rails 5 style specs
+  # to call the old TestCase API if that's what's available (which has positional arguments)
+  prepend PositionalTestCaseAPI if Rails::VERSION::MAJOR < 5
+
 
   routes { OkComputer::Engine.routes }
 
   before do
     # not testing authentication here
-    controller.class.skip_before_filter :authenticate
+    if Rails::VERSION::MAJOR < 5
+      controller.class.skip_before_filter :authenticate
+    else
+      controller.class.skip_before_action :authenticate, raise: false
+    end
   end
 
   describe "GET 'index'" do
