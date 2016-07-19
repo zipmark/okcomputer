@@ -105,59 +105,59 @@ describe OkComputer::OkComputerController do
       end
 
       it "performs the given check and returns text when format: text" do
-        get :show, check: check_type, format: :text
+        get :show, params: { check: check_type, format: :text }
         response.body.should == check.to_text
       end
 
       it "performs the given check and returns text when format: html" do
-        get :show, check: check_type, format: :html
+        get :show, params: { check: check_type, format: :html }
         response.body.should == check.to_text
       end
 
       it "performs the given check and returns text with accept text/html" do
         request.accept = "text/html"
-        get :show, check: check_type
+        get :show, params: { check: check_type }
         response.body.should == check.to_text
       end
 
       it "performs the given check and returns text with accept text/plain" do
         request.accept = "text/plain"
-        get :show, check: check_type
+        get :show, params: { check: check_type }
         response.body.should == check.to_text
       end
 
       it "performs the given check and returns JSON" do
-        get :show, check: check_type, format: :json
+        get :show, params: { check: check_type, format: :json }
         response.body.should == check.to_json
       end
 
       it "performs the given check and returns JSON with accept application/json" do
         request.accept = "application/json"
-        get :show, check: check_type
+        get :show, params: { check: check_type }
         response.body.should == check.to_json
       end
 
       it "returns a success status code if the check passes" do
         check.stub(:success?) { true }
-        get :show, check: check_type, format: :text
+        get :show, params: { check: check_type, format: :text }
         response.should be_success
       end
 
       it "returns a failure status code if the check fails" do
         check.stub(:success?) { false }
-        get :show, check: check_type, format: :text
+        get :show, params: { check: check_type, format: :text }
         response.should_not be_success
       end
     end
 
     it "returns a 404 if the check does not exist" do
-      get :show, check: "non-existant", format: :text
+      get :show, params: { check: "non-existant", format: :text }
       response.body.should == "No matching check"
       response.code.should == "404"
     end
 
     it "returns a JSON 404 if the check does not exist" do
-      get :show, check: "non-existant", format: :json
+      get :show, params: { check: "non-existant", format: :json }
       response.body.should == { error: "No matching check" }.to_json
       response.code.should == "404"
     end
