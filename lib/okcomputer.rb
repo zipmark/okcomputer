@@ -3,6 +3,7 @@ require "ok_computer/engine" if defined?(Rails)
 require "ok_computer/check"
 require "ok_computer/check_collection"
 require "ok_computer/registry"
+require "ok_computer/legacy_rails_controller_support"
 
 # and the built-in checks
 require "ok_computer/built_in_checks/size_threshold_check"
