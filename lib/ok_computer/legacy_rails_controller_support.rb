@@ -10,10 +10,9 @@ module OkComputer
     end
 
     # Support 'render plain' for Rails 3
-    def render(*args, &block)
-      args = args[0] # Always an options hash
-      args[:text] = args.delete(:plain) if args.include?(:plain)
-      super(args, block)
+    def render(**options, &block)
+      options[:text] = options.delete(:plain) if options.include?(:plain)
+      super
     end
   end
 end
