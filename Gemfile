@@ -8,7 +8,7 @@ when /4.1/
   gem "rails", "~> 4.1.0"
 when /4.2/
   gem "rails", "~> 4.2.0"
-else
+when /5.0/
   gem "rails", "~> 5.0.0"
 end
 
