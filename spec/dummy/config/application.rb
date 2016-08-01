@@ -15,7 +15,6 @@ module Dummy
     config.secret_key_base = 'fitterhappiermoreproductive'
     config.session_store :cookie_store, key: '_dummy_session'
     config.cache_classes = true
-    config.static_cache_control = "public, max-age=3600"
     config.consider_all_requests_local       = true
     config.action_controller.perform_caching = false
     config.action_dispatch.show_exceptions = false

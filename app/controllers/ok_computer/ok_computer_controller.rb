@@ -1,8 +1,10 @@
 module OkComputer
   class OkComputerController < ActionController::Base
+    include LegacyRailsControllerSupport if Rails::VERSION::MAJOR < 5
+
     layout nil
 
-    before_filter :authenticate
+    before_action :authenticate
 
     if OkComputer.analytics_ignore && defined?(NewRelic::Agent::Instrumentation::ControllerInstrumentation)
       include NewRelic::Agent::Instrumentation::ControllerInstrumentation
@@ -11,7 +13,7 @@ module OkComputer
 
     rescue_from OkComputer::Registry::CheckNotFound do |e|
       respond_to do |f|
-        f.any(:text, :html) { render text: e.message, status: :not_found }
+        f.any(:text, :html) { render plain: e.message, status: :not_found }
         f.json { render json: { error: e.message }, status: :not_found }
       end
     end
@@ -34,7 +36,7 @@ module OkComputer
 
     def respond(data, status)
       respond_to do |format|
-         format.any(:text, :html) { render text: data, status: status }
+         format.any(:text, :html) { render plain: data, status: status }
          format.json { render json: data, status: status }
       end
     end
