@@ -4,7 +4,9 @@ $:.push File.expand_path("../lib", __FILE__)
 require "ok_computer/version"
 
 authors = {
-  "Patrick Byrne" => "patrick.byrne@tstmedia.com",
+  "Patrick Byrne" => "code@patrickbyrne.net",
+  "Andy Fleener"  => "anfleene@gmail.com",
+  "Chris Arcand"  => "chris@chrisarcand.com"
 }
 
 # Describe your gem and declare its dependencies:
