@@ -1,3 +1,11 @@
+#### v1.9.0
+
+* Added support for Rails 5!
+* Updated CI build matrix (and consequently, added/dropped official support of Ruby/Rails versions)
+    * Dropped support for Rails 4.0, Ruby 2.0 (EOL)
+    * Added Rails 5.0 and Ruby 2.2, 2.3
+    * Current supported versions are now Rails 5.0, 4.2, 4.1, 3.2, and Ruby 2.1, 2.2, 2.3
+
 #### v1.8.0
 
 * No longer display name of requested check when no matching check is found. This eliminates possibility of XSS vulnerability with maliciously crafted requests.
