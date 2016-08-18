@@ -1,3 +1,7 @@
+#### v1.9.1
+
+* Allow CacheCheck to work with Rails cache stores which don't have a `#stats` method, like the filesystem cache.
+
 #### v1.9.0
 
 * Added support for Rails 5!
