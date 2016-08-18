@@ -62,8 +62,17 @@ module OkComputer
       end
 
       context "when cannot connect to cache" do
+        before do
+          Rails.stub_chain(:cache, :stats){ raise 'broken' }
+        end
 
         it { expect{ subject.stats }.to raise_error(CacheCheck::ConnectionFailed) }
+      end
+
+      context "when using a cache without stats" do
+        it "should return an empty string" do
+          subject.stats.should eq ""
+        end
       end
     end
   end

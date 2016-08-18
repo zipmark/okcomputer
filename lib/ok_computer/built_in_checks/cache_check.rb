@@ -18,6 +18,8 @@ module OkComputer
 
     # Public: Outputs stats string for cache
     def stats
+      return "" unless Rails.cache.respond_to? :stats
+
       stats    = Rails.cache.stats
       values     = stats.select{|k,v| k =~ Regexp.new(host) }.values[0]
       mem_used = to_megabytes values['bytes']
