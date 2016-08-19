@@ -40,6 +40,13 @@ module OkComputer
     username && password
   end
 
+  # Public: Mark listed checks as optional
+  def self.make_optional(checks)
+    checks.each do |check|
+      OkComputer::Registry.register check, OkComputer::OptionalCheck.new(OkComputer::Registry.fetch(check))
+    end
+  end
+
   class << self
     # Public: The route to automatically mount the OkComputer engine. Setting to false
     # prevents OkComputer from automatically mounting itself.

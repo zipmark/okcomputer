@@ -126,6 +126,20 @@ end
 OkComputer::Registry.register "check_for_odds", MyCustomCheck.new
 ```
 
+### Registering Optional Checks
+
+Register an optional check like so:
+
+```ruby
+# ...
+OkComputer::Registry.register "some_optional_check", OkComputer::ResqueBackedUpCheck.new("critical", 100)
+# ...
+
+OkComputer.make_optional %w(some_optional_check another_optional_check)
+```
+
+This check will run and report its status, but will not affect the HTTP status code returned.
+
 ### Customizing plain-text output
 
 The plain-text output flows through Rails' internationalization framework.
