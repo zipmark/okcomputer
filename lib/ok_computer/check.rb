@@ -1,3 +1,5 @@
+require "benchmark"
+
 module OkComputer
   class Check
     # to be set by Registry upon registration
@@ -6,11 +8,15 @@ module OkComputer
     attr_accessor :failure_occurred
     # nil by default, set by #check to control the output
     attr_accessor :message
+    # Float::NAN by default, set by #run to the elapsed time to run #check
+    attr_accessor :time
 
     # Public: Run the check
     def run
       clear
-      check
+      with_benchmarking do
+        check
+      end
     end
 
     # Private: Perform the appropriate check
@@ -27,7 +33,7 @@ module OkComputer
     # Returns a String
     def to_text
       passfail = success? ? "passed" : "failed"
-      I18n.t("okcomputer.check.#{passfail}", registrant_name: registrant_name, message: message)
+      I18n.t("okcomputer.check.#{passfail}", registrant_name: registrant_name, message: message, time: "#{time ? sprintf('%0.000f', time) : '?'}s")
     end
 
     # Public: The JSON output of performing the check
@@ -36,7 +42,7 @@ module OkComputer
     def to_json(*args)
       # NOTE swallowing the arguments that Rails passes by default since we don't care. This may prove to be a bad idea
       # Rails passes stuff like this: {:prefixes=>["ok_computer", "application"], :template=>"show", :layout=>#<Proc>}]
-      {registrant_name => {:message => message, :success => success?}}.to_json
+      {registrant_name => {:message => message, :success => success?, :time => time}}.to_json
     end
 
     # Public: Whether the check passed
@@ -62,6 +68,14 @@ module OkComputer
     def clear
       self.failure_occurred = false
       self.message = nil
+      self.time = Float::NAN
+    end
+
+    # Private: Benchmark the time it takes to run the block
+    def with_benchmarking
+      self.time = Benchmark.realtime do
+        yield
+      end
     end
 
     CheckNotDefined = Class.new(StandardError)
