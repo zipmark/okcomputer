@@ -1,3 +1,7 @@
+#### v1.10.0
+
+* Allow customizing the plain-text output through Rails' internaltionalization. See README for details.
+
 #### v1.9.1
 
 * Allow CacheCheck to work with Rails cache stores which don't have a `#stats` method, like the filesystem cache.
