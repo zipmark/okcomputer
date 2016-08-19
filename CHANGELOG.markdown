@@ -1,3 +1,8 @@
+#### v1.11.0
+
+* Adds the ability to specify particular checks are optional. They will still display as failed if they fail, but the HTTP response will still be successful.
+* Adds the execution time of each check to the response (in seconds).
+
 #### v1.10.0
 
 * Allow customizing the plain-text output through Rails' internaltionalization. See README for details.
