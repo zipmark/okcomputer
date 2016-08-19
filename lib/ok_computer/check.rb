@@ -26,8 +26,8 @@ module OkComputer
     #
     # Returns a String
     def to_text
-      passfail = success? ? "PASSED" : "FAILED"
-      "#{registrant_name}: #{passfail} #{message}"
+      passfail = success? ? "passed" : "failed"
+      I18n.t("okcomputer.check.#{passfail}", registrant_name: registrant_name, message: message)
     end
 
     # Public: The JSON output of performing the check
