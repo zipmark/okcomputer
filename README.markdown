@@ -126,6 +126,15 @@ end
 OkComputer::Registry.register "check_for_odds", MyCustomCheck.new
 ```
 
+### Customizing plain-text output
+
+The plain-text output flows through Rails' internationalization framework.
+Adjust the output as necessary by defining `okcomputer.check.passed` and
+`okcomputer.check.failed` keys in your setup. The default values are available
+[in `okcomputer.en.yml`][i18n].
+
+[i18n]:https://github.com/sportngin/okcomputer/blob/eb0be05cc1527e083edd63cfbb0a071f7892c822/config/locales/okcomputer.en.yml#L1-L5
+
 ## Running checks in parallel
 
 By default, OkComputer runs checks in sequence. If you'd like to run them in parallel, you can configure it with:
