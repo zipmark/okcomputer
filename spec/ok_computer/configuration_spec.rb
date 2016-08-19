@@ -110,4 +110,23 @@ describe OkComputer do
       OkComputer.respond_to?('analytics_ignore=').should be_truthy
     end
   end
+
+  context '#make_optional' do
+    before do
+      OkComputer::Registry.register "some_required_check", OkComputer::RubyVersionCheck.new
+      OkComputer::Registry.register "some_optional_check", OkComputer::RubyVersionCheck.new
+    end
+
+    around(:each) do |example|
+      existing = OkComputer::Registry.instance_variable_get(:@registry)
+      example.run
+      OkComputer::Registry.instance_variable_set(:@registry, existing)
+    end
+
+    it "marks listed checks as optional" do
+      OkComputer.make_optional %w(some_optional_check)
+      OkComputer::Registry.fetch("some_required_check").should_not be_a_kind_of OkComputer::OptionalCheck
+      OkComputer::Registry.fetch("some_optional_check").should be_a_kind_of OkComputer::OptionalCheck
+    end
+  end
 end
