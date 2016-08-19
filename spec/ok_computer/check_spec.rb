@@ -20,6 +20,13 @@ module OkComputer
         subject.should_receive(:check)
         subject.run
       end
+
+      it "records the execution time for the check" do
+        subject.should_receive(:clear)
+        subject.should_receive(:check)
+        subject.run
+        subject.time.should be >= 0
+      end
     end
 
     context "#clear" do
@@ -32,6 +39,7 @@ module OkComputer
         subject.clear
         subject.failure_occurred.should_not be_truthy
         subject.message.should be_nil
+        subject.time.should be_nan
       end
     end
 
@@ -40,20 +48,25 @@ module OkComputer
         subject.registrant_name = "foo"
         subject.should_not_receive(:call)
         subject.message = message
+        subject.stub(time: 5)
       end
 
       context "#to_text" do
-        it "combines the registrant_name, success, and message" do
-          subject.to_text.should == "#{subject.registrant_name}: PASSED #{subject.message}"
+        it "combines the registrant_name, success, message, and execution time" do
+          subject.to_text.should == "#{subject.registrant_name}: PASSED #{subject.message} (5s)"
         end
       end
 
       context "#to_json" do
+        before do
+          subject.stub(time: 5)
+        end
         it "returns JSON keyed on registrant_name including the message and whether it succeeded" do
           expected = {
             subject.registrant_name => {
               :message => subject.message,
               :success => subject.success?,
+              :time => 5
             }
           }
           subject.to_json.should == expected.to_json
