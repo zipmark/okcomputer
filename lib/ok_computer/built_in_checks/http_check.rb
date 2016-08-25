@@ -34,7 +34,7 @@ module OkComputer
     # Returns response body if the request was successful.
     # Otherwise raises a HttpCheck::ConnectionFailed error.
     def perform_request
-      timeout(request_timeout) do
+      Timeout.timeout(request_timeout) do
         options = { read_timeout: request_timeout }
 
         if basic_auth_options.any?
