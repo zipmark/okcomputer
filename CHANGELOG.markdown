@@ -1,3 +1,7 @@
+#### v1.11.1
+
+* Fix deprecation warning with useage of Kernal#timeout
+
 #### v1.11.0
 
 * Adds the ability to specify particular checks are optional. They will still display as failed if they fail, but the HTTP response will still be successful.
