@@ -15,6 +15,13 @@ OK Computer][blog].
 
 [blog]:http://pulse.sportngin.com/news_article/show/267646?referrer_id=543230
 
+OkComputer currently supports the following Rails versions:
+
+* 3.2
+* 4.1
+* 4.2
+* 5.0
+
 #### Not using Rails?
 
 If you use [Grape] instead of Rails, check out [okcomputer-grape].
@@ -178,6 +185,16 @@ If you'd like to intentionally count OkComputer requests in your NewRelic analyt
 ```
 # config/initializers/okcomputer.rb
 OkComputer.analytics_ignore = false
+```
+
+## Development
+
+OkComputer supports multiple versions of Rails and you must specify the Rails
+version with which to install/run tests with. This can be set with 
+
+```plaintext
+$ Rbundle install
+
 ```
 
 ## Contributing
