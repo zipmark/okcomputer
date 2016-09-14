@@ -189,24 +189,35 @@ OkComputer.analytics_ignore = false
 
 ## Development
 
-OkComputer supports multiple versions of Rails and you must specify the Rails
-version with which to install/run tests with. This can be set with the environment
-variable `RAILS_VERSION` with one of the supported versions of Rails (MAJOR.MINOR).
-
 ### Setup
 
 ```plaintext
-$ RAILS_VERSION=5.0 bundle install
+$ bundle install
 ```
 
 ### Running the test suite
 
-OkComputer tests are written with [RSpec](http://rspec.info/) and can be executed
-with the `rspec` command line tool directly:
+OkComputer tests are written with [RSpec](http://rspec.info/).
+
+To run the full test suite:
 
 ```plaintext
-$ RAILS_VERSION=5.0 bundle exec rspec
+$ rake spec
 ```
+
+To run the test suite for a specific version of Rails, use the environment
+variable `RAILS_VERSION` with a corresponding supported version (Look for the
+full list at the top of this file):
+
+```plaintext
+$ RAILS_VERSION=3.2 bundle update
+$ RAILS_VERSION=3.2 rake spec
+```
+
+Note the `bundle update` above is required to regenerate your Gemfile.lock with
+Rails 3.2 and its dependencies before you run the tests with that version. You
+will need to reresolve with that command once every time you switch Rails
+versions.
 
 ## Contributing
 
