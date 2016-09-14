@@ -205,19 +205,9 @@ To run the full test suite:
 $ rake spec
 ```
 
-To run the test suite for a specific version of Rails, use the environment
-variable `RAILS_VERSION` with a corresponding supported version (Look for the
-full list at the top of this file):
-
-```plaintext
-$ RAILS_VERSION=3.2 bundle update
-$ RAILS_VERSION=3.2 rake spec
-```
-
-Note the `bundle update` above is required to regenerate your Gemfile.lock with
-Rails 3.2 and its dependencies before you run the tests with that version. You
-will need to reresolve with that command once every time you switch Rails
-versions.
+You may also use the environment variable `RAILS_VERSION` with one
+of the supported versions of Rails (found at the top of this file) to
+bundle and run the tests with a specific version of Rails.
 
 ## Contributing
 

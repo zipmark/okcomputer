@@ -13,12 +13,7 @@ begin
   require "rspec/core/rake_task"
 
   RSpec::Core::RakeTask.new(:spec) do |t|
-    if ENV["CI"]
-      raise "RAILS_VERSION must be specified on CI" unless ENV["RAILS_VERSION"]
-    else
-      ENV['RAILS_VERSION'] ||= "5.0"
-    end
-    puts "Testing with Rails #{ENV['RAILS_VERSION']}..." # See Gemfile
+    puts "Testing with Rails #{ENV["RAILS_VERSION"]}..." if ENV["RAILS_VERSION"]
   end
 
   namespace :spec do
