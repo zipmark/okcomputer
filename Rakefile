@@ -9,13 +9,18 @@ Bundler::GemHelper.install_tasks
 
 task :default => :spec
 
-require "rspec/core/rake_task"
+begin
+  require "rspec/core/rake_task"
 
-RSpec::Core::RakeTask.new(:spec)
-
-namespace :spec do
-  RSpec::Core::RakeTask.new(:docs) do |t|
-    t.rspec_opts = ["--format doc"]
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    puts "Testing with Rails #{ENV["RAILS_VERSION"]}..." if ENV["RAILS_VERSION"]
   end
+
+  namespace :spec do
+    RSpec::Core::RakeTask.new(:docs) do |t|
+      t.rspec_opts = ["--format doc"]
+    end
+  end
+rescue LoadError
 end
 
