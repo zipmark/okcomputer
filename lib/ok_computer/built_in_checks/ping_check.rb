@@ -1,5 +1,3 @@
-require "open-uri"
-
 module OkComputer
   # Performs a health check by making a TCPSocket request to the host and port.
   # A non-error response is considered passing.
