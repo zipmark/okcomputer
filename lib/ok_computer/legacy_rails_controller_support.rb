@@ -10,7 +10,7 @@ module OkComputer
     end
 
     # Support 'render plain' for Rails 3
-    def render(**options, &block)
+    def render(options = {}, &block)
       options[:text] = options.delete(:plain) if options.include?(:plain)
       super
     end
