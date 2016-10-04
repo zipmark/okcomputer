@@ -1,3 +1,7 @@
+#### v1.12.0
+
+* Syntax change for better compatibility with legacy Ruby 1.9 applications.
+
 #### v1.11.1
 
 * Fix deprecation warning with useage of Kernal#timeout
