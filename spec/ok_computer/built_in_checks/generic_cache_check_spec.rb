@@ -19,7 +19,7 @@ module OkComputer
         end
 
         it { should be_successful }
-        it { should have_message "Able to read and write" }
+        it { should have_message "Able to read and write via File store" }
       end
 
       context "with a failed write" do

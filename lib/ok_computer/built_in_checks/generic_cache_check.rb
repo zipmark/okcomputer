@@ -8,7 +8,7 @@ module OkComputer
       test_value.tap do |value|
         Rails.cache.write(cache_key, value)
         if value == Rails.cache.read(cache_key)
-          mark_message "Able to read and write"
+          mark_message "Able to read and write via #{humanize_cache_store_name}"
         else
           mark_failure
           mark_message "Value read from the cache does not match the value written"
@@ -28,6 +28,15 @@ module OkComputer
 
     def cache_key
       "ock-generic-cache-check-#{Socket.gethostname}"
+    end
+
+    def humanize_cache_store_name
+      name = if Rails.application.config.cache_store.is_a? Array
+               Rails.application.config.cache_store[0]
+             else
+               Rails.application.config.cache_store
+             end
+      name.to_s.humanize
     end
   end
 end
