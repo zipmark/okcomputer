@@ -1,3 +1,9 @@
+#### v1.13.0
+
+* Include type of cache in the cache check output.
+* Add new check to determine whether server configuration by ActionMailer is responding.
+* Add new check to determine whether given directory is available on the filesystem.
+
 #### v1.12.0
 
 * Syntax change for better compatibility with legacy Ruby 1.9 applications.
