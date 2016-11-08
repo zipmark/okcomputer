@@ -1,32 +1,54 @@
 module OkComputer
   class CheckCollection
-    attr_accessor :registry
+    attr_accessor :collection, :registrant_name, :display
 
     # Public: Initialize a new CheckCollection
     #
-    # registry - a Hash of checks, with keys being unique names and values
+    # collection - a Hash of checks, with keys being unique names and values
     #   being Check instances
-    def initialize(registry={})
-      self.registry = registry
+    def initialize(display)
+      self.display = display
+      self.collection = {}
     end
 
-    # Public: Run the registry's checks
+    # Public: Run the collection's checks
     def run
       OkComputer.check_in_parallel ? check_in_parallel : check_in_sequence
     end
 
+    # Public: Returns a check or collection if it's in the check collection
+    def fetch(name)
+      collection[name]
+    end
+
     # Public: The list of checks in the collection
     #
-    # Returns an Array of the registry's values
+    # Returns an Array of the collection's values
     def checks
-      registry.values
+      collection.values
+    end
+
+    # Public: Registers a check into the collection
+    #
+    # Returns the check
+    def register(name, check)
+      check.collection = self
+      collection[name] = check
+    end
+
+    # Public: Deregisters a check from the collection
+    #
+    # Returns the check
+    def deregister(name)
+      check = collection.delete(name)
+      check.collection = nil
     end
 
     # Public: The text of each check in the collection
     #
     # Returns a String
     def to_text
-      checks.map(&:to_text).join("\n")
+      "#{display}\n#{checks.map{ |c| "\s\s#{c.to_text}"}.join("\n")}"
     end
 
     # Public: The JSON of each check in the collection

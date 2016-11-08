@@ -4,36 +4,16 @@ module OkComputer
   describe Registry do
     let(:check_object) { double(:checker, :registrant_name= => nil) }
 
-    context ".registry" do
-      let(:some_hash) { double(:hash) }
-
-      around(:each) do |example|
-        existing = Registry.instance_variable_get(:@registry)
-        example.run
-        Registry.instance_variable_set(:@registry, existing)
-      end
-
-      it "keeps the hash of the registered checks keyed on their names" do
-        Registry.instance_variable_set(:@registry, some_hash)
-        Registry.registry.should == some_hash
-      end
-
-      it "defaults to an empty hash if not set" do
-        Registry.instance_variable_set(:@registry, nil)
-        Registry.registry.should == {}
-      end
-    end
-
     context ".all" do
-      let(:registry) { {foo: "bar"} }
-      let(:collection) { double(:check_collection) }
+      let(:collection) { CheckCollection.new('foo collection') }
 
       before do
-        Registry.stub(registry: registry)
+        collection.register('foo', Check.new)
+        collection.register('bar', Check.new)
+        allow(Registry).to receive(:default_collection){ collection }
       end
       it "returns a CheckCollection with all of the registered checks" do
-        CheckCollection.should_receive(:new).with(registry) { collection }
-        Registry.all.should == collection
+        expect(Registry.all).to be_instance_of(CheckCollection)
       end
     end
     context ".fetch(check_name)" do

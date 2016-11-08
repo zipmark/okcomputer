@@ -6,11 +6,18 @@ module OkComputer
     let(:barcheck) { double(:check) }
     let(:registry) { {foo: foocheck, bar: barcheck} }
 
-    subject { CheckCollection.new registry }
+    subject { CheckCollection.new("foo collection name") }
 
-    context ".new registry" do
-      it "remembers the registry of checks given to it" do
-        subject.registry.should == registry
+    before do
+      allow(foocheck).to receive("collection=")
+      allow(barcheck).to receive("collection=")
+      subject.register(:foo, foocheck)
+      subject.register(:bar, barcheck)
+    end
+
+    context ".new" do
+      it "sets the display name of the check collection" do
+        expect(subject.display).to eq("foo collection name")
       end
     end
 
@@ -30,7 +37,31 @@ module OkComputer
 
     context "#checks" do
       it "returns the checks from its registry" do
-        subject.checks.should == registry.values
+        expect(subject.checks).to eq(registry.values)
+      end
+    end
+
+    context "#register" do
+      it "registers a check" do
+        subject.register(:foo, foocheck)
+        expect(subject.checks).to include(foocheck)
+      end
+
+      it "assigns itself to as a check's collection" do
+        expect(foocheck).to receive("collection=").with(subject)
+        subject.register(:foo, foocheck)
+      end
+    end
+
+    context "#deregister" do
+      it "deregisters a check" do
+        subject.deregister(:foo)
+        expect(subject.checks).not_to include(foocheck)
+      end
+      
+      it "removes itself as a check's collection" do
+        expect(foocheck).to receive("collection=").with(nil)
+        subject.deregister(:foo)
       end
     end
 
@@ -38,7 +69,7 @@ module OkComputer
       it "returns the #to_text of each check on a new line" do
         foocheck.stub(:to_text) { "foo" }
         barcheck.stub(:to_text) { "bar" }
-        subject.to_text.should == [foocheck.to_text, barcheck.to_text].join("\n")
+        expect(subject.to_text).to eq("foo collection name\n\s\sfoo\n\s\sbar")
       end
     end
 
