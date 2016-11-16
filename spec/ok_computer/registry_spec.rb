@@ -2,16 +2,18 @@ require "rails_helper"
 
 module OkComputer
   describe Registry do
-    let(:check_object) { double(:checker, :registrant_name= => nil) }
+    let(:check_object) { double(:first_checker, :registrant_name= => nil) }
+    let(:collection) { CheckCollection.new('foo collection') }
+    before do
+      collection.register('foo', Check.new)
+      collection.register('bar', Check.new)
+      allow(Registry).to receive(:default_collection){ collection }
+      allow(check_object).to receive(:collection=).with(collection){ collection }
+      allow(check_object).to receive(:collection=).with(nil){ nil }
+    end
 
     context ".all" do
-      let(:collection) { CheckCollection.new('foo collection') }
 
-      before do
-        collection.register('foo', Check.new)
-        collection.register('bar', Check.new)
-        allow(Registry).to receive(:default_collection){ collection }
-      end
       it "returns a CheckCollection with all of the registered checks" do
         expect(Registry.all).to be_instance_of(CheckCollection)
       end
@@ -32,19 +34,20 @@ module OkComputer
 
     context ".register(check_name, check_object)" do
       let(:check_name) { "foo" }
-      let(:second_check_object) { double(:checker, :registrant_name= => nil) }
+      let(:second_check_object) { double(:second_checker, :registrant_name= => nil) }
 
       before do
         # make sure it isn't there yet
         Registry.deregister(check_name)
+        allow(second_check_object).to receive(:collection=)
       end
 
-      it "assigns the given name to the checker" do
+      it "assigns the given name to the check" do
         check_object.should_receive(:registrant_name=).with(check_name)
         Registry.register(check_name, check_object)
       end
 
-      it "adds the checker to the list of checkers" do
+      it "adds the check to the list of checks" do
         Registry.register(check_name, check_object)
         Registry.registry[check_name].should == check_object
       end

@@ -18,14 +18,32 @@ module OkComputer
 
     # Public: Returns a check or collection if it's in the check collection
     def fetch(name)
-      collection[name]
+      self_and_sub_collections.detect{ |c| c.fetch(name, nil) }
     end
+
+    alias_method :[], :fetch
 
     # Public: The list of checks in the collection
     #
     # Returns an Array of the collection's values
     def checks
       collection.values
+    end
+
+    alias_method :values, :checks
+
+    def check_names
+      collection.keys
+    end
+
+    alias_method :keys, :check_names
+
+    def sub_collections
+      checks.select{ |c| c.is_a?(CheckCollection)}
+    end
+
+    def self_and_sub_collections
+      collection + sub_collections
     end
 
     # Public: Registers a check into the collection
@@ -41,7 +59,7 @@ module OkComputer
     # Returns the check
     def deregister(name)
       check = collection.delete(name)
-      check.collection = nil
+      check.collection = nil if check
     end
 
     # Public: The text of each check in the collection

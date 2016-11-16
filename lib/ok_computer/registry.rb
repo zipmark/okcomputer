@@ -22,6 +22,11 @@ module OkComputer
       default_collection
     end
 
+    # Private: The list of registered checks, keyed by their unique names
+    #
+    # Returns a Hash
+    singleton_class.send(:alias_method, :registry, :all)
+
     # Public: The default collection of checks
     #
     # Returns @default_collection
@@ -42,15 +47,9 @@ module OkComputer
     # Public: Remove the check of the given name being checked
     #
     # check_name - The name of the check to retrieve
-    def self.deregister(check_name)
-      registry.delete(check_name)
-    end
-
-    # Private: The list of registered checks, keyed by their unique names
-    #
-    # Returns a Hash
-    def self.registry
-      @registry ||= {}
+    def self.deregister(check_name, collection_name=nil)
+      collection = collection_name ? default_collection.fetch[collection_name] : default_collection
+      collection.deregister(check_name)
     end
 
     # used when fetching a check that has not been registered

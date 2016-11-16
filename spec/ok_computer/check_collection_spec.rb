@@ -64,7 +64,24 @@ module OkComputer
         subject.deregister(:foo)
       end
     end
+    context "#fetch" do
+      #TODO All of these tests
+      it "finds checks in the current collection" do
 
+      end
+
+      it "finds checks in a sub_collection" do
+
+      end
+
+      it "finds checks in a sub_collection's sub_collection" do
+
+      end
+
+      it "returns nil if the if the check is not in the collection or a sub_collection" do
+
+      end
+    end
     context "#to_text" do
       it "returns the #to_text of each check on a new line" do
         foocheck.stub(:to_text) { "foo" }
