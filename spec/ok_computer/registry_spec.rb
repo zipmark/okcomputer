@@ -49,7 +49,7 @@ module OkComputer
 
       it "adds the check to the list of checks" do
         Registry.register(check_name, check_object)
-        Registry.registry[check_name].should == check_object
+        expect( Registry.registry.fetch(check_name) ).to eq(check_object)
       end
 
       it "overwrites the current check with the given name" do

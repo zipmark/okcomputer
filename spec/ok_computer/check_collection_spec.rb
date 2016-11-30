@@ -81,6 +81,14 @@ module OkComputer
       it "returns nil if the if the check is not in the collection or a sub_collection" do
 
       end
+      it "finds the check in a sub_collection when the sub_collection is not the first sub_collection" do
+        sub_collection_1 = CheckCollection.new("sub1")
+        sub_collection_2 = CheckCollection.new("sub2")
+        subject.register("sub1", sub_collection_1)
+        subject.register("sub2", sub_collection_2)
+        sub_collection_2.register("foo_subcheck", foocheck)
+        expect(subject.fetch("foo_subcheck")).to eq(foocheck)
+      end
     end
     context "#to_text" do
       it "returns the #to_text of each check on a new line" do

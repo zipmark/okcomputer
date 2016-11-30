@@ -10,8 +10,8 @@ module OkComputer
     attr_accessor :message
     # Float::NAN by default, set by #run to the elapsed time to run #check
     attr_accessor :time
-    # The collection that the check is a part of.
-    attr_accessor :collection
+    # The parent collection that the check is a part of.
+    attr_accessor :parent_collection
 
     # Public: Run the check
     def run
