@@ -8,8 +8,8 @@ module OkComputer
       collection.register('foo', Check.new)
       collection.register('bar', Check.new)
       allow(Registry).to receive(:default_collection){ collection }
-      allow(check_object).to receive(:collection=).with(collection){ collection }
-      allow(check_object).to receive(:collection=).with(nil){ nil }
+      allow(check_object).to receive(:parent_collection=).with(collection){ collection }
+      allow(check_object).to receive(:parent_collection=).with(nil){ nil }
     end
 
     context ".all" do
@@ -39,7 +39,7 @@ module OkComputer
       before do
         # make sure it isn't there yet
         Registry.deregister(check_name)
-        allow(second_check_object).to receive(:collection=)
+        allow(second_check_object).to receive(:parent_collection=)
       end
 
       it "assigns the given name to the check" do

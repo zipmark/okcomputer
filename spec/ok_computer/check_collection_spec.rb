@@ -9,8 +9,8 @@ module OkComputer
     subject { CheckCollection.new("foo collection name") }
 
     before do
-      allow(foocheck).to receive("collection=")
-      allow(barcheck).to receive("collection=")
+      allow(foocheck).to receive("parent_collection=")
+      allow(barcheck).to receive("parent_collection=")
       subject.register(:foo, foocheck)
       subject.register(:bar, barcheck)
     end
@@ -48,7 +48,7 @@ module OkComputer
       end
 
       it "assigns itself to as a check's collection" do
-        expect(foocheck).to receive("collection=").with(subject)
+        expect(foocheck).to receive("parent_collection=").with(subject)
         subject.register(:foo, foocheck)
       end
     end
@@ -60,7 +60,7 @@ module OkComputer
       end
       
       it "removes itself as a check's collection" do
-        expect(foocheck).to receive("collection=").with(nil)
+        expect(foocheck).to receive("parent_collection=").with(nil)
         subject.deregister(:foo)
       end
     end
