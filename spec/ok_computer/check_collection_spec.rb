@@ -9,8 +9,6 @@ module OkComputer
     subject { CheckCollection.new("foo collection name") }
 
     before do
-      allow(foocheck).to receive("parent_collection=")
-      allow(barcheck).to receive("parent_collection=")
       subject.register(:foo, foocheck)
       subject.register(:bar, barcheck)
     end
@@ -46,11 +44,6 @@ module OkComputer
         subject.register(:foo, foocheck)
         expect(subject.checks).to include(foocheck)
       end
-
-      it "assigns itself to as a check's collection" do
-        expect(foocheck).to receive("parent_collection=").with(subject)
-        subject.register(:foo, foocheck)
-      end
     end
 
     context "#deregister" do
@@ -58,29 +51,36 @@ module OkComputer
         subject.deregister(:foo)
         expect(subject.checks).not_to include(foocheck)
       end
-      
-      it "removes itself as a check's collection" do
-        expect(foocheck).to receive("parent_collection=").with(nil)
-        subject.deregister(:foo)
-      end
     end
-    context "#fetch" do
-      #TODO All of these tests
-      it "finds checks in the current collection" do
 
+    context "#fetch" do
+      it "finds checks in the current collection" do
+        expect(subject.fetch(:foo)).to eq(foocheck)
       end
 
       it "finds checks in a sub_collection" do
-
+        sub_collection = CheckCollection.new("sub")
+        subject.register("sub", sub_collection)
+        sub_collection.register("foo_subcheck", foocheck)
+        expect(subject.fetch("foo_subcheck")).to eq(foocheck)
       end
 
       it "finds checks in a sub_collection's sub_collection" do
-
+        sub_collection = CheckCollection.new("sub")
+        subject.register("sub", sub_collection)
+        sub_sub_collection = CheckCollection.new("sub_sub")
+        sub_collection.register("sub_sub", sub_sub_collection)
+        sub_sub_collection.register("foo_subcheck", foocheck)
+        expect(subject.fetch("foo_subcheck")).to eq(foocheck)
       end
 
       it "returns nil if the if the check is not in the collection or a sub_collection" do
-
+        sub_collection = CheckCollection.new("sub")
+        subject.register("sub", sub_collection)
+        sub_collection.register("foo_subcheck", foocheck)
+        expect(subject.fetch("bar_subcheck")).to eq(nil)
       end
+
       it "finds the check in a sub_collection when the sub_collection is not the first sub_collection" do
         sub_collection_1 = CheckCollection.new("sub1")
         sub_collection_2 = CheckCollection.new("sub2")
@@ -90,6 +90,7 @@ module OkComputer
         expect(subject.fetch("foo_subcheck")).to eq(foocheck)
       end
     end
+
     context "#to_text" do
       it "returns the #to_text of each check on a new line" do
         foocheck.stub(:to_text) { "foo" }

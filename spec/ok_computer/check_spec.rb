@@ -14,17 +14,6 @@ module OkComputer
       end
     end
 
-    context "#collection" do
-      let(:collection) { CheckCollection.new("Test Collection") }
-      before do
-        subject.parent_collection = collection
-      end
-
-      it "returns the checks parent collection" do
-        expect(subject.parent_collection).to eq(collection)
-      end
-    end
-    
     context "#run" do
       it "clears any past failures and runs the check" do
         subject.should_receive(:clear)

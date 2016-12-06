@@ -8,8 +8,6 @@ module OkComputer
       collection.register('foo', Check.new)
       collection.register('bar', Check.new)
       allow(Registry).to receive(:default_collection){ collection }
-      allow(check_object).to receive(:parent_collection=).with(collection){ collection }
-      allow(check_object).to receive(:parent_collection=).with(nil){ nil }
     end
 
     context ".all" do
@@ -35,11 +33,11 @@ module OkComputer
     context ".register(check_name, check_object)" do
       let(:check_name) { "foo" }
       let(:second_check_object) { double(:second_checker, :registrant_name= => nil) }
+      let(:default_collection) { double }
 
       before do
         # make sure it isn't there yet
         Registry.deregister(check_name)
-        allow(second_check_object).to receive(:parent_collection=)
       end
 
       it "assigns the given name to the check" do
@@ -62,6 +60,23 @@ module OkComputer
         Registry.registry.values.should_not include check_object
         Registry.registry[check_name].should == second_check_object
       end
+      
+      it "uses the default collection if you don't pass a collection name" do
+        allow(Registry).to receive(:default_collection){ default_collection }
+        expect(default_collection).to receive(:register).with(check_name, check_object)
+        Registry.register(check_name, check_object)
+      end
+
+      it "throws a collection not found error if a collection with the given name is not found" do
+        expect { Registry.register(check_name, check_object, "missing collection") }.to raise_error(Registry::CollectionNotFound)
+      end
+
+      it "registers the check to the given check collection" do
+        collection = CheckCollection.new('test collection')
+        Registry.register('test_collection', collection)
+        Registry.register(check_name, check_object, 'test_collection')
+        expect(collection.fetch(check_name)).to eq(check_object)
+      end
     end
 
     context ".deregister(check_name)" do
@@ -74,6 +89,19 @@ module OkComputer
         Registry.deregister(check_name)
         Registry.registry.keys.should_not include check_name
         Registry.registry.values.should_not include check_object
+      end
+
+      it "throws a collection not found error if the given collection is not found" do
+        expect {  Registry.deregister(check_name, 'missing collection') }.to raise_error(Registry::CollectionNotFound)
+      end
+
+      it "deregisters a check from a check collection" do
+        collection = CheckCollection.new('test collection')
+        Registry.register('test_collection', collection)
+        Registry.register(check_name, check_object, 'test_collection')
+        expect(collection.fetch(check_name)).to eq(check_object)
+        Registry.deregister(check_name, 'test_collection')
+        expect(collection.fetch(check_name)).to eq(nil)
       end
 
       it "does not error if the name isn't registered" do

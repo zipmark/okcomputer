@@ -1,6 +1,6 @@
 module OkComputer
   class CheckCollection
-    attr_accessor :parent_collection, :collection, :registrant_name, :display
+    attr_accessor :collection, :registrant_name, :display
 
     # Public: Initialize a new CheckCollection
     #
@@ -17,9 +17,10 @@ module OkComputer
     end
 
     # Public: Returns a check or collection if it's in the check collection
-    def fetch(name)
-      puts self_and_sub_collections
-      self_and_sub_collections.detect{ |c| c.fetch(name) }[name]
+    def fetch(name, default=nil)
+      found_in = self_and_sub_collections.detect{ |c| c.fetch(name, default) }
+      return unless found_in
+      found_in[name]
     end
 
     alias_method :[], :fetch
@@ -51,7 +52,6 @@ module OkComputer
     #
     # Returns the check
     def register(name, check)
-      check.parent_collection = self
       collection[name] = check
     end
 
@@ -60,7 +60,6 @@ module OkComputer
     # Returns the check
     def deregister(name)
       check = collection.delete(name)
-      check.parent_collection = nil if check
     end
 
     # Public: The text of each check in the collection

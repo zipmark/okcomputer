@@ -10,14 +10,14 @@ module OkComputer
     #
     # Returns the registered check or raises Registry::CheckNotFound
     def self.fetch(name)
-      default_collection.fetch(name)
-    rescue KeyError
-      raise CheckNotFound, "No matching check"
+      check = default_collection.fetch(name)
+      raise CheckNotFound, "No matching check" unless check
+      check
     end
 
     # Public: Return an object containing all the registered checks
     #
-    # Returns the defaule_collection CheckCollection instance
+    # Returns the default_collection CheckCollection instance
     def self.all
       default_collection
     end
@@ -40,7 +40,8 @@ module OkComputer
     # check_object - Instance of Checker to register
     def self.register(check_name, check_object, collection_name=nil)
       check_object.registrant_name = check_name
-      collection = collection_name ? default_collection.fetch[collection_name] : default_collection
+      collection = collection_name ? default_collection.fetch(collection_name) : default_collection
+      raise CollectionNotFound unless collection
       collection.register(check_name, check_object)
     end
 
@@ -48,11 +49,13 @@ module OkComputer
     #
     # check_name - The name of the check to retrieve
     def self.deregister(check_name, collection_name=nil)
-      collection = collection_name ? default_collection.fetch[collection_name] : default_collection
+      collection = collection_name ? default_collection.fetch(collection_name) : default_collection
+      raise CollectionNotFound unless collection
       collection.deregister(check_name)
     end
 
     # used when fetching a check that has not been registered
     CheckNotFound = Class.new(StandardError)
+    CollectionNotFound = Class.new(StandardError)
   end
 end
