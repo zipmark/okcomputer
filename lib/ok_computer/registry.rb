@@ -38,6 +38,7 @@ module OkComputer
     #
     # check_name - The name of the check to retrieve
     # check_object - Instance of Checker to register
+    # collection_name - The name of the check collection the check should be registered to
     def self.register(check_name, check_object, collection_name=nil)
       check_object.registrant_name = check_name
       collection = collection_name ? default_collection.fetch(collection_name) : default_collection
@@ -48,6 +49,7 @@ module OkComputer
     # Public: Remove the check of the given name being checked
     #
     # check_name - The name of the check to retrieve
+    # collection_name - The name of the check collection the check should be deregistered from
     def self.deregister(check_name, collection_name=nil)
       collection = collection_name ? default_collection.fetch(collection_name) : default_collection
       raise CollectionNotFound unless collection
