@@ -45,6 +45,14 @@ module OkComputer
       {registrant_name => {:message => message, :success => success?, :time => time}}.to_json
     end
 
+    def <=>(check)
+      if check.is_a?(CheckCollection)
+        -1
+      else
+        registrant_name <=> check.registrant_name
+      end
+    end
+
     # Public: Whether the check passed
     #
     # Returns a boolean

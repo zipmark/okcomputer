@@ -92,6 +92,15 @@ module OkComputer
     end
 
     context "#to_text" do
+      let(:foocheck) { Check.new }
+      let(:barcheck) { Check.new }
+
+      subject { CheckCollection.new("foo collection name") }
+
+      before do
+        subject.register(:foo, foocheck)
+        subject.register(:bar, barcheck)
+      end
       it "returns the #to_text of each check on a new line" do
         foocheck.stub(:to_text) { "foo" }
         barcheck.stub(:to_text) { "bar" }

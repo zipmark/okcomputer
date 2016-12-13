@@ -32,6 +32,14 @@ module OkComputer
       collection.values
     end
 
+    def <=>(check)
+      if check.is_a?(CheckCollection)
+        registrant_name <=> check.registrant_name
+      else
+        1
+      end
+    end
+
     alias_method :values, :checks
 
     def check_names
@@ -66,7 +74,7 @@ module OkComputer
     #
     # Returns a String
     def to_text
-      "#{display}\n#{checks.map{ |c| "\s\s#{c.to_text}"}.join("\n")}"
+      "#{display}\n#{checks.sort.map{ |c| "#{"\s\s" unless c.is_a?(CheckCollection)}#{c.to_text}"}.join("\n")}"
     end
 
     # Public: The JSON of each check in the collection
