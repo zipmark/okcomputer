@@ -42,7 +42,7 @@ module OkComputer
     rescue SocketError => e
       addl_message = "connection to #{host} on port #{port} failed with '#{e.message}': "
       raise ConnectionFailed, addl_message + e.message
-    rescue TimeoutError => e
+    rescue Timeout::Error => e
       addl_message = "#{host} did not respond on port #{port} within #{request_timeout} seconds: "
       raise ConnectionFailed, addl_message + e.message
     rescue => e

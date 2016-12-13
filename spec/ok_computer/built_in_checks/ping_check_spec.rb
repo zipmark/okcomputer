@@ -98,9 +98,9 @@ module OkComputer
         end
       end
 
-      context 'when there is a TimeoutError' do
+      context 'when there is a Timeout::Error' do
         before do
-          allow(TCPSocket).to receive(:new).and_raise(TimeoutError)
+          allow(TCPSocket).to receive(:new).and_raise(Timeout::Error)
         end
 
         it "raises a ConnectionFailed error" do
