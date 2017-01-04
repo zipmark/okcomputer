@@ -4,8 +4,7 @@ module OkComputer
 
     # Public: Initialize a new CheckCollection
     #
-    # collection - a Hash of checks, with keys being unique names and values
-    #   being Check instances
+    # display - the display name for the Check Collection
     def initialize(display)
       self.display = display
       self.collection = {}
@@ -17,13 +16,22 @@ module OkComputer
     end
 
     # Public: Returns a check or collection if it's in the check collection
-    def fetch(name, default=nil)
-      found_in = self_and_sub_collections.detect{ |c| c.fetch(name, default) }
-      return unless found_in
-      found_in[name]
+    #
+    # key - a check or collection name
+    # throws a KeyError when the key is not found
+    def fetch(key, default=nil)
+      found_in = self_and_sub_collections.detect{ |c| c[key] }
+      raise KeyError unless found_in
+      found_in[key]
     end
 
-    alias_method :[], :fetch
+    # Public: Returns a  check or collection if it's in the check collection
+    #
+    # key - a check or collection name
+    def [](key)
+      fetch(key)
+      rescue KeyError
+    end
 
     # Public: The list of checks in the collection
     #

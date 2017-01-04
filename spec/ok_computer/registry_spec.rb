@@ -101,7 +101,7 @@ module OkComputer
         Registry.register(check_name, check_object, 'test_collection')
         expect(collection.fetch(check_name)).to eq(check_object)
         Registry.deregister(check_name, 'test_collection')
-        expect(collection.fetch(check_name)).to eq(nil)
+        expect(collection[check_name]).to eq(nil)
       end
 
       it "does not error if the name isn't registered" do

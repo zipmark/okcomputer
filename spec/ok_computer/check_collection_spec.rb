@@ -74,12 +74,13 @@ module OkComputer
         expect(subject.fetch("foo_subcheck")).to eq(foocheck)
       end
 
-      it "returns nil if the if the check is not in the collection or a sub_collection" do
+      it "raises a  KeyError if the check is not in the collection or a sub_collection" do
         sub_collection = CheckCollection.new("sub")
         subject.register("sub", sub_collection)
         sub_collection.register("foo_subcheck", foocheck)
-        expect(subject.fetch("bar_subcheck")).to eq(nil)
+        expect{ subject.fetch("bar_subcheck") }.to raise_error(KeyError)
       end
+
 
       it "finds the check in a sub_collection when the sub_collection is not the first sub_collection" do
         sub_collection_1 = CheckCollection.new("sub1")
@@ -88,6 +89,16 @@ module OkComputer
         subject.register("sub2", sub_collection_2)
         sub_collection_2.register("foo_subcheck", foocheck)
         expect(subject.fetch("foo_subcheck")).to eq(foocheck)
+      end
+    end
+
+    context "#[]" do
+
+      it "returns nil if the if the check is not in the collection or a sub_collection" do
+        sub_collection = CheckCollection.new("sub")
+        subject.register("sub", sub_collection)
+        sub_collection.register("foo_subcheck", foocheck)
+        expect(subject["bar_subcheck"]).to eq(nil)
       end
     end
 
@@ -101,6 +112,7 @@ module OkComputer
         subject.register(:foo, foocheck)
         subject.register(:bar, barcheck)
       end
+
       it "returns the #to_text of each check on a new line" do
         foocheck.stub(:to_text) { "foo" }
         barcheck.stub(:to_text) { "bar" }
