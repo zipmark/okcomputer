@@ -4,18 +4,13 @@ module OkComputer
   describe Registry do
     let(:check_object) { double(:first_checker, :registrant_name= => nil) }
     let(:collection) { CheckCollection.new('foo collection') }
-    before do
-      collection.register('foo', Check.new)
-      collection.register('bar', Check.new)
-      allow(Registry).to receive(:default_collection){ collection }
-    end
 
     context ".all" do
-
       it "returns a CheckCollection with all of the registered checks" do
         expect(Registry.all).to be_instance_of(CheckCollection)
       end
     end
+
     context ".fetch(check_name)" do
       let(:check_name) { "foo" }
 
@@ -24,9 +19,8 @@ module OkComputer
         Registry.fetch(check_name).should == check_object
       end
 
-      it "raises an exceiption if given a check that's not registered" do
-        Registry.deregister(check_name)
-        expect { Registry.fetch(check_name) }.to raise_error(Registry::CheckNotFound)
+      it "raises an exception if given a check that's not registered" do
+        expect { Registry.fetch("missing check") }.to raise_error(Registry::CheckNotFound)
       end
     end
 
@@ -34,11 +28,6 @@ module OkComputer
       let(:check_name) { "foo" }
       let(:second_check_object) { double(:second_checker, :registrant_name= => nil) }
       let(:default_collection) { double }
-
-      before do
-        # make sure it isn't there yet
-        Registry.deregister(check_name)
-      end
 
       it "assigns the given name to the check" do
         check_object.should_receive(:registrant_name=).with(check_name)

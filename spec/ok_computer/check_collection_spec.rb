@@ -8,13 +8,10 @@ module OkComputer
 
     subject { CheckCollection.new("foo collection name") }
 
-    before do
-      subject.register(:foo, foocheck)
-      subject.register(:bar, barcheck)
-    end
-
     context ".new" do
       it "sets the display name of the check collection" do
+        subject.register(:foo, foocheck)
+        subject.register(:bar, barcheck)
         expect(subject.display).to eq("foo collection name")
       end
     end
@@ -25,6 +22,8 @@ module OkComputer
       context "with check_in_parallel set to #{check_in_parallel}" do
         context "#run" do
           it "runs its registered checks" do
+            subject.register(:foo, foocheck)
+            subject.register(:bar, barcheck)
             foocheck.should_receive(:run)
             barcheck.should_receive(:run)
             subject.run
@@ -35,6 +34,8 @@ module OkComputer
 
     context "#checks" do
       it "returns the checks from its registry" do
+        subject.register(:foo, foocheck)
+        subject.register(:bar, barcheck)
         expect(subject.checks).to eq(registry.values)
       end
     end
@@ -48,6 +49,8 @@ module OkComputer
 
     context "#deregister" do
       it "deregisters a check" do
+        subject.register(:foo, foocheck)
+        expect(subject.checks).to include(foocheck)
         subject.deregister(:foo)
         expect(subject.checks).not_to include(foocheck)
       end
@@ -55,6 +58,7 @@ module OkComputer
 
     context "#fetch" do
       it "finds checks in the current collection" do
+        subject.register(:foo, foocheck)
         expect(subject.fetch(:foo)).to eq(foocheck)
       end
 
@@ -93,7 +97,6 @@ module OkComputer
     end
 
     context "#[]" do
-
       it "returns nil if the if the check is not in the collection or a sub_collection" do
         sub_collection = CheckCollection.new("sub")
         subject.register("sub", sub_collection)
@@ -108,12 +111,9 @@ module OkComputer
 
       subject { CheckCollection.new("foo collection name") }
 
-      before do
+      it "returns the #to_text of each check on a new line" do
         subject.register(:foo, foocheck)
         subject.register(:bar, barcheck)
-      end
-
-      it "returns the #to_text of each check on a new line" do
         foocheck.stub(:to_text) { "foo" }
         barcheck.stub(:to_text) { "bar" }
         expect(subject.to_text).to eq("foo collection name\n\s\sfoo\n\s\sbar")
@@ -122,6 +122,8 @@ module OkComputer
 
     context "#to_json" do
       it "returns the #to_json of each check in a JSON array" do
+        subject.register(:foo, foocheck)
+        subject.register(:bar, barcheck)
         foocheck.stub(:to_json) { {"foo" => "foo result"}.to_json }
         barcheck.stub(:to_json) { {"bar" => "bar result"}.to_json }
         combined_hash = JSON.parse(foocheck.to_json).merge(JSON.parse(barcheck.to_json))
@@ -131,12 +133,16 @@ module OkComputer
 
     context "#success?" do
       it "is true if all checks are true" do
+        subject.register(:foo, foocheck)
+        subject.register(:bar, barcheck)
         foocheck.stub(:success?) { true }
         barcheck.stub(:success?) { true }
         subject.should be_success
       end
 
       it "is failse if any check is false" do
+        subject.register(:foo, foocheck)
+        subject.register(:bar, barcheck)
         foocheck.stub(:success?) { true }
         barcheck.stub(:success?) { false }
         subject.should_not be_success
