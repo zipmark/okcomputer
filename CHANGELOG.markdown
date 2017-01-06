@@ -1,3 +1,8 @@
+#### v1.14.0
+* Add check collections to OkComputer
+
+  > newzac, Andy Fleener: Coveralls, Unknown User: https://github.com/sportngin/okcomputer/pull/124
+
 #### v1.13.0
 
 * Include type of cache in the cache check output.
