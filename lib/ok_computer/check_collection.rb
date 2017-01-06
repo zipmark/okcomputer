@@ -1,32 +1,88 @@
 module OkComputer
   class CheckCollection
-    attr_accessor :registry
+    attr_accessor :collection, :registrant_name, :display
 
     # Public: Initialize a new CheckCollection
     #
-    # registry - a Hash of checks, with keys being unique names and values
-    #   being Check instances
-    def initialize(registry={})
-      self.registry = registry
+    # display - the display name for the Check Collection
+    def initialize(display)
+      self.display = display
+      self.collection = {}
     end
 
-    # Public: Run the registry's checks
+    # Public: Run the collection's checks
     def run
       OkComputer.check_in_parallel ? check_in_parallel : check_in_sequence
     end
 
+    # Public: Returns a check or collection if it's in the check collection
+    #
+    # key - a check or collection name
+    # throws a KeyError when the key is not found
+    def fetch(key, default=nil)
+      found_in = self_and_sub_collections.detect{ |c| c[key] }
+      raise KeyError unless found_in
+      found_in[key]
+    end
+
+    # Public: Returns a  check or collection if it's in the check collection
+    #
+    # key - a check or collection name
+    def [](key)
+      fetch(key)
+      rescue KeyError
+    end
+
     # Public: The list of checks in the collection
     #
-    # Returns an Array of the registry's values
+    # Returns an Array of the collection's values
     def checks
-      registry.values
+      collection.values
+    end
+
+    def <=>(check)
+      if check.is_a?(CheckCollection)
+        registrant_name <=> check.registrant_name
+      else
+        1
+      end
+    end
+
+    alias_method :values, :checks
+
+    def check_names
+      collection.keys
+    end
+
+    alias_method :keys, :check_names
+
+    def sub_collections
+      checks.select{ |c| c.is_a?(CheckCollection)}
+    end
+
+    def self_and_sub_collections
+      [collection] + sub_collections
+    end
+
+    # Public: Registers a check into the collection
+    #
+    # Returns the check
+    def register(name, check)
+      collection[name] = check
+    end
+
+    # Public: Deregisters a check from the collection
+    #
+    # Returns the check
+    def deregister(name)
+      check = collection.delete(name)
     end
 
     # Public: The text of each check in the collection
     #
     # Returns a String
     def to_text
-      checks.map(&:to_text).join("\n")
+      "#{display}\n#{checks.sort.map{ |c| "#{"\s\s" unless c.is_a?(CheckCollection)}#{c.to_text}"}.join("\n")}"
     end
 
     # Public: The JSON of each check in the collection
