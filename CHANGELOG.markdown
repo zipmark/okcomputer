@@ -1,4 +1,9 @@
 #### v1.14.0
+* Add new check to determine whether the app has pending ActiveRecord migrations.
+
+  > pcboy, pbyrne: https://github.com/sportngin/okcomputer/pull/127
+
+#### v1.14.0
 * Add check collections to OkComputer
 
   > newzac, Andy Fleener: Coveralls, Unknown User: https://github.com/sportngin/okcomputer/pull/124
