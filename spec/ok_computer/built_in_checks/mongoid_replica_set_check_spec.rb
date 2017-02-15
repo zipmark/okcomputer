@@ -32,7 +32,7 @@ module OkComputer
     end
 
     it "is a Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#initialize" do
@@ -59,22 +59,22 @@ module OkComputer
 
       context "with a successful connection" do
         before do
-          cluster.should_receive(:refresh)
-          subject.should_receive(:primary_status) { primary_status }
+          expect(cluster).to receive(:refresh)
+          expect(subject).to receive(:primary_status) { primary_status }
         end
 
-        it { should be_successful }
-        it { should have_message "Connected to 3 nodes in mongodb replica set '#{replica_set_name}'" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Connected to 3 nodes in mongodb replica set '#{replica_set_name}'" }
       end
 
       context "with an unsuccessful connection" do
         before do
-          subject.should_receive(:primary_status) { primary_status }
-          subject.should_receive(:secondary_status).and_raise(MongoidReplicaSetCheck::ConnectionFailed, error_message)
+          expect(subject).to receive(:primary_status) { primary_status }
+          expect(subject).to receive(:secondary_status).and_raise(MongoidReplicaSetCheck::ConnectionFailed, error_message)
         end
 
-        it {should_not be_successful }
-        it {should have_message "Error: '#{error_message}'" }
+        it {is_expected.not_to be_successful }
+        it {is_expected.to have_message "Error: '#{error_message}'" }
       end
 
       context "when session not configured" do
@@ -82,8 +82,8 @@ module OkComputer
           expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_raise(StandardError)
         end
 
-        it {should_not be_successful }
-        it {should have_message "Error: 'undefined method `cluster' for nil:NilClass'" }
+        it {is_expected.not_to be_successful }
+        it {is_expected.to have_message "Error: 'undefined method `cluster' for nil:NilClass'" }
       end
     end
 

@@ -38,53 +38,53 @@ describe OkComputer::OkComputerController do
     end
 
     before do
-      OkComputer::Registry.stub(:all) { checks }
-      checks.should_receive(:run)
+      allow(OkComputer::Registry).to receive(:all) { checks }
+      expect(checks).to receive(:run)
     end
 
     it "performs the basic up check when format: text" do
       get :index, format: :text
-      response.body.should == checks.to_text
+      expect(response.body).to eq(checks.to_text)
     end
 
     it "performs the basic up check when format: html" do
       get :index, format: :html
-      response.body.should == checks.to_text
+      expect(response.body).to eq(checks.to_text)
     end
 
     it "performs the basic up check with accept text/html" do
       request.accept = "text/html"
       get :index
-      response.body.should == checks.to_text
+      expect(response.body).to eq(checks.to_text)
     end
 
     it "performs the basic up check with accept text/plain" do
       request.accept = "text/plain"
       get :index
-      response.body.should == checks.to_text
+      expect(response.body).to eq(checks.to_text)
     end
 
     it "performs the basic up check as JSON" do
       get :index, format: :json
-      response.body.should == checks.to_json
+      expect(response.body).to eq(checks.to_json)
     end
 
     it "performs the basic up check as JSON with accept application/json" do
       request.accept = "application/json"
       get :index
-      response.body.should == checks.to_json
+      expect(response.body).to eq(checks.to_json)
     end
 
     it "returns a failure status code if any check fails" do
-      checks.stub(:success?) { false }
+      allow(checks).to receive(:success?) { false }
       get :index, format: :text
-      response.should_not be_success
+      expect(response).not_to be_success
     end
 
     it "returns a success status code if all checks pass" do
-      checks.stub(:success?) { true }
+      allow(checks).to receive(:success?) { true }
       get :index, format: :text
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
@@ -100,66 +100,66 @@ describe OkComputer::OkComputerController do
 
     context "existing check-type" do
       before do
-        OkComputer::Registry.should_receive(:fetch).with(check_type) { check }
-        check.should_receive(:run)
+        expect(OkComputer::Registry).to receive(:fetch).with(check_type) { check }
+        expect(check).to receive(:run)
       end
 
       it "performs the given check and returns text when format: text" do
         get :show, params: { check: check_type, format: :text }
-        response.body.should == check.to_text
+        expect(response.body).to eq(check.to_text)
       end
 
       it "performs the given check and returns text when format: html" do
         get :show, params: { check: check_type, format: :html }
-        response.body.should == check.to_text
+        expect(response.body).to eq(check.to_text)
       end
 
       it "performs the given check and returns text with accept text/html" do
         request.accept = "text/html"
         get :show, params: { check: check_type }
-        response.body.should == check.to_text
+        expect(response.body).to eq(check.to_text)
       end
 
       it "performs the given check and returns text with accept text/plain" do
         request.accept = "text/plain"
         get :show, params: { check: check_type }
-        response.body.should == check.to_text
+        expect(response.body).to eq(check.to_text)
       end
 
       it "performs the given check and returns JSON" do
         get :show, params: { check: check_type, format: :json }
-        response.body.should == check.to_json
+        expect(response.body).to eq(check.to_json)
       end
 
       it "performs the given check and returns JSON with accept application/json" do
         request.accept = "application/json"
         get :show, params: { check: check_type }
-        response.body.should == check.to_json
+        expect(response.body).to eq(check.to_json)
       end
 
       it "returns a success status code if the check passes" do
-        check.stub(:success?) { true }
+        allow(check).to receive(:success?) { true }
         get :show, params: { check: check_type, format: :text }
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "returns a failure status code if the check fails" do
-        check.stub(:success?) { false }
+        allow(check).to receive(:success?) { false }
         get :show, params: { check: check_type, format: :text }
-        response.should_not be_success
+        expect(response).not_to be_success
       end
     end
 
     it "returns a 404 if the check does not exist" do
       get :show, params: { check: "non-existant", format: :text }
-      response.body.should == "No matching check"
-      response.code.should == "404"
+      expect(response.body).to eq("No matching check")
+      expect(response.code).to eq("404")
     end
 
     it "returns a JSON 404 if the check does not exist" do
       get :show, params: { check: "non-existant", format: :json }
-      response.body.should == { error: "No matching check" }.to_json
-      response.code.should == "404"
+      expect(response.body).to eq({ error: "No matching check" }.to_json)
+      expect(response.code).to eq("404")
     end
 
   end
@@ -184,20 +184,20 @@ describe OkComputer::OkComputerController do
 
         context "when analytics_ignore is true" do
 
-          before { OkComputer.stub(:analytics_ignore){ true } }
+          before { allow(OkComputer).to receive(:analytics_ignore){ true } }
 
           it "should inject newrelic_ignore" do
-            Module.any_instance.should_receive(:newrelic_ignore).with(no_args())
+            expect_any_instance_of(Module).to receive(:newrelic_ignore).with(no_args())
             load_class
           end
         end
 
         context "when analytics_ignore is false" do
 
-          before { OkComputer.stub(:analytics_ignore){ false } }
+          before { allow(OkComputer).to receive(:analytics_ignore){ false } }
 
           it "should inject newrelic_ignore" do
-            Module.any_instance.should_not_receive(:newrelic_ignore)
+            expect_any_instance_of(Module).not_to receive(:newrelic_ignore)
             load_class
           end
         end
@@ -205,7 +205,7 @@ describe OkComputer::OkComputerController do
 
       context "when NewRelic is not installed" do
         it "should not inject newrelic_ignore" do
-          Module.any_instance.should_not_receive(:newrelic_ignore)
+          expect_any_instance_of(Module).not_to receive(:newrelic_ignore)
           load_class
         end
       end

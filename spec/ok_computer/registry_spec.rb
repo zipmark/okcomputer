@@ -16,7 +16,7 @@ module OkComputer
 
       it "returns the check registered with the given name" do
         Registry.register(check_name, check_object)
-        Registry.fetch(check_name).should == check_object
+        expect(Registry.fetch(check_name)).to eq(check_object)
       end
 
       it "raises an exception if given a check that's not registered" do
@@ -30,7 +30,7 @@ module OkComputer
       let(:default_collection) { double }
 
       it "assigns the given name to the check" do
-        check_object.should_receive(:registrant_name=).with(check_name)
+        expect(check_object).to receive(:registrant_name=).with(check_name)
         Registry.register(check_name, check_object)
       end
 
@@ -42,12 +42,12 @@ module OkComputer
       it "overwrites the current check with the given name" do
         # put the first one in and make sure it's there
         Registry.register(check_name, check_object)
-        Registry.registry[check_name].should == check_object
+        expect(Registry.registry[check_name]).to eq(check_object)
 
         # put the second one in there, and first one gets replaced
         Registry.register(check_name, second_check_object)
-        Registry.registry.values.should_not include check_object
-        Registry.registry[check_name].should == second_check_object
+        expect(Registry.registry.values).not_to include check_object
+        expect(Registry.registry[check_name]).to eq(second_check_object)
       end
       
       it "uses the default collection if you don't pass a collection name" do
@@ -76,8 +76,8 @@ module OkComputer
         Registry.register(check_name, check_object)
         # then remove it
         Registry.deregister(check_name)
-        Registry.registry.keys.should_not include check_name
-        Registry.registry.values.should_not include check_object
+        expect(Registry.registry.keys).not_to include check_name
+        expect(Registry.registry.values).not_to include check_object
       end
 
       it "throws a collection not found error if the given collection is not found" do

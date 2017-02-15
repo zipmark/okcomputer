@@ -9,14 +9,14 @@ describe OkComputer do
   context "#require_authentication" do
     it "captures username and password necessary to access OkComputer" do
       OkComputer.require_authentication(username, password)
-      OkComputer.send(:username).should == username
-      OkComputer.send(:password).should == password
-      OkComputer.send(:whitelist).should be_empty
+      expect(OkComputer.send(:username)).to eq(username)
+      expect(OkComputer.send(:password)).to eq(password)
+      expect(OkComputer.send(:whitelist)).to be_empty
     end
 
     it "captures an optional list of whitelisted actions to skip authentication" do
       OkComputer.require_authentication(username, password, except: whitelist)
-      OkComputer.send(:whitelist).should == whitelist
+      expect(OkComputer.send(:whitelist)).to eq(whitelist)
     end
   end
 
@@ -29,11 +29,11 @@ describe OkComputer do
 
       context "without a whitelist" do
         before do
-          OkComputer.stub(:options) { {} }
+          allow(OkComputer).to receive(:options) { {} }
         end
 
         it "is true" do
-          OkComputer.requires_authentication?.should be_truthy
+          expect(OkComputer.requires_authentication?).to be_truthy
         end
       end
 
@@ -44,15 +44,15 @@ describe OkComputer do
         end
 
         it "is true for the #index action" do
-          OkComputer.requires_authentication?({action: "index"}).should be_truthy
+          expect(OkComputer.requires_authentication?({action: "index"})).to be_truthy
         end
 
         it "is true for #show if params[:check] is not whitelisted" do
-          OkComputer.requires_authentication?({action: "show", check: "somethingelse"}).should be_truthy
+          expect(OkComputer.requires_authentication?({action: "show", check: "somethingelse"})).to be_truthy
         end
 
         it "is false for #show if params[:check] is whitelisted" do
-          OkComputer.requires_authentication?({action: "show", check: action}).should_not be_truthy
+          expect(OkComputer.requires_authentication?({action: "show", check: action})).not_to be_truthy
         end
       end
     end
@@ -65,7 +65,7 @@ describe OkComputer do
       end
 
       it "is false" do
-        OkComputer.requires_authentication?.should be_falsey
+        expect(OkComputer.requires_authentication?).to be_falsey
       end
     end
   end
@@ -73,7 +73,7 @@ describe OkComputer do
   context "#authenticate(username, password)" do
     it "returns true if OkComputer is not set up to require authentication" do
       OkComputer.require_authentication(nil, nil)
-      OkComputer.authenticate(bogus, bogus).should be_truthy
+      expect(OkComputer.authenticate(bogus, bogus)).to be_truthy
     end
 
     context "when set up to require authentication" do
@@ -82,32 +82,32 @@ describe OkComputer do
       end
 
       it "returns true if given the correct username and password" do
-        OkComputer.authenticate(username, password).should be_truthy
+        expect(OkComputer.authenticate(username, password)).to be_truthy
       end
 
       it "returns false if not given the correct username and password" do
-        OkComputer.authenticate(bogus, bogus).should be_falsey
+        expect(OkComputer.authenticate(bogus, bogus)).to be_falsey
       end
     end
   end
 
   context "#mount_at" do
     it "has default mount_at value of 'okcomputer'" do
-      OkComputer.mount_at.should == 'okcomputer'
+      expect(OkComputer.mount_at).to eq('okcomputer')
     end
 
     it "allows configuration of mount_at" do
-      OkComputer.respond_to?('mount_at=').should be_truthy
+      expect(OkComputer.respond_to?('mount_at=')).to be_truthy
     end
   end
 
   context "#analytics_ignore" do
     it "has default mount_at value of true" do
-      OkComputer.analytics_ignore.should == true
+      expect(OkComputer.analytics_ignore).to eq(true)
     end
 
     it "allows configuration of analytics_ignore" do
-      OkComputer.respond_to?('analytics_ignore=').should be_truthy
+      expect(OkComputer.respond_to?('analytics_ignore=')).to be_truthy
     end
   end
 
@@ -125,8 +125,8 @@ describe OkComputer do
 
     it "marks listed checks as optional" do
       OkComputer.make_optional %w(some_optional_check)
-      OkComputer::Registry.fetch("some_required_check").should_not be_a_kind_of OkComputer::OptionalCheck
-      OkComputer::Registry.fetch("some_optional_check").should be_a_kind_of OkComputer::OptionalCheck
+      expect(OkComputer::Registry.fetch("some_required_check")).not_to be_a_kind_of OkComputer::OptionalCheck
+      expect(OkComputer::Registry.fetch("some_optional_check")).to be_a_kind_of OkComputer::OptionalCheck
     end
   end
 end

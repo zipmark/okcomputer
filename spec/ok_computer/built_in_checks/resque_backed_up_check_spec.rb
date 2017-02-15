@@ -11,18 +11,18 @@ module OkComputer
     subject { ResqueBackedUpCheck.new queue, threshold }
 
     it "is a Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     context ".new(queue, threshold)" do
       it "accepts a queue name and a threshold to consider backed up" do
-        subject.queue.should == queue
-        subject.threshold.should == threshold
+        expect(subject.queue).to eq(queue)
+        expect(subject.threshold).to eq(threshold)
       end
 
       it "coerces the threshold parameter into an integer" do
         threshold = "123"
-        ResqueBackedUpCheck.new(queue, threshold).threshold.should == 123
+        expect(ResqueBackedUpCheck.new(queue, threshold).threshold).to eq(123)
       end
     end
 
@@ -31,29 +31,29 @@ module OkComputer
 
       context "with the count less than the threshold" do
         before do
-          subject.stub(:size) { threshold - 1 }
+          allow(subject).to receive(:size) { threshold - 1 }
         end
 
-        it { should be_successful }
-        it { should have_message "Resque queue '#{queue}' at reasonable level (#{subject.size})" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Resque queue '#{queue}' at reasonable level (#{subject.size})" }
       end
 
       context "with the count equal to the threshold" do
         before do
-          subject.stub(:size) { threshold }
+          allow(subject).to receive(:size) { threshold }
         end
 
-        it { should be_successful }
-        it { should have_message "Resque queue '#{queue}' at reasonable level (#{subject.size})" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Resque queue '#{queue}' at reasonable level (#{subject.size})" }
       end
 
       context "with a count greater than the threshold" do
         before do
-          subject.stub(:size) { threshold + 1 }
+          allow(subject).to receive(:size) { threshold + 1 }
         end
 
-        it { should_not be_successful }
-        it { should have_message "Resque queue '#{subject.queue}' is #{subject.size - subject.threshold} over threshold! (#{subject.size})" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Resque queue '#{subject.queue}' is #{subject.size - subject.threshold} over threshold! (#{subject.size})" }
       end
     end
 
@@ -61,8 +61,8 @@ module OkComputer
       let(:size) { 123 }
 
       it "defers to Resque for the job count" do
-        Resque.should_receive(:size).with(subject.queue) { size }
-        subject.size.should == size
+        expect(Resque).to receive(:size).with(subject.queue) { size }
+        expect(subject.size).to eq(size)
       end
     end
   end

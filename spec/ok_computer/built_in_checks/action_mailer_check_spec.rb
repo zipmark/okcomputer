@@ -12,7 +12,7 @@ module OkComputer
     subject { described_class.new }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#new(class, timeout)" do
@@ -56,11 +56,11 @@ module OkComputer
         before do
           ActionMailer::Base.smtp_settings[:address] = 'localhost'
           ActionMailer::Base.smtp_settings[:port] = 25
-          TCPSocket.should_receive(:new).with('localhost', 25).and_return(double(:socket, :close => true))
+          expect(TCPSocket).to receive(:new).with('localhost', 25).and_return(double(:socket, :close => true))
         end
 
-        it { should be_successful }
-        it { should have_message "ActionMailer::Base check to localhost:25 successful" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "ActionMailer::Base check to localhost:25 successful" }
       end
 
       context "when mailer does not accept connection" do

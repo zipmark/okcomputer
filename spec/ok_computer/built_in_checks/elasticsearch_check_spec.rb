@@ -7,7 +7,7 @@ module OkComputer
     subject { described_class.new(host) }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#new(host, request_timeout)" do
@@ -33,7 +33,7 @@ module OkComputer
     describe "#check" do
       context "when the connection is successful" do
         before do
-          subject.stub(:cluster_health).and_return(cluster_health)
+          allow(subject).to receive(:cluster_health).and_return(cluster_health)
         end
 
         context "when the cluster is healthy" do
@@ -45,8 +45,8 @@ module OkComputer
             }
           end
 
-          it { should be_successful }
-          it { should have_message "Connected to elasticseach cluster 'elasticsearch', 1 nodes, status 'yellow'" }
+          it { is_expected.to be_successful }
+          it { is_expected.to have_message "Connected to elasticseach cluster 'elasticsearch', 1 nodes, status 'yellow'" }
         end
 
         context "when the cluster is unhealthy" do
@@ -58,8 +58,8 @@ module OkComputer
             }
           end
 
-          it { should_not be_successful }
-          it { should have_message "Connected to elasticseach cluster 'elasticsearch', 1 nodes, status 'red'" }
+          it { is_expected.not_to be_successful }
+          it { is_expected.to have_message "Connected to elasticseach cluster 'elasticsearch', 1 nodes, status 'red'" }
         end
       end
 
@@ -67,11 +67,11 @@ module OkComputer
         let(:error_message) { "Error message" }
 
         before do
-          subject.stub(:cluster_health).and_raise(HttpCheck::ConnectionFailed, error_message)
+          allow(subject).to receive(:cluster_health).and_raise(HttpCheck::ConnectionFailed, error_message)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Error: '#{error_message}'" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Error: '#{error_message}'" }
       end
     end
 
@@ -88,7 +88,7 @@ module OkComputer
         let(:response) { cluster_health.to_json }
 
         before do
-          subject.stub(:perform_request).and_return(response)
+          allow(subject).to receive(:perform_request).and_return(response)
         end
 
         it "returns a symbolized hash of the cluster health API response" do
@@ -98,7 +98,7 @@ module OkComputer
 
       context "when the connection fails" do
         before do
-          subject.stub(:perform_request).and_raise(HttpCheck::ConnectionFailed)
+          allow(subject).to receive(:perform_request).and_raise(HttpCheck::ConnectionFailed)
         end
 
         it "raises a ConnectionFailed error" do

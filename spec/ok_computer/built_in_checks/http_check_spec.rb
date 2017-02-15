@@ -7,7 +7,7 @@ module OkComputer
     subject { described_class.new(url) }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#new(url, request_timeout)" do
@@ -37,29 +37,29 @@ module OkComputer
     describe "#check" do
       context "when the connection is successful" do
         before do
-          subject.stub(:perform_request).and_return("foo")
+          allow(subject).to receive(:perform_request).and_return("foo")
         end
 
-        it { should be_successful }
-        it { should have_message "HTTP check successful" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "HTTP check successful" }
       end
 
       context "when the connection fails" do
         let(:error_message) { "Error message" }
 
         before do
-          subject.stub(:perform_request).and_raise(HttpCheck::ConnectionFailed, error_message)
+          allow(subject).to receive(:perform_request).and_raise(HttpCheck::ConnectionFailed, error_message)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Error: '#{error_message}'" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Error: '#{error_message}'" }
       end
     end
 
     describe "#perform_request" do
       context "when the connection is successful" do
         before do
-          subject.url.stub(:read).and_return("foo")
+          allow(subject.url).to receive(:read).and_return("foo")
         end
 
         it "returns the response body" do
@@ -71,7 +71,7 @@ module OkComputer
         let(:error_message) { "Error message" }
 
         before do
-          subject.url.stub(:read).and_raise(Errno::ENETUNREACH)
+          allow(subject.url).to receive(:read).and_raise(Errno::ENETUNREACH)
         end
 
         it "raises a ConnectionFailed error" do
@@ -82,7 +82,7 @@ module OkComputer
       context "when the connection takes too long" do
         before do
           subject.request_timeout = 0.1
-          subject.url.stub(:read) { sleep(subject.request_timeout + 0.1) }
+          allow(subject.url).to receive(:read) { sleep(subject.request_timeout + 0.1) }
         end
 
         it "raises a ConnectionFailed error" do
@@ -93,7 +93,7 @@ module OkComputer
       context "when basic authentication are set" do
         before do
           subject.parse_url('http://user:pass@foo.com')
-          subject.url.stub(:read)
+          allow(subject.url).to receive(:read)
         end
 
         it "sets the Authorization header" do
@@ -108,7 +108,7 @@ module OkComputer
 
       context "when basic authentication credentials are not set" do
         before do
-          subject.url.stub(:read)
+          allow(subject.url).to receive(:read)
         end
 
         it "does not set the Authorization header" do

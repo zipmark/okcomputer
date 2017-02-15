@@ -11,10 +11,10 @@ module OkComputer
         check.mark_failure
       end
 
-      it { should be_successful }
+      it { is_expected.to be_successful }
 
       it "has a failure message" do
-        subject.to_text.should match /FAILED/
+        expect(subject.to_text).to match /FAILED/
       end
     end
 
@@ -22,12 +22,12 @@ module OkComputer
       before do
         check.registrant_name = "foo"
         check.message = "message"
-        check.should_not_receive(:call)
+        expect(check).not_to receive(:call)
         check.mark_failure
       end
 
       it "combines the upstream data with an optional flag" do
-        subject.to_text.should eq "#{check.to_text} (OPTIONAL)"
+        expect(subject.to_text).to eq "#{check.to_text} (OPTIONAL)"
       end
     end
   end
