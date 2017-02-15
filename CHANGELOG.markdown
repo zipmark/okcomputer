@@ -1,4 +1,4 @@
-#### v1.14.0
+#### v1.14.1
 * Add new check to determine whether the app has pending ActiveRecord migrations.
 
   > pcboy, pbyrne: https://github.com/sportngin/okcomputer/pull/127
