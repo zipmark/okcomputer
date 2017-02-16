@@ -15,7 +15,7 @@ end
 module OkComputer
   describe Neo4jCheck do
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     context "#check" do
@@ -26,8 +26,8 @@ module OkComputer
           allow(Neo4j::Session).to receive_message_chain("current.connection.url_prefix.to_s") { "localhost:7474" }
         end
 
-        it { should be_successful }
-        it { should have_message "Connected to neo4j on localhost:7474" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Connected to neo4j on localhost:7474" }
       end
 
       context "with an unsuccessful connection" do
@@ -38,8 +38,8 @@ module OkComputer
           allow(Neo4j::Session).to receive_message_chain("current.connection.head.success?").and_raise(error)
         end
 
-        it {should_not be_successful }
-        it {should have_message "Error: #{error_message}" }
+        it {is_expected.not_to be_successful }
+        it {is_expected.to have_message "Error: #{error_message}" }
       end
     end
   end

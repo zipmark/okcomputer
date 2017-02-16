@@ -3,7 +3,7 @@ require "rails_helper"
 module OkComputer
   describe AppVersionCheck do
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     context "#check" do
@@ -11,21 +11,21 @@ module OkComputer
 
       context "when able to deterimine the version" do
         before do
-          subject.should_receive(:version).and_return(version)
+          expect(subject).to receive(:version).and_return(version)
         end
 
-        it { should be_successful }
-        it { should have_message "Version: #{version}" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Version: #{version}" }
       end
 
       context "when unable to determine the version" do
         before do
-          subject.should_receive(:version).
+          expect(subject).to receive(:version).
             and_raise(AppVersionCheck::UnknownRevision)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Unable to determine version" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Unable to determine version" }
       end
     end
 
@@ -53,8 +53,8 @@ module OkComputer
         end
 
         before do
-          File.should_receive(:exist?).with(revision_path).and_return(true)
-          File.should_receive(:read).with(revision_path).and_return("#{version}\n")
+          expect(File).to receive(:exist?).with(revision_path).and_return(true)
+          expect(File).to receive(:read).with(revision_path).and_return("#{version}\n")
         end
 
         it "returns the contents of the file" do
@@ -70,7 +70,7 @@ module OkComputer
         end
 
         before do
-          File.should_receive(:exist?).with(revision_path).and_return(false)
+          expect(File).to receive(:exist?).with(revision_path).and_return(false)
         end
 
         it "raises an exception" do

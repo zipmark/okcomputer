@@ -13,7 +13,7 @@ module OkComputer
     let(:session) { double(:session) }
 
     it "is a Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#initialize" do
@@ -45,20 +45,20 @@ module OkComputer
 
       context "with a successful connection" do
         before do
-          subject.should_receive(:mongodb_name) { mongodb_name }
+          expect(subject).to receive(:mongodb_name) { mongodb_name }
         end
 
-        it { should be_successful }
-        it { should have_message "Connected to mongodb #{mongodb_name}" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Connected to mongodb #{mongodb_name}" }
       end
 
       context "with an unsuccessful connection" do
         before do
-          subject.should_receive(:mongodb_name).and_raise(MongoidCheck::ConnectionFailed, error_message)
+          expect(subject).to receive(:mongodb_name).and_raise(MongoidCheck::ConnectionFailed, error_message)
         end
 
-        it {should_not be_successful }
-        it {should have_message "Error: '#{error_message}'" }
+        it {is_expected.not_to be_successful }
+        it {is_expected.to have_message "Error: '#{error_message}'" }
       end
 
       context "when session not configured" do
@@ -67,15 +67,15 @@ module OkComputer
           expect(Mongoid::Sessions).to receive(:with_name).with(:default).and_raise(StandardError)
         end
 
-        it {should_not be_successful }
-        it {should have_message "Error: 'undefined method `database' for Mongoid:Module'" }
+        it {is_expected.not_to be_successful }
+        it {is_expected.to have_message "Error: 'undefined method `database' for Mongoid:Module'" }
       end
     end
 
     describe "#mongodb_name" do
       it "returns the name of the mongodb" do
-        subject.should_receive(:mongodb_stats) { stats }
-        subject.mongodb_name.should == stats["db"]
+        expect(subject).to receive(:mongodb_stats) { stats }
+        expect(subject.mongodb_name).to eq(stats["db"])
       end
     end
 
@@ -88,9 +88,9 @@ module OkComputer
         end
 
         it "returns a mongodb stats hash" do
-          session.should_receive(:command).with(dbStats: 1) { stats }
-          Mongoid::Sessions.should_receive(:with_name).with(:default) { session }
-          subject.mongodb_stats.should == stats
+          expect(session).to receive(:command).with(dbStats: 1) { stats }
+          expect(Mongoid::Sessions).to receive(:with_name).with(:default) { session }
+          expect(subject.mongodb_stats).to eq(stats)
         end
       end
 
@@ -99,9 +99,9 @@ module OkComputer
         let(:database) { double(:database) }
 
         it "returns a mongodb stats hash" do
-          database.should_receive(:stats) { stats }
-          Mongoid.should_receive(:database) { database }
-          subject.mongodb_stats.should == stats
+          expect(database).to receive(:stats) { stats }
+          expect(Mongoid).to receive(:database) { database }
+          expect(subject.mongodb_stats).to eq(stats)
         end
       end
     end

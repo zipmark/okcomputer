@@ -14,7 +14,7 @@ module OkComputer
     subject { described_class.new('amqp://local') }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe '#new' do
@@ -64,11 +64,11 @@ module OkComputer
       context "when the connection is successful" do
         context "when the status is OK" do
           before do
-            subject.stub(:connection_status).and_return(:open)
+            allow(subject).to receive(:connection_status).and_return(:open)
           end
 
-          it { should be_successful }
-          it { should have_message "Rabbit Connection Status: (open)" }
+          it { is_expected.to be_successful }
+          it { is_expected.to have_message "Rabbit Connection Status: (open)" }
         end
       end
 
@@ -79,8 +79,8 @@ module OkComputer
           allow_any_instance_of(Bunny).to receive(:start).and_raise(Bunny::TCPConnectionFailedForAllHosts, error_message)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Error: '#{error_message}'" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Error: '#{error_message}'" }
       end
     end
 

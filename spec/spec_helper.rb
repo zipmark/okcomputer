@@ -21,10 +21,10 @@ RSpec.configure do |config|
 
   # TODO Switch to `expect()` rather than `#should`
   config.expect_with :rspec do |expectations|
-    expectations.syntax = [:should, :expect]
+    expectations.syntax = :expect
   end
 
   config.mock_with :rspec do |mocks|
-    mocks.syntax = [:should, :expect]
+    mocks.syntax = :expect
   end
 end

@@ -14,7 +14,7 @@ module OkComputer
     subject { described_class.new(redis_config) }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#new(redis_config)" do
@@ -37,7 +37,7 @@ module OkComputer
     describe "#check" do
       context "when the connection is successful" do
         before do
-          subject.stub(:redis_info).and_return(redis_info)
+          allow(subject).to receive(:redis_info).and_return(redis_info)
         end
 
         let(:redis_info) do
@@ -48,25 +48,25 @@ module OkComputer
           }
         end
 
-        it { should be_successful }
-        it { should have_message "Connected to redis, 1003.84K used memory, uptime 272 secs, 2 connected client(s)" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Connected to redis, 1003.84K used memory, uptime 272 secs, 2 connected client(s)" }
       end
 
       context "when the connection fails" do
         let(:error_message) { "Error message" }
 
         before do
-          subject.stub(:redis_info).and_raise(RedisCheck::ConnectionFailed, error_message)
+          allow(subject).to receive(:redis_info).and_raise(RedisCheck::ConnectionFailed, error_message)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Error: '#{error_message}'" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Error: '#{error_message}'" }
       end
     end
 
     describe "#redis_info" do
       before do
-        subject.stub(:redis) { redis }
+        allow(subject).to receive(:redis) { redis }
       end
 
       context "when the connection is successful" do
@@ -90,7 +90,7 @@ module OkComputer
       context "when the connection fails" do
         let(:redis) { double("Redis") }
         before do
-          redis.stub(:info) { fail Errno::ECONNREFUSED }
+          allow(redis).to receive(:info) { fail Errno::ECONNREFUSED }
         end
 
         it "raises a ConnectionFailed error" do

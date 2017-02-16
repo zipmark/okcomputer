@@ -24,8 +24,8 @@ module OkComputer
           it "runs its registered checks" do
             subject.register(:foo, foocheck)
             subject.register(:bar, barcheck)
-            foocheck.should_receive(:run)
-            barcheck.should_receive(:run)
+            expect(foocheck).to receive(:run)
+            expect(barcheck).to receive(:run)
             subject.run
           end
         end
@@ -114,8 +114,8 @@ module OkComputer
       it "returns the #to_text of each check on a new line" do
         subject.register(:foo, foocheck)
         subject.register(:bar, barcheck)
-        foocheck.stub(:to_text) { "foo" }
-        barcheck.stub(:to_text) { "bar" }
+        allow(foocheck).to receive(:to_text) { "foo" }
+        allow(barcheck).to receive(:to_text) { "bar" }
         expect(subject.to_text).to eq("foo collection name\n\s\sfoo\n\s\sbar")
       end
     end
@@ -124,10 +124,10 @@ module OkComputer
       it "returns the #to_json of each check in a JSON array" do
         subject.register(:foo, foocheck)
         subject.register(:bar, barcheck)
-        foocheck.stub(:to_json) { {"foo" => "foo result"}.to_json }
-        barcheck.stub(:to_json) { {"bar" => "bar result"}.to_json }
+        allow(foocheck).to receive(:to_json) { {"foo" => "foo result"}.to_json }
+        allow(barcheck).to receive(:to_json) { {"bar" => "bar result"}.to_json }
         combined_hash = JSON.parse(foocheck.to_json).merge(JSON.parse(barcheck.to_json))
-        subject.to_json.should == combined_hash.to_json
+        expect(subject.to_json).to eq(combined_hash.to_json)
       end
     end
 
@@ -135,17 +135,17 @@ module OkComputer
       it "is true if all checks are true" do
         subject.register(:foo, foocheck)
         subject.register(:bar, barcheck)
-        foocheck.stub(:success?) { true }
-        barcheck.stub(:success?) { true }
-        subject.should be_success
+        allow(foocheck).to receive(:success?) { true }
+        allow(barcheck).to receive(:success?) { true }
+        expect(subject).to be_success
       end
 
       it "is failse if any check is false" do
         subject.register(:foo, foocheck)
         subject.register(:bar, barcheck)
-        foocheck.stub(:success?) { true }
-        barcheck.stub(:success?) { false }
-        subject.should_not be_success
+        allow(foocheck).to receive(:success?) { true }
+        allow(barcheck).to receive(:success?) { false }
+        expect(subject).not_to be_success
       end
     end
   end

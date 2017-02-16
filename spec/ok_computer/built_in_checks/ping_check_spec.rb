@@ -8,7 +8,7 @@ module OkComputer
     subject { described_class.new(host, port) }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#new(host, port, request_timeout)" do
@@ -45,8 +45,8 @@ module OkComputer
           allow(subject).to receive(:tcp_socket_request).and_return("foo")
         end
 
-        it { should be_successful }
-        it { should have_message "Ping check to #{host}:#{port} successful" }
+        it { is_expected.to be_successful }
+        it { is_expected.to have_message "Ping check to #{host}:#{port} successful" }
       end
 
       context "when the connection fails" do
@@ -56,8 +56,8 @@ module OkComputer
           allow(subject).to receive(:tcp_socket_request).and_raise(PingCheck::ConnectionFailed, error_message)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Error: '#{error_message}'" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Error: '#{error_message}'" }
       end
     end
 

@@ -3,7 +3,7 @@ require "rails_helper"
 module OkComputer
   describe ActiveRecordMigrationsCheck do
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     context "#check" do
@@ -17,8 +17,8 @@ module OkComputer
             expect(ActiveRecord::Migrator).to receive(:needs_migration?).and_return(false)
           end
 
-          it { should be_successful }
-          it { should have_message "NO pending migrations" }
+          it { is_expected.to be_successful }
+          it { is_expected.to have_message "NO pending migrations" }
         end
 
         context "with pending migrations" do
@@ -26,8 +26,8 @@ module OkComputer
             expect(ActiveRecord::Migrator).to receive(:needs_migration?).and_return(true)
           end
 
-          it { should_not be_successful }
-          it { should have_message "Pending migrations" }
+          it { is_expected.not_to be_successful }
+          it { is_expected.to have_message "Pending migrations" }
         end
       end
 
@@ -36,7 +36,7 @@ module OkComputer
           allow(ActiveRecord::Migrator).to receive(:respond_to?).with(:needs_migration?).and_return(false)
         end
 
-        it { should_not be_successful }
+        it { is_expected.not_to be_successful }
       end
     end
   end

@@ -7,7 +7,7 @@ module OkComputer
     subject { described_class.new(host) }
 
     it "is a subclass of Check" do
-      subject.should be_a Check
+      expect(subject).to be_a Check
     end
 
     describe "#new(host, request_timeout)" do
@@ -34,20 +34,20 @@ module OkComputer
       context "when the connection is successful" do
         context "when the status is OK" do
           before do
-            subject.stub(:ping?).and_return(true)
+            allow(subject).to receive(:ping?).and_return(true)
           end
 
-          it { should be_successful }
-          it { should have_message "Solr ping reported success" }
+          it { is_expected.to be_successful }
+          it { is_expected.to have_message "Solr ping reported success" }
         end
 
         context "when the status is not OK" do
           before do
-            subject.stub(:ping?).and_return(false)
+            allow(subject).to receive(:ping?).and_return(false)
           end
 
-          it { should_not be_successful }
-          it { should have_message "Solr ping reported failure" }
+          it { is_expected.not_to be_successful }
+          it { is_expected.to have_message "Solr ping reported failure" }
         end
       end
 
@@ -55,18 +55,18 @@ module OkComputer
         let(:error_message) { "Error message" }
 
         before do
-          subject.stub(:perform_request).and_raise(HttpCheck::ConnectionFailed, error_message)
+          allow(subject).to receive(:perform_request).and_raise(HttpCheck::ConnectionFailed, error_message)
         end
 
-        it { should_not be_successful }
-        it { should have_message "Error: '#{error_message}'" }
+        it { is_expected.not_to be_successful }
+        it { is_expected.to have_message "Error: '#{error_message}'" }
       end
     end
 
     describe "#ping?" do
       context "when the connection is successful" do
         before do
-          subject.stub(:perform_request).and_return(response)
+          allow(subject).to receive(:perform_request).and_return(response)
         end
 
         context "when the status is OK" do
@@ -105,7 +105,7 @@ module OkComputer
 
       context "when the connection fails" do
         before do
-          subject.stub(:perform_request).and_raise(HttpCheck::ConnectionFailed)
+          allow(subject).to receive(:perform_request).and_raise(HttpCheck::ConnectionFailed)
         end
 
         it "raises a ConnectionFailed error" do
