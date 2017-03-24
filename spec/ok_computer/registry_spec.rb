@@ -29,6 +29,11 @@ module OkComputer
       let(:second_check_object) { double(:second_checker, :registrant_name= => nil) }
       let(:default_collection) { double }
 
+      after do
+        # Clear out registered checks to avoid leaking test doubles
+        Registry.instance_variable_set(:@default_collection, nil)
+      end
+
       it "assigns the given name to the check" do
         expect(check_object).to receive(:registrant_name=).with(check_name)
         Registry.register(check_name, check_object)
