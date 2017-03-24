@@ -49,7 +49,7 @@ module OkComputer
       if check.is_a?(CheckCollection)
         -1
       else
-        registrant_name <=> check.registrant_name
+        registrant_name.to_s <=> check.registrant_name.to_s
       end
     end
 
