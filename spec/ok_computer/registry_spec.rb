@@ -31,7 +31,7 @@ module OkComputer
 
       after do
         # Clear out registered checks to avoid leaking test doubles
-        Registry.instance_variable_set(:@default_collection, nil)
+        Registry.remove_instance_variable(:@default_collection)
       end
 
       it "assigns the given name to the check" do
