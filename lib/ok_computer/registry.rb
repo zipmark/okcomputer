@@ -40,7 +40,7 @@ module OkComputer
     # check_object - Instance of Checker to register
     # collection_name - The name of the check collection the check should be registered to
     def self.register(check_name, check_object, collection_name=nil)
-      check_object.registrant_name = check_name
+      check_object.registrant_name = check_name.to_s
       find_collection(collection_name).register(check_name, check_object)
     end
 
