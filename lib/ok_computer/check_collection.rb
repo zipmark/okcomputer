@@ -69,14 +69,14 @@ module OkComputer
     #
     # Returns the check
     def register(name, check)
-      collection[name] = check
+      collection[name.to_s] = check
     end
 
     # Public: Deregisters a check from the collection
     #
     # Returns the check
     def deregister(name)
-      check = collection.delete(name)
+      check = collection.delete(name.to_s)
     end
 
     # Public: The text of each check in the collection
