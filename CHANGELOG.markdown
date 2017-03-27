@@ -1,3 +1,7 @@
+#### v1.14.2
+
+* Fix exception which can occur when using both symbols and strings when registering checks.
+
 #### v1.14.1
 * Add new check to determine whether the app has pending ActiveRecord migrations.
 
