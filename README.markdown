@@ -108,6 +108,8 @@ Register additional checks in an initializer, like so:
 # config/initializers/okcomputer.rb
 OkComputer::Registry.register "resque_down", OkComputer::ResqueDownCheck.new
 OkComputer::Registry.register "resque_backed_up", OkComputer::ResqueBackedUpCheck.new("critical", 100)
+
+# This check works on 2.4.0 and above versions of resque-scheduler
 OkComputer::Registry.register "resque_scheduler_down", OkComputer::ResqueSchedulerCheck.new
 ```
 
