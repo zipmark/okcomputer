@@ -27,7 +27,7 @@ module OkComputer
     #
     # Returns a String with the version number
     def is_current?
-      Sequel.extension(:migration)
+      ::Sequel.extension(:migration)
       ::Sequel::Migrator.is_current?(database, migration_directory)
     rescue => e
       raise ConnectionFailed, e
