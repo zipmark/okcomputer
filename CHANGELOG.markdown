@@ -1,3 +1,4 @@
+#### v1.17.0
 #### v1.16.0
 * Add a Resque Scheduler check
 
