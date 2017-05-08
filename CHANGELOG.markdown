@@ -1,3 +1,9 @@
+#### v1.15.0
+
+* Add a SequelCheck
+
+ > Aryk: https://github.com/sportngin/okcomputer/pull/136
+
 #### v1.14.2
 
 * Fix exception which can occur when using both symbols and strings when registering checks.
